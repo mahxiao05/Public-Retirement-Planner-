@@ -6,7 +6,7 @@ changing the menu:  python3 tools/build.py
 
 Each page marks the shared parts with comment pairs, and the text between them is replaced:
   <!-- @head --> ... <!-- /@head -->        fonts, site.css, saved reader settings, AdSense loader
-  <!-- @header --> ... <!-- /@header -->    skip link, menu bar, Text & colors panel
+  <!-- @header --> ... <!-- /@header -->    skip link, menu bar, reading-setting icons
   <!-- @footer --> ... <!-- /@footer -->    footer links and disclaimer, site.js
 A page names its menu item with <meta name="nav" content="planner">.
 """
@@ -70,18 +70,22 @@ def head(rel, url):
 
 
 def header(rel, page):
+    marked = []   # the current page is marked once, even when it appears in several menu groups
     def link(href, inner, cls):
-        here = ' aria-current="page"' if href == page else ""
+        here = ""
+        if href == page and not marked:
+            here = ' aria-current="page"'
+            marked.append(href)
         return f'<a class="{cls}" href="{rel}{href}"{here}>{inner}</a>' if href else f'<a class="{cls}" href="{rel or "./"}"{here}>{inner}</a>'
-    items, marked = [], False
+    items = []
     for n, entry in enumerate(NAV):
         if len(entry) == 2:
             items.append("      <li>" + link(entry[0], entry[1], "nav-top") + "</li>")
             continue
         label, intro, links = entry
         current = ""
-        if not marked and any(h == page for h, _, _ in links):   # highlight only the first group that holds this page
-            current, marked = " has-current", True
+        if any(h == page for h, _, _ in links) and not marked:   # highlight only the first group that holds this page
+            current = " has-current"
         cards = "".join(f'\n            <li>{link(h, f"<strong>{t}</strong><span>{d}</span>", "nav-card")}</li>' for h, t, d in links)
         items.append(f"""      <li class="nav-group{current}">
         <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-{n}">{label}<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>

@@ -50,6 +50,7 @@
     "fairness": ["https://www.ssa.gov/benefits/retirement/social-security-fairness-act.html", "Social Security: Social Security Fairness Act (WEP and GPO ended)"],
     "spouse": ["https://www.ssa.gov/oact/quickcalc/spouse.html", "Social Security: Benefits for a spouse"],
     "survivor": ["https://www.ssa.gov/OP_Home/handbook/handbook.04/handbook-0407.html", "Social Security Handbook 407: Widow(er)'s benefit amount"],
+    "survivor-limit": ["https://secure.ssa.gov/poms.nsf/lnx/0300615320", "Social Security POMS RS 00615.320: survivor limit when the worker claimed early"],
     "medicare": ["https://www.medicare.gov/basics/get-started-with-medicare/sign-up/when-does-medicare-coverage-start", "Medicare.gov: When Medicare coverage starts"]
   };
 
@@ -189,7 +190,7 @@
       who: function (inp) { return inp.special ? "FERS special provisions" : "FERS"; },
       mathSteps: function (inp, p, years) {
         var out = [
-          li("Service at retirement: " + num(p.svc, 2) + " years", num(inp.fSvcNow, 2) + " years today + " + num(years, 2) + " more years of work" + (p.sickMonths ? ", plus " + p.sickMonths + " months of unused sick leave (" + num(inp.sickHours, 0) + " hours ÷ about 174 hours a month)" : "") + ". OPM drops partial months, so we count " + p.months + " months.", srcLink("fers-law", "5 U.S.C. 8415")),
+          li("Service at retirement: " + num(p.svc, 2) + " years", num(inp.fSvcNow, 2) + " years today + " + num(years, 2) + " more years of work" + (p.sickMonths ? ", plus " + p.sickMonths + " months of unused sick leave (" + num(inp.sickHours, 0) + " hours ÷ about " + num(FERS.SICK_HOURS_PER_MONTH, 0) + " hours a month)" : "") + ". OPM drops partial months, so we count " + p.months + " months.", srcLink("fers-law", "5 U.S.C. 8415")),
           li("Retirement type: " + p.el.kind, p.el.rule, srcLink("fers-elig", "FERS eligibility")),
           li("Multiplier: " + p.mult, inp.special ? "Special provisions pay 1.7% of your high-3 for each of your first 20 years and 1% for each year after." : (p.mult === "1.1%" ? "You'd retire at 62 or older with at least 20 years, so the multiplier is 1.1%." : "FERS pays 1% of your high-3 for each year of service. Retiring at 62 or older with 20 years raises it to 1.1%."), srcLink("fers-comp", "FERS computation")),
           li("Annuity before any reduction: " + usd2(p.unreduced) + " a month", usd(inp.high3) + " high-3 × " + p.mult + " × " + num(p.yrs, 2) + " years ÷ 12", srcLink("fers-comp", "FERS computation"))
@@ -232,7 +233,9 @@
       if (half > inp.spSS) { r.spousal = half - inp.spSS; r.spousalStart = Math.max(start, plan.ss.claim); }
     }
     // If you die first: survivor gets the larger of their own benefit and your benefit (we assume they're at full retirement age).
-    r.survivorSS = Math.max(inp.spSS, plan.ss.none ? 0 : plan.ss.monthly);
+    // If you claimed early, your benefit for this counts as at least 82.5% of your full amount (the widow(er)'s limit, POMS RS 00615.320).
+    var yours = plan.ss.none || !plan.ss.qualifies ? 0 : plan.ss.claim < plan.ss.fra ? Math.max(plan.ss.monthly, 0.825 * plan.ss.pia) : plan.ss.monthly;
+    r.survivorSS = Math.max(inp.spSS, yours);
     return r;
   }
   function incomeAt(inp, plan, age) {
@@ -324,6 +327,7 @@
   function validate(n) {
     var inp = inputs();
     if (n === "birth") return setErr("birth", inp.by < 1940 || inp.by > today.getFullYear() - 18 ? "Enter your birth year as four digits, like 1965." : "");
+    if (n === "spouse") return setErr("spouse", inp.married && (inp.spBy < 1935 || inp.spBy > today.getFullYear()) ? "Enter your spouse's birth year as four digits, like 1966." : "");
     if (n === "retire") {
       if (inp.retMonths < inp.nowMonths) return setErr("retire", "That age has already passed. Enter your age today (" + ageTxt(inp.nowMonths) + ") or older.");
       var p = sys(inp).pension(inp, inp.retMonths);
@@ -522,13 +526,14 @@
       $("sp-steps").innerHTML = [
         li("Spouse's own benefit: " + usd2(sp.own) + " a month", "The amount you entered, starting at their full retirement age of " + ageTxt(sp.fra) + " (" + dateAt(inp, sp.start) + ").", null),
         li("Spousal benefit: " + (sp.spousal > 0 ? "a top-up of " + usd2(sp.spousal) + " a month" : "none"), sp.spousal > 0 ? "A spouse can get up to 50% of your full-retirement-age amount (" + usd2(ss.pia) + " × 50% = " + usd2(ss.pia / 2) + "). Social Security pays their own benefit first, then adds the difference once you've started your own benefit." : "Half of your full-retirement-age amount (" + usd2((ss.pia || 0) / 2) + ") isn't more than their own benefit, so they'd get their own.", srcLink("spouse", "Benefits for a spouse")),
-        li("Survivor benefit: " + usd2(sp.survivorSS) + " a month", "If you die first, your spouse gets the larger of their own benefit and the amount you were receiving, if they're at full retirement age.", srcLink("survivor", "Widow(er)'s benefit"))
+        li("Survivor benefit: " + usd2(sp.survivorSS) + " a month", "If you die first, your spouse gets the larger of their own benefit and the amount you were receiving, if they're at full retirement age." + (ss.claim < ss.fra ? " Because you start early, your amount here is at least 82.5% of your full-retirement-age amount (" + usd2(0.825 * ss.pia) + ")." : ""), srcLink(ss.claim < ss.fra ? "survivor-limit" : "survivor", "Widow(er)'s benefit"))
       ].join("");
     }
     $("leaves-out").textContent = "This plan leaves out taxes, Medicare premiums, " + S.leavesOut + (sp ? " For your spouse, we assume they start Social Security at their full retirement age and don't have a pension of their own." : "") + " Because we don't add cost-of-living increases, think of every amount as roughly today's dollars.";
-    var srcIds = S.sources(inp).concat(["pia", "cbb", "fra", "early", "delay", "credits", "working", "fairness"]).concat(sp ? ["spouse", "survivor"] : []).concat(["medicare"]);
+    var srcIds = S.sources(inp).concat(["pia", "cbb", "fra", "early", "delay", "credits", "working", "fairness"]).concat(sp ? ["spouse", "survivor", "survivor-limit"] : []).concat(["medicare"]);
     $("sources").innerHTML = srcIds.map(function (id) { return '<li id="src-' + id + '"><a href="' + SOURCES[id][0] + '" target="_blank" rel="noopener">' + SOURCES[id][1] + "</a></li>"; }).join("");
 
+    if (window.SiteInfo) window.SiteInfo.tidy();
     $("intro").hidden = true; $("wizard").hidden = true; $("results").hidden = false;
     window.scrollTo(0, 0);
     save();
