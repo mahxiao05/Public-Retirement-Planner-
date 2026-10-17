@@ -2,7 +2,9 @@
 
 Help people plan for retirement.
 
-Static HTML/CSS/JS, no build step. Open any `index.html` in a browser.
+Static HTML/CSS/JS, no build step. Open any `index.html` in a browser. Served by GitHub Pages from the root of `main`.
+
+- `index.html`: home page with links to both tools, an About section and the disclaimer.
 
 - `oregon-pers/index.html`: Oregon PERS pension and IAP estimator (Tier One, Tier Two, OPSRP). Built for members near retirement: large print with a text-size switch, plain language, one question per screen (6 steps), then a plain-English answer, an age comparison table and next steps. Math and sources fold out at the end.
 - `planner/index.html`: Retirement Date Planner. Same look. 8 questions (birth date, PERS group, service, pay, IAP, Social Security, retirement age, Social Security start age), then one income timeline (PERS pension, IAP over 20 years, Social Security, Medicare at 65), a retirement-date comparison and a Social Security start-age comparison. Rules sit in separate `<script>` blocks that register on `window.RetirementRules` (`socialSecurity`, `pensions["or-pers"]`), so FERS and Washington DRS can be added as new pension entries.
