@@ -26,6 +26,7 @@ NAV = [
         PLANNER,
         ("oregon-pers/", "Oregon PERS Pension Estimator", "Your monthly pension at any age, with Money Match"),
         ("planner/?system=fers", "FERS and TSP Planner", "Annuity, supplement and TSP for federal employees"),
+        ("retirement-checklist/", "Retirement Countdown Checklist", "Every deadline from 3 years out to Medicare at 65"),
     ]),
     ("Oregon PERS", "For Oregon state, school, city and county employees.", [
         ("oregon-pers/", "Pension Estimator", "How much your PERS pension will be"),
@@ -38,9 +39,10 @@ NAV = [
         ("guides/fers-retirement-age/", "When can I retire under FERS?", "Your Minimum Retirement Age and the MRA+10 cut"),
         ("planner/?system=fers", "FERS and TSP Planner", "See your annuity, supplement and TSP by date"),
     ]),
-    ("Social Security", "How it fits with a public pension.", [
+    ("Social Security & Medicare", "How they fit with a public pension.", [
         ("guides/when-to-start-social-security/", "When should I start Social Security?", "Starting at 62, at full retirement age or at 70"),
         ("guides/does-a-pension-reduce-social-security/", "Does my pension lower my Social Security?", "What the 2025 Social Security Fairness Act changed"),
+        ("guides/health-insurance-before-medicare/", "Health insurance before 65", "FEHB, PERS retiree plans, COBRA and HealthCare.gov"),
         PLANNER,
     ]),
     ("guides/", "Guides"),
