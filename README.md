@@ -8,19 +8,19 @@ Static HTML/CSS/JS. Served by GitHub Pages from the root of `main`. No build ste
 python3 tools/build.py
 ```
 
-It stamps the shared `<head>`, menu bar and footer into every `index.html` (between the `<!-- @head -->`, `<!-- @header -->` and `<!-- @footer -->` markers) and writes `sitemap.xml`, `robots.txt` and, once `ADSENSE_ID` is set, `ads.txt`.
+It stamps the shared `<head>`, menu bar, breadcrumbs, footer and phone tab bar into every `index.html` (between the `<!-- @head -->`, `<!-- @header -->`, `<!-- @crumbs -->` and `<!-- @footer -->` markers; breadcrumbs are added after `<main>` automatically) and writes `sitemap.xml`, `robots.txt` and, once `ADSENSE_ID` is set, `ads.txt`.
 
 ## Pages
 - `index.html`: home.
 - `planner/`: Retirement Date Planner (`planner.js`). Oregon PERS or FERS, Social Security, optional spouse, income timeline, retirement-date and Social Security start-age comparisons, "If you die first", and a print view. `?system=fers` preselects FERS.
 - `oregon-pers/`: Oregon PERS Pension Estimator, including Money Match for Tier One and Tier Two.
-- `fers/`: FERS and TSP rules explained, with a link into the planner.
-- `guides/`: plain-English articles.
+- `fers/`: FERS explained (the complete FERS guide), with links into the planner.
+- `guides/`: plain-English articles. `where-to-begin/` is the "Start here" page; `oregon-pers-explained/` and `social-security-explained/` are the complete system guides.
 - `about/`, `contact/`, `privacy/`, `terms/`: pages AdSense reviewers look for.
 
 ## Shared code
 - `assets/site.css`: all shared styles. Reader settings are attributes on `<html>`: `data-theme` (light, dark, or none for the device setting), `data-size` (1 to 3) and `data-font` (clear, book, wide).
-- `assets/site.js`: menu, reading-setting icons (text size, colors, letters), print button.
+- `assets/site.js`: desktop menu, phone menu sheet (opened from the tab bar), reading-setting icons (text size, colors, letters), print button.
 - `assets/info.js`: the "i" buttons. Put `<button type="button" class="info" data-info="KEY"></button>` next to a term; tapping it opens the explanation for `KEY` from `TOPICS`, with official links, below that line. Scripts that draw results use `SiteInfo.button(KEY)`. Keep the explanations in step with `assets/rules/`.
 - `assets/rules/*.js`: the official rules, one file per system. Each registers on `window.RetirementRules`. To add Washington DRS, add `assets/rules/wa-drs.js`, its question screens in `planner/index.html`, and an adapter in `SYSTEMS` in `planner/planner.js`.
 
