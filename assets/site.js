@@ -17,10 +17,18 @@
     if (kind === "size") return root.getAttribute("data-size") || "1";
     return root.getAttribute("data-font") || "clear";
   }
+  var NAMES = { size: { "1": "Normal text", "2": "Large text", "3": "Largest text" }, theme: { light: "Light colors", dark: "Dark colors" },
+    font: { clear: "Easy-to-read letters", book: "Book-style letters", wide: "Wide-spaced letters" } };
+  function effectiveTheme() {
+    var t = root.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  // Screen readers hear the current choice on each icon.
   function sync() {
-    document.querySelectorAll("[data-set]").forEach(function (b) {
-      var parts = b.getAttribute("data-set").split(":");
-      b.setAttribute("aria-pressed", current(parts[0]) === parts[1] ? "true" : "false");
+    document.querySelectorAll("[data-cycle]").forEach(function (b) {
+      var k = b.getAttribute("data-cycle"), v = k === "theme" ? effectiveTheme() : current(k);
+      b.setAttribute("aria-label", NAMES[k][v] + ". Tap to change.");
     });
   }
 
@@ -33,7 +41,6 @@
 
   function init() {
     var menuBtn = document.getElementById("menu-btn"), nav = document.getElementById("site-nav");
-    var dispBtn = document.getElementById("display-btn"), panel = document.getElementById("display-panel");
     if (menuBtn && nav) menuBtn.addEventListener("click", function () { if (!toggle(menuBtn, nav)) closeGroups(); });
     // Menu groups open on click or tap, one at a time. Escape or a click elsewhere closes them.
     var groups = document.querySelectorAll(".nav-group > .nav-top");
@@ -49,13 +56,21 @@
       var open = document.querySelector('.nav-group > .nav-top[aria-expanded="true"]');
       if (open) { closeGroups(); open.focus(); }
     });
-    if (dispBtn && panel) {
-      dispBtn.addEventListener("click", function () { if (toggle(dispBtn, panel)) { var f = panel.querySelector("h2"); if (f) { f.setAttribute("tabindex", "-1"); f.focus(); } } });
-      var done = document.getElementById("display-done");
-      if (done) done.addEventListener("click", function () { toggle(dispBtn, panel, false); dispBtn.focus(); });
-    }
-    document.querySelectorAll("[data-set]").forEach(function (b) {
-      b.addEventListener("click", function () { var p = b.getAttribute("data-set").split(":"); apply(p[0], p[1]); });
+    // Reading-setting icons: each tap moves to the next choice and briefly says which one is on.
+    var NEXT = { size: ["1", "2", "3"], font: ["clear", "book", "wide"] };
+    var status = document.createElement("div");
+    status.className = "quick-status"; status.setAttribute("role", "status"); status.hidden = true;
+    document.body.appendChild(status);
+    var timer;
+    document.querySelectorAll("[data-cycle]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var kind = b.getAttribute("data-cycle"), v;
+        if (kind === "theme") v = effectiveTheme() === "dark" ? "light" : "dark";
+        else { var list = NEXT[kind]; v = list[(list.indexOf(current(kind)) + 1) % list.length]; }
+        apply(kind, v);
+        status.textContent = NAMES[kind][v]; status.hidden = false;
+        clearTimeout(timer); timer = setTimeout(function () { status.hidden = true; }, 1800);
+      });
     });
     document.querySelectorAll("[data-print]").forEach(function (b) { b.addEventListener("click", function () { window.print(); }); });
     var stamp = document.querySelectorAll(".print-date");
