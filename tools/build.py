@@ -104,6 +104,7 @@ def footer(rel):
     </nav>
     <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
     <p>Your answers stay on your device. Last updated {LAST_UPDATED}.</p>
+    <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
   </div>
 </footer>
 <script src="{rel}assets/info.js"></script>
