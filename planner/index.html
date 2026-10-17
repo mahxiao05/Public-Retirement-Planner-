@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
 <link rel="stylesheet" href="../assets/site.css">
 <script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
-<!-- AdSense loader goes here once ADSENSE_ID is set in tools/build.py -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867146450299069" crossorigin="anonymous"></script>
 <!-- /@head -->
 </head>
 <body>
@@ -109,14 +109,14 @@
 
       <!-- PERS: group -->
       <section class="q" data-step="pers-group" hidden>
-        <h2>When did you start working in a PERS job?</h2>
+        <h2>When did you start working in a PERS job?<button type="button" class="info" data-info="pers-tier"></button></h2>
         <p class="why">Your start date puts you in one of three PERS groups. Each one has its own formula.</p>
         <div class="opts" role="radiogroup" aria-label="PERS group">
           <label class="opt"><input type="radio" name="plan" id="plan-t1" value="T1"><span><b>Before 1996</b><em>Tier One</em></span></label>
           <label class="opt"><input type="radio" name="plan" id="plan-t2" value="T2" checked><span><b>1996 to August 28, 2003</b><em>Tier Two</em></span></label>
           <label class="opt"><input type="radio" name="plan" id="plan-op" value="OPSRP"><span><b>August 29, 2003 or later</b><em>OPSRP (Oregon Public Service Retirement Plan)</em></span></label>
         </div>
-        <h3>What kind of job do you have?</h3>
+        <h3>What kind of job do you have?<button type="button" class="info" data-info="pers-pf"></button></h3>
         <div class="opts" role="radiogroup" aria-label="Job type">
           <label class="opt"><input type="radio" name="cls" id="cls-gen" value="GEN" checked><span><b>Most public jobs</b><em>Teachers, office staff, nurses, city and state workers ("general service")</em></span></label>
           <label class="opt"><input type="radio" name="cls" id="cls-pf" value="PF"><span><b>Police officer or firefighter</b><em>A position PERS classifies as police and fire</em></span></label>
@@ -125,7 +125,7 @@
 
       <!-- PERS: service -->
       <section class="q" data-step="pers-svc" hidden>
-        <h2>How many years have you worked in PERS jobs?</h2>
+        <h2>How many years have you worked in PERS jobs?<button type="button" class="info" data-info="pers-svc"></button></h2>
         <p class="why">PERS calls this your service credit. Each year adds to your pension. We'll add the years you keep working until the date you pick.</p>
         <div class="fields">
           <div class="field"><label for="svc">Years of service so far</label><div class="plain"><input type="number" id="svc" min="0" max="50" step="0.5" value="24" inputmode="decimal"></div><span class="help">Half years are fine, like 24.5.</span></div>
@@ -135,7 +135,7 @@
 
       <!-- PERS: pay -->
       <section class="q" data-step="pers-pay" hidden>
-        <h2>What were your three best-paid years?</h2>
+        <h2>What were your three best-paid years?<button type="button" class="info" data-info="pers-pay"></button></h2>
         <p class="why">PERS bases your pension on your highest pay, averaged over three years. Use your gross yearly pay, before taxes.</p>
         <div class="fields">
           <div class="field"><label for="sal1">Best year</label><div class="money"><input type="number" id="sal1" min="0" step="500" value="84000" inputmode="numeric"></div></div>
@@ -148,18 +148,18 @@
 
       <!-- PERS: IAP -->
       <section class="q" data-step="pers-iap" hidden>
-        <h2>What's in your IAP account?</h2>
+        <h2>What's in your IAP account?<button type="button" class="info" data-info="iap"></button></h2>
         <p class="why">The Individual Account Program (IAP) is a separate savings account PERS keeps for you. Since 2004, part of each paycheck has gone into it. If you don't know, leave it at 0.</p>
         <div class="fields">
           <div class="field"><label for="iap-bal">IAP balance today</label><div class="money"><input type="number" id="iap-bal" min="0" step="1000" value="62000" inputmode="numeric"></div><span class="help">It's on your yearly IAP statement.</span></div>
           <div class="field"><label for="iap-sal">Your monthly pay now</label><div class="money"><input type="number" id="iap-sal" min="0" step="100" value="7000" inputmode="numeric"></div><span class="help">Before taxes.</span></div>
         </div>
-        <div class="field" style="max-width:260px"><label for="iap-ret">Yearly growth to assume (%)</label><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
+        <div class="field" style="max-width:260px"><label for="iap-ret">Yearly growth to assume (%)<button type="button" class="info" data-info="growth"></button></label><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
       </section>
 
       <!-- PERS: member account (Money Match), Tier One and Tier Two only -->
       <section class="q" data-step="pers-acct" hidden>
-        <h2>What's in your PERS member account?</h2>
+        <h2>What's in your PERS member account?<button type="button" class="info" data-info="money-match"></button></h2>
         <p class="why">Tier One and Tier Two members have a member account from contributions made before 2004. PERS also figures your pension a second way from this account, called Money Match, and pays you whichever way gives more.</p>
         <div class="fields">
           <div class="field" style="max-width:320px"><label for="acct-bal">Member account balance today</label><div class="money"><input type="number" id="acct-bal" min="0" step="1000" value="0" inputmode="numeric"></div><span class="help">On your yearly PERS member statement. Leave at 0 if you don't know, and we'll skip Money Match.</span></div>
@@ -169,7 +169,7 @@
 
       <!-- FERS: job -->
       <section class="q" data-step="fers-job" hidden>
-        <h2>What kind of federal job do you have?</h2>
+        <h2>What kind of federal job do you have?<button type="button" class="info" data-info="fers-special"></button></h2>
         <p class="why">Some jobs retire under special rules with earlier retirement ages and a larger formula.</p>
         <div class="opts" role="radiogroup" aria-label="FERS job type">
           <label class="opt"><input type="radio" name="fjob" id="fjob-reg" value="reg" checked><span><b>Most federal jobs</b><em>Regular FERS</em></span></label>
@@ -179,7 +179,7 @@
 
       <!-- FERS: service -->
       <section class="q" data-step="fers-svc" hidden>
-        <h2>How many years of federal service do you have?</h2>
+        <h2>How many years of federal service do you have?<button type="button" class="info" data-info="fers-svc"></button></h2>
         <p class="why">Count your creditable civilian service under FERS. We'll add the years you keep working until the date you pick.</p>
         <div class="fields">
           <div class="field"><label for="fsvc">Years of service so far</label><div class="plain"><input type="number" id="fsvc" min="0" max="50" step="0.5" value="22" inputmode="decimal"></div><span class="help">Half years are fine.</span></div>
@@ -190,7 +190,7 @@
 
       <!-- FERS: high-3 -->
       <section class="q" data-step="fers-pay" hidden>
-        <h2>What's your highest average yearly pay over three years in a row?</h2>
+        <h2>What's your highest average yearly pay over three years in a row?<button type="button" class="info" data-info="high3"></button></h2>
         <p class="why">FERS calls this your "high-3". Use basic pay, including locality pay, but not overtime or bonuses. For most people it's their last three years.</p>
         <div class="fields">
           <div class="field" style="max-width:320px"><label for="high3">High-3 average salary</label><div class="money"><input type="number" id="high3" min="0" step="500" value="95000" inputmode="numeric"></div><span class="help">A yearly amount, before taxes.</span></div>
@@ -199,19 +199,19 @@
 
       <!-- FERS: TSP -->
       <section class="q" data-step="fers-tsp" hidden>
-        <h2>What's in your TSP?</h2>
+        <h2>What's in your TSP?<button type="button" class="info" data-info="tsp"></button></h2>
         <p class="why">The Thrift Savings Plan (TSP) is your federal retirement savings account. Your agency adds money too. If you don't know, leave the balance at 0.</p>
         <div class="fields">
           <div class="field"><label for="tsp-bal">TSP balance today</label><div class="money"><input type="number" id="tsp-bal" min="0" step="1000" value="240000" inputmode="numeric"></div><span class="help">On tsp.gov or your quarterly statement.</span></div>
           <div class="field"><label for="tsp-pay">Your monthly pay now</label><div class="money"><input type="number" id="tsp-pay" min="0" step="100" value="8000" inputmode="numeric"></div><span class="help">Basic pay, before taxes.</span></div>
           <div class="field"><label for="tsp-pct">You put in (% of pay)</label><div class="plain"><input type="number" id="tsp-pct" min="0" max="80" step="1" value="5" inputmode="numeric"></div><span class="help">5% gets you the full agency match.</span></div>
         </div>
-        <div class="field" style="max-width:260px"><label for="tsp-ret">Yearly growth to assume (%)</label><div class="plain"><input type="number" id="tsp-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
+        <div class="field" style="max-width:260px"><label for="tsp-ret">Yearly growth to assume (%)<button type="button" class="info" data-info="growth"></button></label><div class="plain"><input type="number" id="tsp-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
       </section>
 
       <!-- Social Security -->
       <section class="q" data-step="ss" hidden>
-        <h2>What do you know about your Social Security?</h2>
+        <h2>What do you know about your Social Security?<button type="button" class="info" data-info="ss-know"></button></h2>
         <p class="why">Your Social Security statement has the most accurate number. If you don't have it handy, we can estimate from your pay.</p>
         <div class="opts" role="radiogroup" aria-label="Social Security">
           <label class="opt"><input type="radio" name="ssmode" id="ss-mode-stmt" value="stmt"><span><b>I have my Social Security statement</b><em>I'll type in the amount it shows</em></span></label>
@@ -224,10 +224,10 @@
         </div>
         <div class="sub" id="ss-est-box">
           <div class="fields">
-            <div class="field"><label for="ss-pay">Your usual yearly pay</label><div class="money"><input type="number" id="ss-pay" min="0" step="500" value="70000" inputmode="numeric"></div><span class="help">Think of what a typical year of your career would pay today.</span></div>
+            <div class="field"><label for="ss-pay">Your usual yearly pay<button type="button" class="info" data-info="ss-estimate"></button></label><div class="money"><input type="number" id="ss-pay" min="0" step="500" value="70000" inputmode="numeric"></div><span class="help">Think of what a typical year of your career would pay today.</span></div>
             <div class="field"><label for="ss-yrs">Years you've paid Social Security tax</label><div class="plain"><input type="number" id="ss-yrs" min="0" max="50" step="1" value="30" inputmode="numeric"></div><span class="help">Count years with pay from any job.</span></div>
           </div>
-          <h3>Does Social Security tax come out of your paycheck now?</h3>
+          <h3>Does Social Security tax come out of your paycheck now?<button type="button" class="info" data-info="ss-public"></button></h3>
           <div class="opts" role="radiogroup" aria-label="Paying Social Security tax now">
             <label class="opt"><input type="radio" name="sscont" id="ss-cont-yes" value="yes" checked><span><b>Yes</b><em>Your pay stub shows "Social Security" or "OASDI"</em></span></label>
             <label class="opt"><input type="radio" name="sscont" id="ss-cont-no" value="no"><span><b>No</b><em>Some public jobs don't pay into Social Security</em></span></label>
@@ -237,7 +237,7 @@
 
       <!-- spouse -->
       <section class="q" data-step="spouse" hidden>
-        <h2>Are you married?</h2>
+        <h2>Are you married?<button type="button" class="info" data-info="spouse"></button></h2>
         <p class="why">A spouse can get Social Security based on your work, and you can choose a pension that keeps paying your spouse after you die.</p>
         <div class="opts" role="radiogroup" aria-label="Married">
           <label class="opt"><input type="radio" name="married" id="mar-no" value="no" checked><span><b>No</b><em>Plan for me only</em></span></label>
@@ -255,14 +255,14 @@
             <div class="field"><label for="sp-y">Spouse's birth year</label><div class="plain"><input type="number" id="sp-y" min="1935" max="2008" step="1" value="1966" inputmode="numeric"></div></div>
           </div>
           <div class="field" style="max-width:340px"><label for="sp-ss">Spouse's own Social Security at their full retirement age</label><div class="money"><input type="number" id="sp-ss" min="0" step="10" value="1200" inputmode="numeric"></div><span class="help">From their Social Security statement. Enter 0 if they won't get any on their own work.</span></div>
-          <h3>How should your pension be paid?</h3>
+          <h3>How should your pension be paid?<button type="button" class="info" id="surv-info" data-info="pers-options"></button></h3>
           <div class="opts" role="radiogroup" aria-label="Survivor option" id="surv-opts"></div>
         </div>
       </section>
 
       <!-- retirement date -->
       <section class="q" data-step="retire" hidden>
-        <h2>At what age are you thinking of retiring?</h2>
+        <h2>At what age are you thinking of retiring?<button type="button" class="info" id="ret-info" data-info="pers-early"></button></h2>
         <p class="why">This is when you'd stop working and start your pension. You can compare other dates on the results page.</p>
         <div class="fields">
           <div class="field"><label for="ret-y">Age</label><div class="plain"><input type="number" id="ret-y" min="50" max="75" step="1" value="62" inputmode="numeric"></div></div>
@@ -275,7 +275,7 @@
 
       <!-- Social Security start -->
       <section class="q" data-step="claim" hidden>
-        <h2>When would you start Social Security?</h2>
+        <h2>When would you start Social Security?<button type="button" class="info" data-info="ss-claim"></button></h2>
         <p class="why">You can start as early as 62 or wait until 70. Each month you wait raises your payment for life. Your retirement date and your Social Security date don't have to be the same.</p>
         <div class="opts" role="radiogroup" aria-label="Social Security start age" id="claim-opts"></div>
       </section>
@@ -301,7 +301,7 @@
     </div>
 
     <section class="section">
-      <h2>Your income timeline</h2>
+      <h2>Your income timeline<button type="button" class="info" data-info="timeline"></button></h2>
       <p>Each stop is a date when something starts or ends. Amounts are monthly, before taxes.</p>
       <div class="panel">
         <ol class="timeline" id="timeline"></ol>
@@ -309,12 +309,12 @@
     </section>
 
     <section class="section" id="surv-section" hidden>
-      <h2>If you die first</h2>
+      <h2>If you die first<button type="button" class="info" data-info="survivor-ss"></button></h2>
       <div class="panel" id="surv-body"></div>
     </section>
 
     <section class="section">
-      <h2>Compare retirement dates</h2>
+      <h2>Compare retirement dates<button type="button" class="info" data-info="compare-dates"></button></h2>
       <p>Working longer adds service and can remove early-retirement cuts. Your Social Security start age stays the same in this table. Tap <strong>Show</strong> to see that date on your timeline.</p>
       <div class="panel tablewrap">
         <table class="stack">
@@ -325,7 +325,7 @@
     </section>
 
     <section class="section" id="claim-section">
-      <h2>Compare Social Security start ages</h2>
+      <h2>Compare Social Security start ages<button type="button" class="info" data-info="compare-ss"></button></h2>
       <p id="claim-intro"></p>
       <div class="panel tablewrap">
         <table class="stack">
@@ -391,6 +391,7 @@
     <p>Your answers stay on your device. Last updated October 17, 2026.</p>
   </div>
 </footer>
+<script src="../assets/info.js"></script>
 <script src="../assets/site.js"></script>
 <!-- /@footer -->
 

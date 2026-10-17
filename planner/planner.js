@@ -19,6 +19,8 @@
   function val(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
   function radio(name) { var r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : null; }
   function li(t, calc, src) { return "<li><strong>" + t + "</strong><span class=\"calc\">" + calc + "</span>" + (src ? '<span class="src">Source: ' + src + "</span>" : "") + "</li>"; }
+  var info = function (key) { return window.SiteInfo ? window.SiteInfo.button(key) : ""; };
+  function setInfo(id, key) { var b = $(id); if (!b || b.getAttribute("data-info") === key) return; b.setAttribute("data-info", key); if (window.SiteInfo) b.setAttribute("aria-label", "Explain: " + window.SiteInfo.TOPICS[key].t); }
   function srcLink(id, text) { return '<a href="#src-' + id + '">' + text + "</a>"; }
 
   // ---------- sources ----------
@@ -285,6 +287,8 @@
     syncSub(); previews();
     if (n === "claim") renderClaimOpts();
     if (n === "spouse") renderSurvOpts();
+    var fers = radio("system") === "fers";
+    setInfo("surv-info", fers ? "fers-survivor" : "pers-options"); setInfo("ret-info", fers ? "fers-mra" : "pers-early");
     var h = document.querySelector('.q[data-step="' + n + '"] h2'); if (h && focus) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
   }
   function syncSub() {
@@ -366,20 +370,21 @@
     var st = $("r-status"), stText = st.lastElementChild, ico = st.firstElementChild, cut = S.cutText(inp, p);
     if (cut) { st.className = "status early"; ico.textContent = "!"; stText.textContent = cut; }
     else { st.className = "status full"; ico.textContent = "✓"; stText.textContent = "No early-retirement cut to your " + (S.name === "FERS" ? "annuity" : "pension") + "."; }
+    stText.insertAdjacentHTML("beforeend", info(S.name === "FERS" ? "fers-mra" : "pers-early"));
 
     var more = [];
-    more.push("<p>By then you'd have about " + yrsTxt(Math.round(p.svc * 10) / 10) + " of service.</p>");
-    if (p.optUnknown) more.push("<p><strong>About your payment option:</strong> these amounts are for the option that pays only you. " + p.opt.name + " pays less while you're alive. " + p.opt.how + "</p>");
-    if (p.usesMM) more.push("<p><strong>Money Match pays you more.</strong> Your member account would give " + usd(p.mm.monthly) + " a month, compared with " + usd(p.formulaMonthly) + " from the Full Formula, so we use Money Match.</p>");
-    if (sup) more.push("<p>From retirement until age 62 you'd also get a <strong>FERS supplement</strong> of about " + usd(sup.monthly) + " a month, which bridges the gap until Social Security.</p>");
+    more.push("<p>By then you'd have about " + yrsTxt(Math.round(p.svc * 10) / 10) + " of service." + info(S.name === "FERS" ? "fers-formula" : "pers-formula") + "</p>");
+    if (p.optUnknown) more.push("<p><strong>About your payment option:</strong> these amounts are for the option that pays only you. " + p.opt.name + " pays less while you're alive. " + p.opt.how + info("pers-options") + "</p>");
+    if (p.usesMM) more.push("<p><strong>Money Match pays you more.</strong> Your member account would give " + usd(p.mm.monthly) + " a month, compared with " + usd(p.formulaMonthly) + " from the Full Formula, so we use Money Match." + info("money-match") + "</p>");
+    if (sup) more.push("<p>From retirement until age 62 you'd also get a <strong>FERS supplement</strong> of about " + usd(sup.monthly) + " a month, which bridges the gap until Social Security." + info("supplement") + "</p>");
     if (sp) {
       var hh = incomeAt(inp, plan, Math.max(inp.retMonths, hasSS ? ss.claim : 0, sp.start)).total;
-      more.push("<p>Counting your spouse's Social Security, your household would have about <strong>" + usd(hh) + " a month</strong> once everyone has started.</p>");
+      more.push("<p>Counting your spouse's Social Security, your household would have about <strong>" + usd(hh) + " a month</strong> once everyone has started." + info("spouse") + "</p>");
     }
     if (inp.system === "pers" && !p.vestedLikely) more.push('<p class="err">With fewer than 5 years of service you may not qualify for a PERS pension yet. Check with PERS.</p>');
-    if (inp.system === "pers" && p.anyCapped) more.push("<p>Pay above PERS's limit of " + usd(PERS.SALARY_LIMIT) + " a year doesn't count, so we capped it.</p>");
-    if (!ss.none && !ss.qualifies) more.push('<p class="err">With fewer than 10 years of Social Security work you may not have the 40 credits needed for a Social Security retirement benefit, so we left it out.</p>');
-    if (hasSS && ss.claim < inp.retMonths && ss.claim < ss.fra) more.push("<p><strong>Heads up:</strong> if you start Social Security before your full retirement age while you're still working, Social Security holds back $1 for every $2 you earn over " + usd(SS.EARNINGS_LIMIT.under) + " a year (the " + SS.EARNINGS_LIMIT.year + " limit). " + srcLink("working", "See the rule") + ".</p>");
+    if (inp.system === "pers" && p.anyCapped) more.push("<p>Pay above PERS's limit of " + usd(PERS.SALARY_LIMIT) + " a year doesn't count, so we capped it." + info("pers-pay") + "</p>");
+    if (!ss.none && !ss.qualifies) more.push('<p class="err">With fewer than 10 years of Social Security work you may not have the 40 credits needed for a Social Security retirement benefit, so we left it out.' + info("ss-estimate") + "</p>");
+    if (hasSS && ss.claim < inp.retMonths && ss.claim < ss.fra) more.push("<p><strong>Heads up:</strong> if you start Social Security before your full retirement age while you're still working, Social Security holds back $1 for every $2 you earn over " + usd(SS.EARNINGS_LIMIT.under) + " a year (the " + SS.EARNINGS_LIMIT.year + " limit). " + srcLink("working", "See the rule") + "." + info("earnings-test") + "</p>");
     if (sup && hasSS && ss.claim > 62 * 12) more.push("<p>The FERS supplement stops at 62 even if you wait longer to start Social Security.</p>");
     $("r-more").innerHTML = more.join("");
 
@@ -410,7 +415,7 @@
     });
     if (MEDICARE >= inp.nowMonths) {
       html.push({ m: MEDICARE, note: true, h: '<li class="stopi note"><p class="when">' + dateAt(inp, MEDICARE) + " · age 65</p><h3>Medicare can start.</h3><p>Sign up between " + dateAt(inp, MEDICARE - 3) + " and " + dateAt(inp, MEDICARE + 3) + ". " +
-        (inp.retMonths < MEDICARE ? "Retiring before 65 means you'll need other health insurance until then. " : "") + srcLink("medicare", "Medicare sign-up rules") + "</p></li>" });
+        (inp.retMonths < MEDICARE ? "Retiring before 65 means you'll need other health insurance until then. " : "") + srcLink("medicare", "Medicare sign-up rules") + info("medicare") + "</p></li>" });
     }
     html.sort(function (a, b) { return a.m - b.m || (a.note ? 1 : -1); });
     $("timeline").innerHTML = html.map(function (x) { return x.h; }).join("");
