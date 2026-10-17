@@ -3,7 +3,6 @@
 (function () {
   var root = document.documentElement;
   var KEYS = { size: "site-size", theme: "site-theme", font: "site-font" };
-  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
 
   function apply(kind, value) {

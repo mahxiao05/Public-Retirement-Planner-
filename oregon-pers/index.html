@@ -43,7 +43,7 @@
         <div class="nav-panel" id="menu-2" hidden>
           <p class="nav-intro">For Oregon state, school, city and county employees.</p>
           <ul class="nav-cards">
-            <li><a class="nav-card" href="../oregon-pers/" aria-current="page"><strong>Pension Estimator</strong><span>How much your PERS pension will be</span></a></li>
+            <li><a class="nav-card" href="../oregon-pers/"><strong>Pension Estimator</strong><span>How much your PERS pension will be</span></a></li>
             <li><a class="nav-card" href="../guides/when-can-i-retire-oregon-pers/"><strong>When can I retire from PERS?</strong><span>Full-benefit ages for each plan, and the early cut</span></a></li>
             <li><a class="nav-card" href="../guides/pers-tier-one-tier-two-opsrp/"><strong>Tier One, Tier Two or OPSRP?</strong><span>Which plan you're in and how it changes your pension</span></a></li>
             <li><a class="nav-card" href="../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
@@ -123,6 +123,7 @@
           <div class="field"><label for="age-y">Years</label><div class="plain"><input type="number" id="age-y" min="18" max="80" step="1" value="57" inputmode="numeric"></div></div>
           <div class="field"><label for="age-m">and months</label><div class="plain"><input type="number" id="age-m" min="0" max="11" step="1" value="0" inputmode="numeric"></div><span class="help">Leave at 0 if you're not sure.</span></div>
         </div>
+        <p class="err" id="age-err" hidden></p>
       </section>
 
       <!-- 3 -->
@@ -156,9 +157,9 @@
           <div class="field"><label for="iap-bal">IAP balance today</label><div class="money"><input type="number" id="iap-bal" min="0" step="1000" value="62000" inputmode="numeric"></div><span class="help">It's on your yearly IAP statement.</span></div>
           <div class="field"><label for="iap-sal">Your monthly pay now</label><div class="money"><input type="number" id="iap-sal" min="0" step="100" value="7000" inputmode="numeric"></div><span class="help">Before taxes.</span></div>
         </div>
-        <div class="field" style="max-width:260px"><label for="iap-ret">Yearly growth to assume (%)<button type="button" class="info" data-info="growth"></button></label><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
+        <div class="field" style="max-width:260px"><div class="field-head"><label for="iap-ret">Yearly growth to assume (%)</label><button type="button" class="info" data-info="growth"></button></div><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
         <div class="sub" id="acct-box">
-          <div class="field" style="max-width:320px"><label for="acct-bal">PERS member account balance (Tier One and Tier Two)<button type="button" class="info" data-info="money-match"></button></label><div class="money"><input type="number" id="acct-bal" min="0" step="1000" value="0" inputmode="numeric"></div><span class="help">On your yearly member statement, separate from your IAP. PERS uses it for a second method, Money Match, and pays whichever is higher. Leave at 0 to skip.</span></div>
+          <div class="field" style="max-width:320px"><div class="field-head"><label for="acct-bal">PERS member account balance (Tier One and Tier Two)</label><button type="button" class="info" data-info="money-match"></button></div><div class="money"><input type="number" id="acct-bal" min="0" step="1000" value="0" inputmode="numeric"></div><span class="help">On your yearly member statement, separate from your IAP. PERS uses it for a second method, Money Match, and pays whichever is higher. Leave at 0 to skip.</span></div>
         </div>
       </section>
 
@@ -277,7 +278,7 @@
 (function () {
   // ---------- official numbers: ../assets/rules/oregon-pers.js ----------
   var PERS = window.RetirementRules.pensions["or-pers"];
-  var calcPension = PERS.calcPension, calcIAP = PERS.calcIAP, earlyFactor = PERS.earlyFactor, retirementAges = PERS.retirementAges;
+  var calcPension = PERS.calcPension, calcIAP = PERS.calcIAP, earlyFactor = PERS.earlyFactor;
   var SALARY_LIMIT = PERS.SALARY_LIMIT, REDIRECT_THRESHOLD = PERS.REDIRECT_THRESHOLD;
 
   // ---------- page ----------
@@ -293,7 +294,6 @@
   function radio(name) { return document.querySelector('input[name="' + name + '"]:checked').value; }
 
   var TOTAL = 6, step = 1;
-  var NAMES = { T1: "Tier One", T2: "Tier Two", OPSRP: "OPSRP" };
 
   function inputs() {
     return {
@@ -334,6 +334,11 @@
     var h = document.querySelector('.q[data-step="' + n + '"] h2'); if (h && focus) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
   }
 
+  function validAge() {
+    var y = val("age-y"), ok = y >= 18 && y <= 80;
+    $("age-err").textContent = ok ? "" : "Enter your age in years, from 18 to 80."; $("age-err").hidden = ok;
+    return ok;
+  }
   function validRet() {
     var inp = inputs();
     if (inp.retMonths < inp.nowMonths) { $("ret-err").textContent = "That age has already passed. Enter your age today or older."; $("ret-err").hidden = false; return false; }
@@ -346,7 +351,7 @@
     var years = Math.max(0, inp.retMonths - inp.nowMonths) / 12;
     var iap = calcIAP({ plan: inp.plan, balance: inp.iapBal, monthlySalary: inp.iapSal, years: years, ret: inp.iapRet });
     var info = function (key) { return window.SiteInfo ? window.SiteInfo.button(key) : ""; };
-    var who = NAMES[inp.plan] + (inp.cls === "PF" ? " police and fire" : " general service");
+    var who = PERS.NAMES[inp.plan] + (inp.cls === "PF" ? " police and fire" : " general service");
 
     // lead answer
     if (p.eligible) {
@@ -359,6 +364,9 @@
     else if (p.monthsEarly > 0 && !p.usesMM) {
       st.className = "status early"; ico.textContent = "!";
       stText.textContent = "This is " + pctTxt(1 - p.factor) + " less than you'd get with no reduction, because you'd retire " + durTxt(p.monthsEarly) + " before your full-benefit age of " + ageTxt(p.ages.normal) + ". The reduction lasts for life.";
+    } else if (p.monthsEarly > 0) {
+      st.className = "status early"; ico.textContent = "!";
+      stText.textContent = "You'd retire " + durTxt(p.monthsEarly) + " before your full-benefit age of " + ageTxt(p.ages.normal) + ". Money Match pays more than the reduced Full Formula here, and it is already figured for your age.";
     } else { st.className = "status full"; ico.textContent = "✓"; stText.textContent = "No reduction. You'd be at or past your full-benefit age."; }
     stText.insertAdjacentHTML("beforeend", info("pers-early"));
 
@@ -375,10 +383,10 @@
     var rows = [], seen = {};
     function add(m) { if (m == null || seen[m]) return; seen[m] = 1; rows.push(m); }
     for (var y = startY; y < startY + 8 && y <= 75; y++) add(y * 12);
-    add(inp.retMonths); add(firstFullAge(inp));
+    var fullM = firstFullAge(inp);
+    add(inp.retMonths); add(fullM);
     rows.sort(function (a, b) { return a - b; });
     var pickAmt = p.eligible ? p.monthly : null;
-    var fullM = firstFullAge(inp);
     $("cmp").innerHTML = rows.map(function (m) {
       var q = at(inp, m), picked = m === inp.retMonths, full = m === fullM;
       var amt = q.eligible ? usd(q.monthly) : "Too early";
@@ -410,6 +418,7 @@
       li("IAP at retirement: " + usd(iap.total), "The two amounts above added together. If paid over 20 years while the rest keeps growing, about " + usd(iap.pay20) + " a month.", '<a href="#src-guide">PERS preretirement guides</a>')
     ].join("");
 
+    if (window.SiteInfo) window.SiteInfo.tidy();
     $("intro").hidden = true; $("wizard").hidden = true; $("results").hidden = false;
     window.scrollTo(0, 0);
     save();
@@ -417,6 +426,7 @@
 
   // ---------- events ----------
   $("next").addEventListener("click", function () {
+    if (step === 2 && !validAge()) return;
     if (step < TOTAL) { showStep(step + 1, true); window.scrollTo(0, 0); }
     else if (validRet()) showResults();
   });
@@ -452,7 +462,6 @@
 
   restore();
   showStep(1);
-  window.PERSCalc = { calcPension: calcPension, calcIAP: calcIAP, earlyFactor: earlyFactor, retirementAges: retirementAges, showResults: showResults, showStep: showStep };
 })();
 </script>
 </body>

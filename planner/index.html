@@ -46,7 +46,7 @@
             <li><a class="nav-card" href="../oregon-pers/"><strong>Pension Estimator</strong><span>How much your PERS pension will be</span></a></li>
             <li><a class="nav-card" href="../guides/when-can-i-retire-oregon-pers/"><strong>When can I retire from PERS?</strong><span>Full-benefit ages for each plan, and the early cut</span></a></li>
             <li><a class="nav-card" href="../guides/pers-tier-one-tier-two-opsrp/"><strong>Tier One, Tier Two or OPSRP?</strong><span>Which plan you're in and how it changes your pension</span></a></li>
-            <li><a class="nav-card" href="../planner/" aria-current="page"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
+            <li><a class="nav-card" href="../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
           </ul>
         </div>
       </li>
@@ -69,7 +69,7 @@
             <li><a class="nav-card" href="../guides/when-to-start-social-security/"><strong>When should I start Social Security?</strong><span>Starting at 62, at full retirement age or at 70</span></a></li>
             <li><a class="nav-card" href="../guides/does-a-pension-reduce-social-security/"><strong>Does my pension lower my Social Security?</strong><span>What the 2025 Social Security Fairness Act changed</span></a></li>
             <li><a class="nav-card" href="../guides/health-insurance-before-medicare/"><strong>Health insurance before 65</strong><span>FEHB, PERS retiree plans, COBRA and HealthCare.gov</span></a></li>
-            <li><a class="nav-card" href="../planner/" aria-current="page"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
+            <li><a class="nav-card" href="../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
           </ul>
         </div>
       </li>
@@ -175,7 +175,7 @@
           <div class="field"><label for="iap-bal">IAP balance today</label><div class="money"><input type="number" id="iap-bal" min="0" step="1000" value="62000" inputmode="numeric"></div><span class="help">It's on your yearly IAP statement.</span></div>
           <div class="field"><label for="iap-sal">Your monthly pay now</label><div class="money"><input type="number" id="iap-sal" min="0" step="100" value="7000" inputmode="numeric"></div><span class="help">Before taxes.</span></div>
         </div>
-        <div class="field" style="max-width:260px"><label for="iap-ret">Yearly growth to assume (%)<button type="button" class="info" data-info="growth"></button></label><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
+        <div class="field" style="max-width:260px"><div class="field-head"><label for="iap-ret">Yearly growth to assume (%)</label><button type="button" class="info" data-info="growth"></button></div><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
       </section>
 
       <!-- PERS: member account (Money Match), Tier One and Tier Two only -->
@@ -227,7 +227,7 @@
           <div class="field"><label for="tsp-pay">Your monthly pay now</label><div class="money"><input type="number" id="tsp-pay" min="0" step="100" value="8000" inputmode="numeric"></div><span class="help">Basic pay, before taxes.</span></div>
           <div class="field"><label for="tsp-pct">You put in (% of pay)</label><div class="plain"><input type="number" id="tsp-pct" min="0" max="80" step="1" value="5" inputmode="numeric"></div><span class="help">5% gets you the full agency match.</span></div>
         </div>
-        <div class="field" style="max-width:260px"><label for="tsp-ret">Yearly growth to assume (%)<button type="button" class="info" data-info="growth"></button></label><div class="plain"><input type="number" id="tsp-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
+        <div class="field" style="max-width:260px"><div class="field-head"><label for="tsp-ret">Yearly growth to assume (%)</label><button type="button" class="info" data-info="growth"></button></div><div class="plain"><input type="number" id="tsp-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
       </section>
 
       <!-- Social Security -->
@@ -245,7 +245,7 @@
         </div>
         <div class="sub" id="ss-est-box">
           <div class="fields">
-            <div class="field"><label for="ss-pay">Your usual yearly pay<button type="button" class="info" data-info="ss-estimate"></button></label><div class="money"><input type="number" id="ss-pay" min="0" step="500" value="70000" inputmode="numeric"></div><span class="help">Think of what a typical year of your career would pay today.</span></div>
+            <div class="field"><div class="field-head"><label for="ss-pay">Your usual yearly pay</label><button type="button" class="info" data-info="ss-estimate"></button></div><div class="money"><input type="number" id="ss-pay" min="0" step="500" value="70000" inputmode="numeric"></div><span class="help">Think of what a typical year of your career would pay today.</span></div>
             <div class="field"><label for="ss-yrs">Years you've paid Social Security tax</label><div class="plain"><input type="number" id="ss-yrs" min="0" max="50" step="1" value="30" inputmode="numeric"></div><span class="help">Count years with pay from any job.</span></div>
           </div>
           <h3>Does Social Security tax come out of your paycheck now?<button type="button" class="info" data-info="ss-public"></button></h3>
@@ -275,6 +275,7 @@
             </div>
             <div class="field"><label for="sp-y">Spouse's birth year</label><div class="plain"><input type="number" id="sp-y" min="1935" max="2008" step="1" value="1966" inputmode="numeric"></div></div>
           </div>
+          <p class="err" data-err="spouse" hidden></p>
           <div class="field" style="max-width:340px"><label for="sp-ss">Spouse's own Social Security at their full retirement age</label><div class="money"><input type="number" id="sp-ss" min="0" step="10" value="1200" inputmode="numeric"></div><span class="help">From their Social Security statement. Enter 0 if they won't get any on their own work.</span></div>
           <h3>How should your pension be paid?<button type="button" class="info" id="surv-info" data-info="pers-options"></button></h3>
           <div class="opts" role="radiogroup" aria-label="Survivor option" id="surv-opts"></div>

@@ -28,7 +28,7 @@
     var months = Math.floor(inp.svc * 12) + sickMonths;   // whole months only
     var yrs = months / 12;
     var mult, base;
-    if (inp.special) {
+    if (inp.special && el.kind === "special") {   // 1.7% only for a special-provisions retirement (5 U.S.C. 8415(d))
       base = inp.high3 * (0.017 * Math.min(yrs, 20) + 0.01 * Math.max(0, yrs - 20));
       mult = yrs > 20 ? "1.7% for the first 20 years and 1% after" : "1.7%";
     } else {

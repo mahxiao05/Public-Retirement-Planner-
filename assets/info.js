@@ -105,8 +105,8 @@
   var counter = 0;
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
-  // Where the explanation goes: inside a list item, otherwise right after the line holding the button.
-  function anchorFor(btn) { return btn.closest("li, label, p, h1, h2, h3, legend, .status, th") || btn.parentNode; }
+  // Where the explanation goes: inside a list item, otherwise right after the form field or line holding the button.
+  function anchorFor(btn) { return btn.closest(".field, li, label, p, h1, h2, h3, legend, .status, th") || btn.parentNode; }
 
   function build(key) {
     var tp = TOPICS[key];
@@ -139,8 +139,8 @@
   }
 
   // Fill in labels for buttons written in the page, so each one says what it explains.
-  function label(root) {
-    (root || document).querySelectorAll("button.info:not([aria-label])").forEach(function (b) {
+  function label() {
+    document.querySelectorAll("button.info:not([aria-label])").forEach(function (b) {
       var tp = TOPICS[b.getAttribute("data-info")];
       b.setAttribute("aria-label", "Explain: " + (tp ? tp.t : "more information"));
       b.setAttribute("aria-expanded", "false");
@@ -155,13 +155,21 @@
     var id = btn.getAttribute("aria-controls"), box = id && document.getElementById(id);
     if (btn.getAttribute("aria-expanded") === "true" && box) close(btn, box, false); else open(btn);
   });
+  // Escape closes the box from inside it or from its "i" button.
   document.addEventListener("keydown", function (e) {
-    if (e.key !== "Escape") return;
-    var box = e.target.closest && e.target.closest(".infobox");
-    if (!box) return;
-    var btn = document.querySelector('button.info[aria-controls="' + box.id + '"]');
-    if (btn) close(btn, box, true);
+    if (e.key !== "Escape" || !e.target.closest) return;
+    var box = e.target.closest(".infobox"), btn;
+    if (box) btn = document.querySelector('button.info[aria-controls="' + box.id + '"]');
+    else if ((btn = e.target.closest('button.info[aria-expanded="true"]'))) box = document.getElementById(btn.getAttribute("aria-controls"));
+    if (btn && box) close(btn, box, true);
   });
+
+  // Remove boxes whose button was redrawn away (results pages rebuild their buttons).
+  function tidy() {
+    document.querySelectorAll(".infobox").forEach(function (box) {
+      if (!document.querySelector('button.info[aria-controls="' + box.id + '"]')) box.parentNode.removeChild(box);
+    });
+  }
 
   // HTML for a button, for pages that draw results with JavaScript.
   window.SiteInfo = {
@@ -170,7 +178,7 @@
       var tp = TOPICS[key];
       return '<button type="button" class="info" data-info="' + key + '" aria-expanded="false" aria-label="Explain: ' + esc(tp ? tp.t : "more information") + '"><span aria-hidden="true">i</span></button>';
     },
-    label: label
+    tidy: tidy
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { label(); }); else label();
 })();
