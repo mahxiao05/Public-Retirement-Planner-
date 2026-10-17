@@ -10,17 +10,35 @@
 <link rel="canonical" href="https://publicpensionplanner.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867146450299069" crossorigin="anonymous"></script>
 <!-- /@head -->
 <style>
-.hero { padding-block: 2rem 1.2rem; display: grid; gap: .8rem; }
-.hero h1 { font-size: 1.9rem; }
-.hero p { color: var(--muted); max-width: 60ch; font-size: 1.05rem; }
-.card .btnlike { justify-self: start; margin-top: .4rem; background: var(--accent); color: var(--on-accent); font-weight: 700; border-radius: 12px; padding: .7rem 1.4rem; min-height: 52px; display: inline-flex; align-items: center; }
-.guides-list { margin: 0; padding-left: 1.4rem; display: grid; gap: .5rem; }
+.home { max-width: 1040px; }
+.hero { margin-top: 1.6rem; padding: 2.4rem 2.2rem; border-radius: 28px; background: linear-gradient(135deg, var(--accent-soft), var(--surface) 70%); border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: grid; gap: 1rem; justify-items: start; }
+.hero .kicker { font-weight: 700; color: var(--accent); font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; }
+.hero h1 { font-size: 2.3rem; max-width: 20ch; }
+.hero p { color: var(--muted); max-width: 58ch; font-size: 1.08rem; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: .3rem; }
+.trust { list-style: none; margin: .4rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; color: var(--ink); font-weight: 700; font-size: .95rem; }
+.trust li { display: inline-flex; align-items: center; gap: .45rem; }
+.trust li::before { content: "✓"; display: grid; place-items: center; width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-size: .75rem; }
+.home h2.sect { margin: 2.4rem 0 1rem; }
+.home .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card .ico { width: 3rem; height: 3rem; border-radius: 14px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin-bottom: .3rem; }
+.card .ico svg { width: 1.6rem; height: 1.6rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.card.featured { border-color: var(--accent); }
+.guides-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: .6rem; }
+.guides-list a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; padding: .8rem 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); color: var(--ink); font-weight: 700; text-decoration: none; height: 100%; }
+.guides-list a::after { content: "→"; color: var(--accent); flex: none; }
+.guides-list a:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
+.home .more-link { margin-top: .9rem; font-weight: 700; }
+.soon { margin-top: 2.4rem; padding: 1.2rem 1.4rem; border: 1px dashed var(--line-strong); border-radius: var(--radius); color: var(--muted); }
+.soon strong { color: var(--ink); }
+@media (max-width: 720px) { .home .cards { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) { .hero { padding: 1.5rem 1.2rem; border-radius: 22px; } .hero h1 { font-size: 1.8rem; } .home .cards, .guides-list { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
@@ -28,8 +46,8 @@
 <a class="skip" href="#main">Skip to main content</a>
 <header class="site-head">
   <div class="headbar">
-    <a class="brand" href="./">Public Retirement Planner</a>
-    <button type="button" class="head-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span>Public Retirement Planner</a>
+    <button type="button" class="head-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menu</button>
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul class="nav-list">
       <li><a class="nav-top" href="./" aria-current="page">Home</a></li>
@@ -92,56 +110,66 @@
   </div>
 </header>
 <!-- /@header -->
-<main id="main" class="page">
+<main id="main" class="page home">
   <section class="hero">
+    <span class="kicker">For public employees</span>
     <h1>Plan your retirement from public service</h1>
     <p>Free tools for public employees getting close to retirement. They use the official formulas, explain every step in plain words, and link to the government pages the numbers come from.</p>
+    <div class="actions">
+      <a class="btn primary" href="planner/">Plan my retirement date</a>
+      <a class="btn secondary" href="retirement-checklist/">See the checklist</a>
+    </div>
+    <ul class="trust">
+      <li>Official formulas</li>
+      <li>Every step explained</li>
+      <li>Your answers stay on your device</li>
+    </ul>
   </section>
 
+  <h2 class="sect">Tools</h2>
   <div class="cards">
-    <a class="card" href="planner/">
+    <a class="card featured" href="planner/">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3"/></svg></span>
       <span class="label">Start here</span>
-      <h2>Retirement Date Planner</h2>
+      <h3>Retirement Date Planner</h3>
       <p>See your pension, your savings account and your Social Security together on one timeline, for Oregon PERS or federal FERS. Include your spouse, and compare retiring at different ages.</p>
-      <span class="btnlike">Plan my retirement date</span>
+      <span class="go">Plan my retirement date</span>
     </a>
     <a class="card" href="oregon-pers/">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 20h18M5 20V10M19 20V10M9 20v-6M15 20v-6M2.5 10L12 4l9.5 6z"/></svg></span>
       <span class="label">Oregon PERS</span>
-      <h2>Oregon PERS Pension Estimator</h2>
+      <h3>Oregon PERS Pension Estimator</h3>
       <p>Estimate your monthly PERS pension and IAP for Tier One, Tier Two or OPSRP, including Money Match for longtime members.</p>
       <span class="go">Estimate my PERS pension</span>
     </a>
     <a class="card" href="fers/">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>
       <span class="label">Federal employees</span>
-      <h2>FERS Pension and TSP Estimator</h2>
+      <h3>FERS Pension and TSP Estimator</h3>
       <p>Estimate your FERS basic annuity, the FERS supplement and your TSP, and find your earliest retirement date.</p>
       <span class="go">Estimate my FERS pension</span>
     </a>
     <a class="card" href="retirement-checklist/">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.5M8 15.5l1.6 1.6 2.9-3.1M14.5 9.5H17M14.5 16H17"/></svg></span>
       <span class="label">Checklist</span>
-      <h2>Retirement Countdown Checklist</h2>
+      <h3>Retirement Countdown Checklist</h3>
       <p>Every step and deadline in order: estimates, applications, Social Security, health coverage and Medicare at 65. Tick them off as you go, or print it.</p>
       <span class="go">Open the checklist</span>
     </a>
   </div>
 
-  <section class="section">
-    <h2>Plain-English guides</h2>
-    <ul class="guides-list">
-      <li><a href="guides/when-can-i-retire-oregon-pers/">When can I retire from Oregon PERS?</a></li>
-      <li><a href="guides/pers-tier-one-tier-two-opsrp/">Tier One, Tier Two and OPSRP: what's the difference?</a></li>
-      <li><a href="guides/does-a-pension-reduce-social-security/">Does my government pension lower my Social Security?</a></li>
-      <li><a href="guides/health-insurance-before-medicare/">How do I get health insurance if I retire before 65?</a></li>
-      <li><a href="guides/when-to-start-social-security/">When should I start Social Security?</a></li>
-      <li><a href="guides/fers-retirement-age/">When can I retire under FERS?</a></li>
-    </ul>
-    <p><a href="guides/">See all guides</a></p>
-  </section>
+  <h2 class="sect">Plain-English guides</h2>
+  <ul class="guides-list">
+    <li><a href="guides/when-can-i-retire-oregon-pers/">When can I retire from Oregon PERS?</a></li>
+    <li><a href="guides/pers-tier-one-tier-two-opsrp/">Tier One, Tier Two and OPSRP: what's the difference?</a></li>
+    <li><a href="guides/does-a-pension-reduce-social-security/">Does my government pension lower my Social Security?</a></li>
+    <li><a href="guides/health-insurance-before-medicare/">How do I get health insurance if I retire before 65?</a></li>
+    <li><a href="guides/when-to-start-social-security/">When should I start Social Security?</a></li>
+    <li><a href="guides/fers-retirement-age/">When can I retire under FERS?</a></li>
+  </ul>
+  <p class="more-link"><a href="guides/">See all guides</a></p>
 
-  <section class="section">
-    <h2>Coming later</h2>
-    <p>Washington state employees: DRS pensions (PERS, TRS and SERS plans).</p>
-  </section>
+  <p class="soon"><strong>Coming later:</strong> Washington state employees, with DRS pensions for the PERS, TRS and SERS plans.</p>
 
   <section class="section">
     <p class="plainnote"><strong>These are estimates, not advice.</strong> We aren't part of any government agency. Before you choose a retirement date, ask your retirement system and Social Security for official estimates.</p>
