@@ -26,7 +26,7 @@ It stamps the shared `<head>`, menu bar and footer into every `index.html` (betw
 
 ## Before going live with ads
 - `ADSENSE_ID` is set (pub-7867146450299069), so every page loads the AdSense script and `ads.txt` is written.
-- Put a real address in `contact/index.html` (it says `CONTACT_EMAIL`).
+- Contact email: info@publicpensionplanner.com (a Porkbun forward).
 - The site is served at https://publicpensionplanner.com (the `CNAME` file; DNS at Porkbun points to GitHub Pages). `SITE_URL` in `tools/build.py` matches.
 
 ## Oregon PERS rules used (verify each January)
