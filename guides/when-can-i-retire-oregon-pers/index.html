@@ -24,11 +24,56 @@
     <a class="brand" href="../../">Public Retirement Planner</a>
     <button type="button" class="head-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav class="site-nav" id="site-nav" aria-label="Main">
-      <a href="../../planner/">Plan my retirement</a>
-      <a href="../../oregon-pers/">Oregon PERS</a>
-      <a href="../../fers/">Federal FERS</a>
-      <a href="../../guides/" aria-current="page">Guides</a>
-      <a href="../../about/">About</a>
+      <ul class="nav-list">
+      <li><a class="nav-top" href="../../">Home</a></li>
+      <li class="nav-group">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-1">Tools<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-1" hidden>
+          <p class="nav-intro">Free calculators that show every step of the math.</p>
+          <ul class="nav-cards">
+            <li><a class="nav-card" href="../../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
+            <li><a class="nav-card" href="../../oregon-pers/"><strong>Oregon PERS Pension Estimator</strong><span>Your monthly pension at any age, with Money Match</span></a></li>
+            <li><a class="nav-card" href="../../planner/?system=fers"><strong>FERS and TSP Planner</strong><span>Annuity, supplement and TSP for federal employees</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-group has-current">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-2">Oregon PERS<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-2" hidden>
+          <p class="nav-intro">For Oregon state, school, city and county employees.</p>
+          <ul class="nav-cards">
+            <li><a class="nav-card" href="../../oregon-pers/"><strong>Pension Estimator</strong><span>How much your PERS pension will be</span></a></li>
+            <li><a class="nav-card" href="../../guides/when-can-i-retire-oregon-pers/" aria-current="page"><strong>When can I retire from PERS?</strong><span>Full-benefit ages for each plan, and the early cut</span></a></li>
+            <li><a class="nav-card" href="../../guides/pers-tier-one-tier-two-opsrp/"><strong>Tier One, Tier Two or OPSRP?</strong><span>Which plan you're in and how it changes your pension</span></a></li>
+            <li><a class="nav-card" href="../../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-group">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-3">Federal FERS<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-3" hidden>
+          <p class="nav-intro">For federal civilian employees.</p>
+          <ul class="nav-cards">
+            <li><a class="nav-card" href="../../fers/"><strong>FERS pension and TSP explained</strong><span>Retirement ages, the annuity formula, supplement and TSP</span></a></li>
+            <li><a class="nav-card" href="../../guides/fers-retirement-age/"><strong>When can I retire under FERS?</strong><span>Your Minimum Retirement Age and the MRA+10 cut</span></a></li>
+            <li><a class="nav-card" href="../../planner/?system=fers"><strong>FERS and TSP Planner</strong><span>See your annuity, supplement and TSP by date</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-group">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-4">Social Security<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-4" hidden>
+          <p class="nav-intro">How it fits with a public pension.</p>
+          <ul class="nav-cards">
+            <li><a class="nav-card" href="../../guides/when-to-start-social-security/"><strong>When should I start Social Security?</strong><span>Starting at 62, at full retirement age or at 70</span></a></li>
+            <li><a class="nav-card" href="../../guides/does-a-pension-reduce-social-security/"><strong>Does my pension lower my Social Security?</strong><span>What the 2025 Social Security Fairness Act changed</span></a></li>
+            <li><a class="nav-card" href="../../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline, with dates compared</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a class="nav-top" href="../../guides/">Guides</a></li>
+      <li><a class="nav-top" href="../../about/">About</a></li>
+      </ul>
     </nav>
     <button type="button" class="head-btn" id="display-btn" aria-expanded="false" aria-controls="display-panel">Text &amp; colors</button>
   </div>
@@ -110,6 +155,7 @@
     </nav>
     <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
     <p>Your answers stay on your device. Last updated October 17, 2026.</p>
+    <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
   </div>
 </footer>
 <script src="../../assets/info.js"></script>

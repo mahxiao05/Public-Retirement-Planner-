@@ -18,12 +18,33 @@ SITE_URL = "https://publicpensionplanner.com/"
 ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
 LAST_UPDATED = "October 17, 2026"
 
+# Top menu. A group is (label, intro, [(href, title, description)]); a plain link is (href, label).
+PLANNER = ("planner/", "Retirement Date Planner", "Pension, savings and Social Security on one timeline, with dates compared")
 NAV = [
-    ("planner", "planner/", "Plan my retirement"),
-    ("pers", "oregon-pers/", "Oregon PERS"),
-    ("fers", "fers/", "Federal FERS"),
-    ("guides", "guides/", "Guides"),
-    ("about", "about/", "About"),
+    ("", "Home"),
+    ("Tools", "Free calculators that show every step of the math.", [
+        PLANNER,
+        ("oregon-pers/", "Oregon PERS Pension Estimator", "Your monthly pension at any age, with Money Match"),
+        ("planner/?system=fers", "FERS and TSP Planner", "Annuity, supplement and TSP for federal employees"),
+    ]),
+    ("Oregon PERS", "For Oregon state, school, city and county employees.", [
+        ("oregon-pers/", "Pension Estimator", "How much your PERS pension will be"),
+        ("guides/when-can-i-retire-oregon-pers/", "When can I retire from PERS?", "Full-benefit ages for each plan, and the early cut"),
+        ("guides/pers-tier-one-tier-two-opsrp/", "Tier One, Tier Two or OPSRP?", "Which plan you're in and how it changes your pension"),
+        PLANNER,
+    ]),
+    ("Federal FERS", "For federal civilian employees.", [
+        ("fers/", "FERS pension and TSP explained", "Retirement ages, the annuity formula, supplement and TSP"),
+        ("guides/fers-retirement-age/", "When can I retire under FERS?", "Your Minimum Retirement Age and the MRA+10 cut"),
+        ("planner/?system=fers", "FERS and TSP Planner", "See your annuity, supplement and TSP by date"),
+    ]),
+    ("Social Security", "How it fits with a public pension.", [
+        ("guides/when-to-start-social-security/", "When should I start Social Security?", "Starting at 62, at full retirement age or at 70"),
+        ("guides/does-a-pension-reduce-social-security/", "Does my pension lower my Social Security?", "What the 2025 Social Security Fairness Act changed"),
+        PLANNER,
+    ]),
+    ("guides/", "Guides"),
+    ("about/", "About"),
 ]
 FOOT = [("", "Home"), ("about/", "About"), ("contact/", "Contact"), ("privacy/", "Privacy policy"), ("terms/", "Terms of use")]
 
@@ -46,9 +67,29 @@ def head(rel, url):
 <!-- /@head -->"""
 
 
-def header(rel, current):
-    links = "\n".join(
-        f'      <a href="{rel}{href}"{" aria-current=\"page\"" if key == current else ""}>{label}</a>' for key, href, label in NAV)
+def header(rel, page):
+    def link(href, inner, cls):
+        here = ' aria-current="page"' if href == page else ""
+        return f'<a class="{cls}" href="{rel}{href}"{here}>{inner}</a>' if href else f'<a class="{cls}" href="{rel or "./"}"{here}>{inner}</a>'
+    items, marked = [], False
+    for n, entry in enumerate(NAV):
+        if len(entry) == 2:
+            items.append("      <li>" + link(entry[0], entry[1], "nav-top") + "</li>")
+            continue
+        label, intro, links = entry
+        current = ""
+        if not marked and any(h == page for h, _, _ in links):   # highlight only the first group that holds this page
+            current, marked = " has-current", True
+        cards = "".join(f'\n            <li>{link(h, f"<strong>{t}</strong><span>{d}</span>", "nav-card")}</li>' for h, t, d in links)
+        items.append(f"""      <li class="nav-group{current}">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-{n}">{label}<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-{n}" hidden>
+          <p class="nav-intro">{intro}</p>
+          <ul class="nav-cards">{cards}
+          </ul>
+        </div>
+      </li>""")
+    links = "\n".join(items)
     return f"""<!-- @header -->
 <a class="skip" href="#main">Skip to main content</a>
 <header class="site-head">
@@ -56,7 +97,9 @@ def header(rel, current):
     <a class="brand" href="{rel or './'}">Public Retirement Planner</a>
     <button type="button" class="head-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
 {links}
+      </ul>
     </nav>
     <button type="button" class="head-btn" id="display-btn" aria-expanded="false" aria-controls="display-panel">Text &amp; colors</button>
   </div>
@@ -104,6 +147,7 @@ def footer(rel):
     </nav>
     <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
     <p>Your answers stay on your device. Last updated {LAST_UPDATED}.</p>
+    <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
   </div>
 </footer>
 <script src="{rel}assets/info.js"></script>
@@ -127,9 +171,8 @@ def main():
         path = "/".join(p.relative_to(ROOT).parts[:-1])
         url = SITE_URL + (path + "/" if path else "")
         text = p.read_text()
-        m = re.search(r'<meta name="nav" content="([^"]*)">', text)
         text = replace(text, "head", head(rel, url))
-        text = replace(text, "header", header(rel, m.group(1) if m else ""))
+        text = replace(text, "header", header(rel, path + "/" if path else ""))
         text = replace(text, "footer", footer(rel))
         p.write_text(text)
         urls.append(url)
