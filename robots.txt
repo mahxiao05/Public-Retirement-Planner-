@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mahxiao05.github.io/Public-Retirement-Planner-/sitemap.xml
+Sitemap: https://publicpensionplanner.com/sitemap.xml
