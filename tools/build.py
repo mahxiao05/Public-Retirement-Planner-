@@ -15,7 +15,7 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE_URL = "https://mahxiao05.github.io/Public-Retirement-Planner-/"   # change when a custom domain is connected
-ADSENSE_ID = ""          # e.g. "pub-1234567890123456" from AdSense > Account > Account information
+ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
 LAST_UPDATED = "October 17, 2026"
 
 NAV = [
@@ -106,6 +106,7 @@ def footer(rel):
     <p>Your answers stay on your device. Last updated {LAST_UPDATED}.</p>
   </div>
 </footer>
+<script src="{rel}assets/info.js"></script>
 <script src="{rel}assets/site.js"></script>
 <!-- /@footer -->"""
 

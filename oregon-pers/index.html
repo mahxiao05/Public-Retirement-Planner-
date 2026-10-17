@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
 <link rel="stylesheet" href="../assets/site.css">
 <script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
-<!-- AdSense loader goes here once ADSENSE_ID is set in tools/build.py -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867146450299069" crossorigin="anonymous"></script>
 <!-- /@head -->
 </head>
 <body>
@@ -80,14 +80,14 @@
     <form id="form" novalidate>
       <!-- 1 -->
       <section class="q" data-step="1">
-        <h2>When did you start working in a PERS job?</h2>
+        <h2>When did you start working in a PERS job?<button type="button" class="info" data-info="pers-tier"></button></h2>
         <p class="why">Your start date puts you in one of three groups. Each one has its own formula.</p>
         <div class="opts" role="radiogroup" aria-label="PERS group">
           <label class="opt"><input type="radio" name="plan" id="plan-t1" value="T1" checked><span><b>Before 1996</b><em>Tier One</em></span></label>
           <label class="opt"><input type="radio" name="plan" id="plan-t2" value="T2"><span><b>1996 to August 28, 2003</b><em>Tier Two</em></span></label>
           <label class="opt"><input type="radio" name="plan" id="plan-op" value="OPSRP"><span><b>August 29, 2003 or later</b><em>OPSRP (Oregon Public Service Retirement Plan)</em></span></label>
         </div>
-        <h3>What kind of job do you have?</h3>
+        <h3>What kind of job do you have?<button type="button" class="info" data-info="pers-pf"></button></h3>
         <div class="opts" role="radiogroup" aria-label="Job type">
           <label class="opt"><input type="radio" name="cls" id="cls-gen" value="GEN" checked><span><b>Most public jobs</b><em>Teachers, office staff, nurses, city and state workers ("general service")</em></span></label>
           <label class="opt"><input type="radio" name="cls" id="cls-pf" value="PF"><span><b>Police officer or firefighter</b><em>A position PERS classifies as police and fire</em></span></label>
@@ -106,7 +106,7 @@
 
       <!-- 3 -->
       <section class="q" data-step="3" hidden>
-        <h2>How many years have you worked in PERS jobs?</h2>
+        <h2>How many years have you worked in PERS jobs?<button type="button" class="info" data-info="pers-svc"></button></h2>
         <p class="why">PERS calls this your service credit. Each year adds to your pension.</p>
         <div class="fields">
           <div class="field"><label for="svc">Years of service so far</label><div class="plain"><input type="number" id="svc" min="0" max="50" step="0.5" value="24" inputmode="decimal"></div><span class="help">Half years are fine, like 24.5.</span></div>
@@ -116,7 +116,7 @@
 
       <!-- 4 -->
       <section class="q" data-step="4" hidden>
-        <h2>What were your three best-paid years?</h2>
+        <h2>What were your three best-paid years?<button type="button" class="info" data-info="pers-pay"></button></h2>
         <p class="why">PERS bases your pension on your highest pay, averaged over three years. Use your gross yearly pay before taxes.</p>
         <div class="fields">
           <div class="field"><label for="sal1">Best year</label><div class="money"><input type="number" id="sal1" min="0" step="500" value="84000" inputmode="numeric"></div></div>
@@ -129,15 +129,15 @@
 
       <!-- 5 -->
       <section class="q" data-step="5" hidden>
-        <h2>What's in your IAP account?</h2>
+        <h2>What's in your IAP account?<button type="button" class="info" data-info="iap"></button></h2>
         <p class="why">The Individual Account Program (IAP) is a separate savings account PERS keeps for you. Since 2004, part of each paycheck has gone into it. If you don't know, leave it at 0. You can still see your pension.</p>
         <div class="fields">
           <div class="field"><label for="iap-bal">IAP balance today</label><div class="money"><input type="number" id="iap-bal" min="0" step="1000" value="62000" inputmode="numeric"></div><span class="help">It's on your yearly IAP statement.</span></div>
           <div class="field"><label for="iap-sal">Your monthly pay now</label><div class="money"><input type="number" id="iap-sal" min="0" step="100" value="7000" inputmode="numeric"></div><span class="help">Before taxes.</span></div>
         </div>
-        <div class="field" style="max-width:260px"><label for="iap-ret">Yearly growth to assume (%)</label><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
+        <div class="field" style="max-width:260px"><label for="iap-ret">Yearly growth to assume (%)<button type="button" class="info" data-info="growth"></button></label><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
         <div class="sub" id="acct-box">
-          <div class="field" style="max-width:320px"><label for="acct-bal">PERS member account balance (Tier One and Tier Two)</label><div class="money"><input type="number" id="acct-bal" min="0" step="1000" value="0" inputmode="numeric"></div><span class="help">On your yearly member statement, separate from your IAP. PERS uses it for a second method, Money Match, and pays whichever is higher. Leave at 0 to skip.</span></div>
+          <div class="field" style="max-width:320px"><label for="acct-bal">PERS member account balance (Tier One and Tier Two)<button type="button" class="info" data-info="money-match"></button></label><div class="money"><input type="number" id="acct-bal" min="0" step="1000" value="0" inputmode="numeric"></div><span class="help">On your yearly member statement, separate from your IAP. PERS uses it for a second method, Money Match, and pays whichever is higher. Leave at 0 to skip.</span></div>
         </div>
       </section>
 
@@ -169,7 +169,7 @@
     </div>
 
     <section class="section">
-      <h2>What if you work a little longer?</h2>
+      <h2>What if you work a little longer?<button type="button" class="info" data-info="pers-early"></button></h2>
       <p>Each extra year adds service, and before your full-benefit age it also shrinks the early-retirement cut. Tap <strong>Show</strong> on any row to see that age.</p>
       <div class="panel tablewrap">
         <table>
@@ -246,6 +246,7 @@
     <p>Your answers stay on your device. Last updated October 17, 2026.</p>
   </div>
 </footer>
+<script src="../assets/info.js"></script>
 <script src="../assets/site.js"></script>
 <!-- /@footer -->
 
@@ -322,6 +323,7 @@
     var p = at(inp, inp.retMonths);
     var years = Math.max(0, inp.retMonths - inp.nowMonths) / 12;
     var iap = calcIAP({ plan: inp.plan, balance: inp.iapBal, monthlySalary: inp.iapSal, years: years, ret: inp.iapRet });
+    var info = function (key) { return window.SiteInfo ? window.SiteInfo.button(key) : ""; };
     var who = NAMES[inp.plan] + (inp.cls === "PF" ? " police and fire" : " general service");
 
     // lead answer
@@ -336,13 +338,14 @@
       st.className = "status early"; ico.textContent = "!";
       stText.textContent = "This is " + pctTxt(1 - p.factor) + " less than you'd get with no reduction, because you'd retire " + durTxt(p.monthsEarly) + " before your full-benefit age of " + ageTxt(p.ages.normal) + ". The reduction lasts for life.";
     } else { st.className = "status full"; ico.textContent = "✓"; stText.textContent = "No reduction. You'd be at or past your full-benefit age."; }
+    stText.insertAdjacentHTML("beforeend", info("pers-early"));
 
     var more = [];
-    more.push("<p><strong>Your IAP account</strong> could hold about <strong>" + usd(iap.total) + "</strong> when you retire. Taken over 20 years, that's roughly " + usd(iap.pay20) + " a month on top of your pension.</p>");
-    more.push("<p>By then you'd have about " + yrsTxt(Math.round(p.svc * 10) / 10) + " of service, and your pension is based on average pay of " + usd(p.fasAnnual) + " a year.</p>");
+    more.push("<p><strong>Your IAP account</strong> could hold about <strong>" + usd(iap.total) + "</strong> when you retire. Taken over 20 years, that's roughly " + usd(iap.pay20) + " a month on top of your pension." + info("iap") + "</p>");
+    more.push("<p>By then you'd have about " + yrsTxt(Math.round(p.svc * 10) / 10) + " of service, and your pension is based on average pay of " + usd(p.fasAnnual) + " a year." + info("pers-formula") + "</p>");
     if (!p.vestedLikely) more.push('<p class="err">With fewer than 5 years of service you may not qualify for a pension yet. Check with PERS.</p>');
-    if (p.usesMM) more.push("<p><strong>Money Match pays you more.</strong> Your member account gives " + usd(p.mm.monthly) + " a month, compared with " + usd(p.formulaMonthly) + " from the Full Formula, so we show Money Match.</p>");
-    if (p.anyCapped) more.push("<p>Pay above the state limit of " + usd(SALARY_LIMIT) + " a year doesn't count, so we capped it.</p>");
+    if (p.usesMM) more.push("<p><strong>Money Match pays you more.</strong> Your member account gives " + usd(p.mm.monthly) + " a month, compared with " + usd(p.formulaMonthly) + " from the Full Formula, so we show Money Match." + info("money-match") + "</p>");
+    if (p.anyCapped) more.push("<p>Pay above the state limit of " + usd(SALARY_LIMIT) + " a year doesn't count, so we capped it." + info("pers-pay") + "</p>");
     $("r-more").innerHTML = more.join("");
 
     // comparison table: from today (or earliest age) up to 8 whole-year ages, always including the pick and the first full-benefit age.

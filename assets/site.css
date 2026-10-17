@@ -244,10 +244,25 @@ details.how[open] > summary::before { content: "−"; }
 
 /* ---------- printing: one clean plan ---------- */
 .print-only { display: none; }
+/* "i" buttons and the explanations they open (assets/info.js). The visible circle is small; the tap area is 44px. */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+button.info { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; width: 44px; height: 44px; margin: -.5rem 0 -.5rem .15rem; padding: 0; border: 0; background: none; cursor: pointer; color: var(--accent); font: inherit; }
+button.info > span { display: inline-flex; align-items: center; justify-content: center; width: 1.55rem; height: 1.55rem; border-radius: 50%; border: 2px solid currentColor; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 700; font-size: 1rem; line-height: 1; }
+button.info:hover > span, button.info[aria-expanded="true"] > span { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+button.info:focus-visible { outline: 3px solid var(--accent); outline-offset: 0; border-radius: 50%; }
+.infobox { margin: .5rem 0 .8rem; padding: 1rem 1.15rem; background: var(--accent-soft); color: var(--ink); border: 2px solid var(--accent); border-left-width: 8px; border-radius: 12px; font-size: 1rem; font-weight: 400; font-family: var(--font-body); line-height: 1.6; text-align: left; display: grid; gap: .55rem; max-width: 46rem; }
+.infobox p, .infobox ul { margin: 0; }
+.infobox ul { padding-left: 1.3rem; display: grid; gap: .25rem; }
+.infobox .info-title { font-weight: 700; font-size: 1.08rem; }
+.infobox .formula { font-weight: 700; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: .45rem .7rem; }
+.infobox .info-src { font-size: .95rem; }
+.infobox .info-links a { overflow-wrap: anywhere; }
+.infobox .info-close { justify-self: start; min-height: 48px; padding: .4rem 1.3rem; }
+
 @media print {
   :root { --bg: #fff; --surface: #fff; --ink: #000; --muted: #333; --line: #999; --answer: #fff; --accent: #000; --accent-soft: #eee; --caution-soft: #f3f3f3; --size: 13pt; color-scheme: light; }
   body { background: #fff; color: #000; }
-  .site-head, .display-panel, .site-foot .foot-links, .no-print, .nav, .pick, .ad-slot, .skip { display: none !important; }
+  .site-head, .display-panel, .site-foot .foot-links, .no-print, .nav, .pick, .ad-slot, .skip, button.info, .infobox { display: none !important; }
   .print-only { display: block; }
   details.how > .how-body { display: grid !important; }
   details.how > summary::before { display: none; }
