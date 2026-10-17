@@ -4,127 +4,136 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Public Retirement Planner</title>
-<meta name="description" content="Free, plain-language retirement tools for public employees near retirement: Oregon PERS pension and IAP estimates, Social Security, and a retirement date planner. Official math, with sources.">
+<meta name="description" content="Free, plain-language retirement tools for public employees near retirement: Oregon PERS, federal FERS and TSP, and Social Security on one timeline. Official math, with sources.">
+<meta name="nav" content="">
+<!-- @head -->
+<link rel="canonical" href="https://mahxiao05.github.io/Public-Retirement-Planner-/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
+<!-- AdSense loader goes here once ADSENSE_ID is set in tools/build.py -->
+<!-- /@head -->
 <style>
-/* Layout: the site's home. A short promise, two large tool cards, what's coming, then About and the disclaimer. Same tokens as the tools. */
-:root {
-  --bg: #f6f8f7; --surface: #ffffff; --ink: #0f1d17; --muted: #3f4f48; --line: #b9c6c0;
-  --accent: #1b5e3c; --on-accent: #ffffff; --accent-soft: #e3f0e8; --answer-line: #d9a632;
-  --caution: #8a4b00; --caution-soft: #fdeed6;
-  --font-head: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --font-body: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif;
-  --size: 19px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #101714; --surface: #18221e; --ink: #f1f6f3; --muted: #c4d2cb; --line: #3c4d45;
-    --accent: #7fd1a4; --on-accent: #0b1a12; --accent-soft: #1f3a2c; --answer-line: #e0b54e;
-    --caution: #f3b866; --caution-soft: #3a2a12; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #101714; --surface: #18221e; --ink: #f1f6f3; --muted: #c4d2cb; --line: #3c4d45;
-  --accent: #7fd1a4; --on-accent: #0b1a12; --accent-soft: #1f3a2c; --answer-line: #e0b54e;
-  --caution: #f3b866; --caution-soft: #3a2a12; color-scheme: dark;
-}
-:root.bigtext { --size: 23px; }
-* { box-sizing: border-box; }
-html { font-size: var(--size); }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.6; }
-.page { max-width: 760px; margin: 0 auto; padding-block: 0 3rem; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3 { font-family: var(--font-head); margin: 0; line-height: 1.2; text-wrap: balance; }
-h1 { font-size: 1.9rem; } h2 { font-size: 1.45rem; } h3 { font-size: 1.2rem; }
-p { margin: 0; }
-a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 2px; }
-:focus-visible { outline: 4px solid var(--answer-line); outline-offset: 3px; }
-.top { display: flex; justify-content: space-between; align-items: center; gap: .75rem 1rem; flex-wrap: wrap; padding-block: 1.1rem; border-bottom: 2px solid var(--line); }
-.top .name { font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; }
-.textsize { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--muted); }
-.textsize button { min-height: 44px; min-width: 52px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; font-family: var(--font-body); font-weight: 700; cursor: pointer; }
-.textsize button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
-.textsize .s { font-size: 16px; } .textsize .l { font-size: 22px; }
 .hero { padding-block: 2rem 1.2rem; display: grid; gap: .8rem; }
+.hero h1 { font-size: 1.9rem; }
 .hero p { color: var(--muted); max-width: 60ch; font-size: 1.05rem; }
-.tools { display: grid; gap: 1rem; }
-.tool { display: grid; gap: .5rem; background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 1.4rem; text-decoration: none; color: var(--ink); }
-.tool:hover { border-color: var(--accent); }
-.tool p { color: var(--muted); }
-.tool .go { display: inline-block; justify-self: start; margin-top: .4rem; background: var(--accent); color: var(--on-accent); font-weight: 700; border-radius: 12px; padding: .7rem 1.4rem; min-height: 52px; line-height: 1.6; }
-.tool .label { font-size: .85rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
-.section { margin-top: 2rem; display: grid; gap: .8rem; }
-.section p, .section li { max-width: 62ch; }
-ul { margin: 0; padding-left: 1.3rem; display: grid; gap: .4rem; }
-.plainnote { background: var(--caution-soft); border-left: 6px solid var(--caution); padding: .8rem 1rem; border-radius: 0 10px 10px 0; }
-.plainnote strong { color: var(--caution); }
-.legal { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--line); color: var(--muted); font-size: .9rem; display: grid; gap: .6rem; }
+.card .btnlike { justify-self: start; margin-top: .4rem; background: var(--accent); color: var(--on-accent); font-weight: 700; border-radius: 12px; padding: .7rem 1.4rem; min-height: 52px; display: inline-flex; align-items: center; }
+.guides-list { margin: 0; padding-left: 1.4rem; display: grid; gap: .5rem; }
 </style>
 </head>
 <body>
-<div class="page">
-  <header class="top">
-    <span class="name">Public Retirement Planner</span>
-    <div class="textsize" role="group" aria-label="Text size">
-      <span>Text size</span>
-      <button type="button" class="s" id="ts-normal" aria-pressed="true" aria-label="Normal text">A</button>
-      <button type="button" class="l" id="ts-large" aria-pressed="false" aria-label="Larger text">A</button>
+<!-- @header -->
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-head">
+  <div class="headbar">
+    <a class="brand" href="./">Public Retirement Planner</a>
+    <button type="button" class="head-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="planner/">Plan my retirement</a>
+      <a href="oregon-pers/">Oregon PERS</a>
+      <a href="fers/">Federal FERS</a>
+      <a href="guides/">Guides</a>
+      <a href="about/">About</a>
+    </nav>
+    <button type="button" class="head-btn" id="display-btn" aria-expanded="false" aria-controls="display-panel">Text &amp; colors</button>
+  </div>
+  <div class="display-panel" id="display-panel" hidden>
+    <div class="inner">
+      <h2>Make this site easier to read</h2>
+      <div class="setting" role="group" aria-label="Text size">
+        <span class="label">Text size</span>
+        <div class="choices">
+          <button type="button" class="sz1" data-set="size:1" aria-pressed="true">Normal</button>
+          <button type="button" class="sz2" data-set="size:2" aria-pressed="false">Large</button>
+          <button type="button" class="sz3" data-set="size:3" aria-pressed="false">Largest</button>
+        </div>
+      </div>
+      <div class="setting" role="group" aria-label="Colors">
+        <span class="label">Colors</span>
+        <div class="choices">
+          <button type="button" data-set="theme:light" aria-pressed="false">Light</button>
+          <button type="button" data-set="theme:dark" aria-pressed="false">Dark</button>
+          <button type="button" data-set="theme:auto" aria-pressed="true">Same as my device</button>
+        </div>
+      </div>
+      <div class="setting" role="group" aria-label="Letters">
+        <span class="label">Letters</span>
+        <div class="choices">
+          <button type="button" class="f-clear" data-set="font:clear" aria-pressed="true">Easy to read</button>
+          <button type="button" class="f-book" data-set="font:book" aria-pressed="false">Book style</button>
+          <button type="button" class="f-wide" data-set="font:wide" aria-pressed="false">Wide spacing</button>
+        </div>
+      </div>
+      <button type="button" class="btn primary done" id="display-done">Done</button>
     </div>
-  </header>
-
+  </div>
+</header>
+<!-- /@header -->
+<main id="main" class="page">
   <section class="hero">
     <h1>Plan your retirement from public service</h1>
     <p>Free tools for public employees getting close to retirement. They use the official formulas, explain every step in plain words, and link to the government pages the numbers come from.</p>
   </section>
 
-  <div class="tools">
-    <a class="tool" href="planner/">
+  <div class="cards">
+    <a class="card" href="planner/">
       <span class="label">Start here</span>
       <h2>Retirement Date Planner</h2>
-      <p>See your Oregon PERS pension, your IAP account and your Social Security together on one timeline. Compare retiring at different ages, and starting Social Security at different ages.</p>
-      <span class="go">Plan my retirement date</span>
+      <p>See your pension, your savings account and your Social Security together on one timeline, for Oregon PERS or federal FERS. Include your spouse, and compare retiring at different ages.</p>
+      <span class="btnlike">Plan my retirement date</span>
     </a>
-    <a class="tool" href="oregon-pers/">
-      <span class="label">Oregon PERS only</span>
+    <a class="card" href="oregon-pers/">
+      <span class="label">Oregon PERS</span>
       <h2>Oregon PERS Pension Estimator</h2>
-      <p>Estimate your monthly PERS pension and IAP for Tier One, Tier Two or OPSRP, and see how waiting a year or two changes it.</p>
-      <span class="go">Estimate my pension</span>
+      <p>Estimate your monthly PERS pension and IAP for Tier One, Tier Two or OPSRP, including Money Match for longtime members.</p>
+      <span class="go">Estimate my PERS pension</span>
+    </a>
+    <a class="card" href="fers/">
+      <span class="label">Federal employees</span>
+      <h2>FERS Pension and TSP Estimator</h2>
+      <p>Estimate your FERS basic annuity, the FERS supplement and your TSP, and find your earliest retirement date.</p>
+      <span class="go">Estimate my FERS pension</span>
     </a>
   </div>
 
   <section class="section">
-    <h2>Coming later</h2>
-    <ul>
-      <li>Federal employees: FERS pension and TSP</li>
-      <li>Washington state employees: DRS pensions</li>
+    <h2>Plain-English guides</h2>
+    <ul class="guides-list">
+      <li><a href="guides/when-can-i-retire-oregon-pers/">When can I retire from Oregon PERS?</a></li>
+      <li><a href="guides/pers-tier-one-tier-two-opsrp/">Tier One, Tier Two and OPSRP: what's the difference?</a></li>
+      <li><a href="guides/does-a-pension-reduce-social-security/">Does my government pension lower my Social Security?</a></li>
+      <li><a href="guides/when-to-start-social-security/">When should I start Social Security?</a></li>
+      <li><a href="guides/fers-retirement-age/">When can I retire under FERS?</a></li>
     </ul>
+    <p><a href="guides/">See all guides</a></p>
   </section>
 
-  <section class="section" id="about">
-    <h2>About this site</h2>
-    <p>Retirement rules are long and hard to read. This site turns the official formulas into a few simple questions and a plain answer. You can open "How we worked this out" at the end of any tool to see each step of the math and the source for every number.</p>
-    <p>We check the figures against Oregon PERS (oregon.gov/pers) and the Social Security Administration (ssa.gov), and update them when those agencies publish new numbers each year. Each tool shows the date its rules were last checked.</p>
-    <p class="plainnote"><strong>This site gives estimates, not advice.</strong> We aren't part of Oregon PERS, Social Security or any government agency. Before you choose a retirement date, ask PERS and Social Security for official estimates.</p>
+  <section class="section">
+    <h2>Coming later</h2>
+    <p>Washington state employees: DRS pensions (PERS, TRS and SERS plans).</p>
   </section>
 
-  <footer class="legal">
-    <p><strong>Disclaimer.</strong> The tools on this site give estimates based on your answers and on rules published by Oregon PERS and the Social Security Administration. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with any government agency.</p>
-    <p>Your answers stay on your device. Nothing is sent anywhere. Last updated October 17, 2026.</p>
-  </footer>
-</div>
-<script>
-(function () {
-  function setSize(big) {
-    document.documentElement.classList.toggle("bigtext", big);
-    document.getElementById("ts-large").setAttribute("aria-pressed", big);
-    document.getElementById("ts-normal").setAttribute("aria-pressed", !big);
-    try { localStorage.setItem("pers-guide-size", big ? "1" : "0"); } catch (e) {}
-  }
-  document.getElementById("ts-normal").addEventListener("click", function () { setSize(false); });
-  document.getElementById("ts-large").addEventListener("click", function () { setSize(true); });
-  try { if (localStorage.getItem("pers-guide-size") === "1") setSize(true); } catch (e) {}
-})();
-</script>
+  <section class="section">
+    <p class="plainnote"><strong>These are estimates, not advice.</strong> We aren't part of any government agency. Before you choose a retirement date, ask your retirement system and Social Security for official estimates.</p>
+  </section>
+</main>
+<!-- @footer -->
+<footer class="site-foot">
+  <div class="inner">
+    <nav class="foot-links" aria-label="Site">
+      <a href="./">Home</a>
+      <a href="about/">About</a>
+      <a href="contact/">Contact</a>
+      <a href="privacy/">Privacy policy</a>
+      <a href="terms/">Terms of use</a>
+    </nav>
+    <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
+    <p>Your answers stay on your device. Last updated October 17, 2026.</p>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
+<!-- /@footer -->
 </body>
 </html>

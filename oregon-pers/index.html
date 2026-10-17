@@ -4,172 +4,70 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Oregon PERS Pension Estimator</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="A plain-language guide for Oregon PERS members close to retirement: answer six questions and see what your pension and IAP could pay, with the official math and sources.">
+<meta name="nav" content="pers">
+<!-- @head -->
+<link rel="canonical" href="https://mahxiao05.github.io/Public-Retirement-Planner-/oregon-pers/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
-<style>
-/* Layout: a calm, single-column guide. One question per screen with large controls, then a plain-English answer, an age comparison table and next steps. Built for readers in their 50s and 60s: big type, high contrast, no sliders, nothing hidden behind hover. */
-:root {
-  --bg: #f6f8f7;
-  --surface: #ffffff;
-  --ink: #0f1d17;
-  --muted: #3f4f48;        /* still 8:1 on white, so secondary text stays readable */
-  --line: #b9c6c0;
-  --accent: #1b5e3c;       /* deep forest green */
-  --on-accent: #ffffff;
-  --accent-soft: #e3f0e8;
-  --answer: #fff4d9;       /* warm highlight behind the main answer */
-  --answer-line: #d9a632;
-  --caution: #8a4b00;
-  --caution-soft: #fdeed6;
-  --stop: #a3221b;
-  --stop-soft: #fbe3e1;
-  --font-head: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --font-body: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif;
-  --size: 19px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #101714; --surface: #18221e; --ink: #f1f6f3; --muted: #c4d2cb; --line: #3c4d45;
-    --accent: #7fd1a4; --on-accent: #0b1a12; --accent-soft: #1f3a2c; --answer: #33290f; --answer-line: #e0b54e;
-    --caution: #f3b866; --caution-soft: #3a2a12; --stop: #ff9b92; --stop-soft: #3d1a17; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #101714; --surface: #18221e; --ink: #f1f6f3; --muted: #c4d2cb; --line: #3c4d45;
-  --accent: #7fd1a4; --on-accent: #0b1a12; --accent-soft: #1f3a2c; --answer: #33290f; --answer-line: #e0b54e;
-  --caution: #f3b866; --caution-soft: #3a2a12; --stop: #ff9b92; --stop-soft: #3d1a17; color-scheme: dark;
-}
-:root.bigtext { --size: 23px; }
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-html { font-size: var(--size); }
-body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.6; }
-.page { max-width: 760px; margin: 0 auto; padding-block: 0 3rem; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3 { font-family: var(--font-head); margin: 0; line-height: 1.2; text-wrap: balance; }
-h1 { font-size: 1.75rem; }
-h2 { font-size: 1.45rem; }
-h3 { font-size: 1.15rem; }
-p { margin: 0; }
-a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 2px; }
-strong { font-weight: 700; }
-:focus-visible { outline: 4px solid var(--answer-line); outline-offset: 3px; }
-
-/* header */
-.top { display: flex; justify-content: space-between; align-items: center; gap: .75rem 1rem; flex-wrap: wrap; padding-block: 1.1rem; border-bottom: 2px solid var(--line); }
-.top .name { font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; }
-.textsize { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--muted); }
-.textsize button { min-height: 44px; min-width: 52px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; font-family: var(--font-body); font-weight: 700; cursor: pointer; }
-.textsize button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
-.textsize .s { font-size: 16px; } .textsize .l { font-size: 22px; }
-
-.intro { padding-block: 1.6rem 1rem; display: grid; gap: .8rem; }
-.intro p { color: var(--muted); max-width: 60ch; }
-.plainnote { background: var(--caution-soft); border-left: 6px solid var(--caution); padding: .8rem 1rem; border-radius: 0 10px 10px 0; }
-.plainnote strong { color: var(--caution); }
-
-/* progress */
-.progress { display: grid; gap: .4rem; margin-block: 1rem .9rem; }
-.progress .label { font-weight: 700; color: var(--muted); font-size: .9rem; }
-.progress .track { height: 10px; background: var(--line); border-radius: 99px; overflow: hidden; }
-.progress .fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .25s; }
-
-/* question card */
-.q { background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 1.4rem; display: grid; gap: 1.1rem; }
-.q .why { color: var(--muted); }
-.opts { display: grid; gap: .7rem; }
-.opt { position: relative; display: block; cursor: pointer; }
-.opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-.opt span { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); gap: .1rem .8rem; align-items: start; border: 2px solid var(--line); border-radius: 12px; padding: .85rem 1rem; min-height: 56px; }
-.opt span::before { content: ""; grid-row: 1 / 3; width: 1.3rem; height: 1.3rem; margin-top: .2rem; border-radius: 50%; border: 3px solid var(--muted); background: var(--surface); }
-.opt b { font-size: 1.05rem; }
-.opt em { font-style: normal; color: var(--muted); font-size: .92rem; }
-.opt input:checked + span { border-color: var(--accent); background: var(--accent-soft); }
-.opt input:checked + span::before { border-color: var(--accent); background: radial-gradient(var(--accent) 0 45%, var(--surface) 50%); }
-.opt input:focus-visible + span { outline: 4px solid var(--answer-line); outline-offset: 3px; }
-
-.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .9rem; }
-.field { display: grid; gap: .3rem; align-content: start; }
-.field label { font-weight: 700; }
-.field .help { color: var(--muted); font-size: .88rem; }
-.money, .plain { position: relative; }
-.money::before { content: "$"; position: absolute; left: .8rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-weight: 700; pointer-events: none; }
-input[type="number"] { width: 100%; font-family: var(--font-body); font-size: 1.15rem; font-weight: 700; padding: .65rem .8rem; min-height: 56px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font-variant-numeric: tabular-nums; }
-.money input { padding-left: 1.8rem; }
-input[type="number"]:focus { border-color: var(--accent); }
-.tip { background: var(--accent-soft); border-radius: 12px; padding: .8rem 1rem; font-size: .92rem; }
-.tip strong { color: var(--accent); }
-.linkbtn { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; cursor: pointer; justify-self: start; min-height: 44px; }
-.err { color: var(--stop); font-weight: 700; }
-
-.nav { display: flex; justify-content: space-between; gap: .8rem; flex-wrap: wrap; margin-top: 1.1rem; }
-.btn { font-family: var(--font-body); font-size: 1.05rem; font-weight: 700; min-height: 56px; padding: .7rem 1.6rem; border-radius: 12px; border: 2px solid var(--accent); cursor: pointer; }
-.btn.primary { background: var(--accent); color: var(--on-accent); }
-.btn.secondary { background: var(--surface); color: var(--accent); }
-.btn:hover { filter: brightness(1.08); }
-
-/* results */
-.answer { background: var(--answer); border: 2px solid var(--answer-line); border-radius: 16px; padding: 1.4rem; display: grid; gap: .9rem; }
-.answer .lead { font-size: 1.3rem; line-height: 1.45; }
-.answer .lead big { display: block; font-family: var(--font-head); font-size: 2.6rem; font-weight: 700; line-height: 1.1; margin-block: .3rem; }
-.answer .more { display: grid; gap: .4rem; }
-.status { display: flex; gap: .7rem; align-items: flex-start; border-radius: 12px; padding: .8rem 1rem; font-weight: 700; }
-.status.full { background: var(--accent-soft); color: var(--ink); }
-.status.early { background: var(--caution-soft); }
-.status.no { background: var(--stop-soft); }
-.status .ico { flex: none; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: grid; place-items: center; font-size: .9rem; color: var(--surface); margin-top: .1rem; }
-.status.full .ico { background: var(--accent); } .status.early .ico { background: var(--caution); } .status.no .ico { background: var(--stop); }
-
-.section { margin-top: 1.6rem; display: grid; gap: .8rem; }
-.panel { background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 1.2rem; display: grid; gap: .8rem; min-width: 0; }
-.tablewrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-th, td { text-align: left; padding: .65rem .6rem; border-bottom: 2px solid var(--line); vertical-align: middle; }
-th { font-size: .88rem; color: var(--muted); }
-td.amt { font-weight: 700; font-size: 1.1rem; white-space: nowrap; }
-tr.picked td { background: var(--answer); }
-tr.fullrow td:first-child { box-shadow: inset 6px 0 0 var(--accent); }
-.tag { display: inline-block; font-size: .8rem; font-weight: 700; padding: .1rem .55rem; border-radius: 99px; background: var(--accent-soft); color: var(--ink); white-space: nowrap; }
-.tag.cut { background: var(--caution-soft); }
-td .pick { font-family: var(--font-body); font-weight: 700; font-size: .9rem; min-height: 44px; padding: .3rem .8rem; border-radius: 10px; border: 2px solid var(--accent); background: var(--surface); color: var(--accent); cursor: pointer; white-space: nowrap; }
-tr.picked .pick { background: var(--accent); color: var(--on-accent); }
-
-ol.next { margin: 0; padding-left: 1.4rem; display: grid; gap: .7rem; }
-ol.next li::marker { font-weight: 700; color: var(--accent); }
-.phone { font-weight: 700; font-size: 1.15rem; white-space: nowrap; user-select: all; }
-
-details.how { background: var(--surface); border: 2px solid var(--line); border-radius: 16px; }
-details.how > summary { cursor: pointer; padding: 1rem 1.2rem; font-weight: 700; font-size: 1.1rem; min-height: 56px; display: flex; align-items: center; gap: .6rem; color: var(--accent); }
-details.how > summary::marker { content: ""; }
-details.how > summary::before { content: "+"; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 2px solid var(--accent); flex: none; }
-details.how[open] > summary::before { content: "−"; }
-.how-body { padding: 0 1.2rem 1.2rem; display: grid; gap: .9rem; }
-.steps { margin: 0; padding-left: 1.4rem; display: grid; gap: .8rem; }
-.steps .calc { display: block; color: var(--muted); font-size: .92rem; }
-.steps .src { display: block; font-size: .85rem; }
-.sources { margin: 0; padding-left: 1.4rem; display: grid; gap: .5rem; font-size: .92rem; }
-.legal { margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--line); color: var(--muted); font-size: .9rem; display: grid; gap: .6rem; }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-@media (max-width: 520px) { .q, .answer, .panel { padding: 1rem; } .answer .lead big { font-size: 2.1rem; } .btn { flex: 1 1 auto; } }
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+<script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
+<!-- AdSense loader goes here once ADSENSE_ID is set in tools/build.py -->
+<!-- /@head -->
 </head>
-<body style="margin:0">
-
-<div class="page">
-  <header class="top">
-    <span class="name">Oregon PERS Pension Estimator</span>
-    <div class="textsize" role="group" aria-label="Text size">
-      <span>Text size</span>
-      <button type="button" class="s" id="ts-normal" aria-pressed="true" aria-label="Normal text">A</button>
-      <button type="button" class="l" id="ts-large" aria-pressed="false" aria-label="Larger text">A</button>
+<body>
+<!-- @header -->
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-head">
+  <div class="headbar">
+    <a class="brand" href="../">Public Retirement Planner</a>
+    <button type="button" class="head-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a href="../planner/">Plan my retirement</a>
+      <a href="../oregon-pers/" aria-current="page">Oregon PERS</a>
+      <a href="../fers/">Federal FERS</a>
+      <a href="../guides/">Guides</a>
+      <a href="../about/">About</a>
+    </nav>
+    <button type="button" class="head-btn" id="display-btn" aria-expanded="false" aria-controls="display-panel">Text &amp; colors</button>
+  </div>
+  <div class="display-panel" id="display-panel" hidden>
+    <div class="inner">
+      <h2>Make this site easier to read</h2>
+      <div class="setting" role="group" aria-label="Text size">
+        <span class="label">Text size</span>
+        <div class="choices">
+          <button type="button" class="sz1" data-set="size:1" aria-pressed="true">Normal</button>
+          <button type="button" class="sz2" data-set="size:2" aria-pressed="false">Large</button>
+          <button type="button" class="sz3" data-set="size:3" aria-pressed="false">Largest</button>
+        </div>
+      </div>
+      <div class="setting" role="group" aria-label="Colors">
+        <span class="label">Colors</span>
+        <div class="choices">
+          <button type="button" data-set="theme:light" aria-pressed="false">Light</button>
+          <button type="button" data-set="theme:dark" aria-pressed="false">Dark</button>
+          <button type="button" data-set="theme:auto" aria-pressed="true">Same as my device</button>
+        </div>
+      </div>
+      <div class="setting" role="group" aria-label="Letters">
+        <span class="label">Letters</span>
+        <div class="choices">
+          <button type="button" class="f-clear" data-set="font:clear" aria-pressed="true">Easy to read</button>
+          <button type="button" class="f-book" data-set="font:book" aria-pressed="false">Book style</button>
+          <button type="button" class="f-wide" data-set="font:wide" aria-pressed="false">Wide spacing</button>
+        </div>
+      </div>
+      <button type="button" class="btn primary done" id="display-done">Done</button>
     </div>
-  </header>
-
+  </div>
+</header>
+<!-- /@header -->
+<main id="main" class="page">
   <section class="intro" id="intro">
     <h1>How much will my PERS pension be?</h1>
-    <p>Answer six short questions. You'll get an estimate of your monthly pension and your IAP account, and see how waiting a year or two changes it. It takes about three minutes.</p>
+    <p>Answer six short questions. You'll get an estimate of your monthly pension (including Money Match for Tier One and Tier Two) and your IAP account, and see how waiting a year or two changes it. It takes about three minutes.</p>
     <p class="plainnote"><strong>This is an estimate, not advice.</strong> We aren't part of Oregon PERS. Only PERS can tell you your actual benefit, so ask them for an official estimate before you set a retirement date. Rules checked October 17, 2026.</p>
   </section>
 
@@ -238,6 +136,9 @@ details.how[open] > summary::before { content: "−"; }
           <div class="field"><label for="iap-sal">Your monthly pay now</label><div class="money"><input type="number" id="iap-sal" min="0" step="100" value="7000" inputmode="numeric"></div><span class="help">Before taxes.</span></div>
         </div>
         <div class="field" style="max-width:260px"><label for="iap-ret">Yearly growth to assume (%)</label><div class="plain"><input type="number" id="iap-ret" min="-10" max="15" step="0.5" value="5" inputmode="decimal"></div><span class="help">5% is a middle-of-the-road guess. Real returns go up and down.</span></div>
+        <div class="sub" id="acct-box">
+          <div class="field" style="max-width:320px"><label for="acct-bal">PERS member account balance (Tier One and Tier Two)</label><div class="money"><input type="number" id="acct-bal" min="0" step="1000" value="0" inputmode="numeric"></div><span class="help">On your yearly member statement, separate from your IAP. PERS uses it for a second method, Money Match, and pays whichever is higher. Leave at 0 to skip.</span></div>
+        </div>
       </section>
 
       <!-- 6 -->
@@ -260,6 +161,7 @@ details.how[open] > summary::before { content: "−"; }
   </div>
 
   <div id="results" hidden>
+    <div class="print-only"><h2>My Oregon PERS estimate</h2><p>Prepared <span class="print-date"></span> with the Oregon PERS Pension Estimator at mahxiao05.github.io/Public-Retirement-Planner. These are estimates, not advice.</p></div>
     <div class="answer" aria-live="polite">
       <p class="lead" id="r-lead"></p>
       <div class="status" id="r-status"><span class="ico" aria-hidden="true"></span><span></span></div>
@@ -299,13 +201,14 @@ details.how[open] > summary::before { content: "−"; }
           <h3>Your IAP account</h3>
           <ol class="steps" id="iap-steps"></ol>
           <h3>What this estimate leaves out</h3>
-          <p>Some Tier One and Tier Two members get more from a different method called Money Match, and PERS pays whichever method is higher. This estimate also doesn't include raises, cost-of-living increases, survivor options, split Tier One/OPSRP careers, or special rules for 911 telecommunicators, judges and legislators. For partial years before your full-benefit age, we estimate between PERS's yearly factors.</p>
+          <p>For Tier One and Tier Two, we compare the Full Formula with Money Match and show the higher one. We don't calculate Formula Plus Annuity, which applies only to Tier One members who contributed before August 21, 1981, or PERS's 2003 "look-back" amount. This estimate also doesn't include raises, cost-of-living increases, survivor options, split Tier One/OPSRP careers, or special rules for 911 telecommunicators, judges and legislators. For partial years before your full-benefit age, we estimate between PERS's yearly factors.</p>
           <h3>Sources</h3>
           <ol class="sources">
             <li id="src-t1t2"><a href="https://www.oregon.gov/pers/mem/pages/tier-one-tier-two-overview-and-benefit-calculation.aspx" target="_blank" rel="noopener">Oregon PERS: Tier One/Tier Two benefit calculation</a></li>
             <li id="src-opsrp"><a href="https://www.oregon.gov/pers/mem/pages/opsrp-overview.aspx" target="_blank" rel="noopener">Oregon PERS: OPSRP benefit calculation</a></li>
             <li id="src-compare"><a href="https://www.oregon.gov/pers/MEM/Pages/Benefit-Component-Comparisons.aspx" target="_blank" rel="noopener">Oregon PERS: Benefit component comparisons (retirement ages)</a></li>
-            <li id="src-aef"><a href="https://www.oregon.gov/pers/Documents/Financials/AEFs/AEFs-1-1-26.pdf" target="_blank" rel="noopener">Oregon PERS: Actuarial Equivalency Factors, effective January 1, 2026 (Table 1, early retirement)</a></li>
+            <li id="src-mm"><a href="https://www.oregon.gov/pers/mem/pages/tier-one-tier-two-overview-and-benefit-calculation.aspx" target="_blank" rel="noopener">Oregon PERS: Money Match (account balance × 2 × age factor)</a></li>
+            <li id="src-aef"><a href="https://www.oregon.gov/pers/Documents/Financials/AEFs/AEFs-1-1-26.pdf" target="_blank" rel="noopener">Oregon PERS: Actuarial Equivalency Factors, effective January 1, 2026 (Table 1, early retirement; Table 3a, Money Match)</a></li>
             <li id="src-early">Oregon PERS: Age to retire with reduced benefits, <a href="https://apps.pers.state.or.us/opsrp/Content/opsrp_age_to_retire_with_reduced_benefits.htm" target="_blank" rel="noopener">OPSRP</a> and <a href="https://apps.pers.state.or.us/pers238/Content/pers_age_to_retire_with_reduced_benefits.htm" target="_blank" rel="noopener">Tier One/Tier Two</a></li>
             <li id="src-limit"><a href="https://www.oregon.gov/pers/mem/pages/sb-1049-changes-salary-limit.aspx" target="_blank" rel="noopener">Oregon PERS: Senate Bill 1049 salary limit</a></li>
             <li id="src-redirect"><a href="https://www.oregon.gov/pers/emp/pages/member-redirect.aspx" target="_blank" rel="noopener">Oregon PERS: Member Redirect (2026 IAP threshold)</a></li>
@@ -317,6 +220,7 @@ details.how[open] > summary::before { content: "−"; }
 
     <div class="nav">
       <button type="button" class="btn secondary" id="edit">Change my answers</button>
+      <button type="button" class="btn secondary" data-print>Print my estimate</button>
       <button type="button" class="btn secondary" id="restart">Start over</button>
     </div>
   </div>
@@ -327,67 +231,31 @@ details.how[open] > summary::before { content: "−"; }
     <p>Want to see your pension, IAP and Social Security together? Use the <a href="../planner/">Retirement Date Planner</a>.</p>
     <p><a href="../">All retirement tools</a></p>
   </footer>
-</div>
+</main>
+<!-- @footer -->
+<footer class="site-foot">
+  <div class="inner">
+    <nav class="foot-links" aria-label="Site">
+      <a href="../">Home</a>
+      <a href="../about/">About</a>
+      <a href="../contact/">Contact</a>
+      <a href="../privacy/">Privacy policy</a>
+      <a href="../terms/">Terms of use</a>
+    </nav>
+    <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
+    <p>Your answers stay on your device. Last updated October 17, 2026.</p>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+<!-- /@footer -->
 
+<script src="../assets/rules/oregon-pers.js"></script>
 <script>
 (function () {
-  // ---------- official numbers ----------
-  // Table 1, Early Retirement Factors, AEFs effective 1/1/2026. Index = whole years before full-benefit age.
-  var EARLY_FACTORS = [1.000, 0.918, 0.843, 0.775, 0.713, 0.657, 0.605, 0.558, 0.515, 0.476, 0.440];
-  var SALARY_LIMIT = 245724;          // SB 1049 annual limit as published by PERS
-  var REDIRECT_THRESHOLD = 3890;      // 2026 monthly salary threshold
-  var MULT = { T1: { GEN: 0.0167, PF: 0.02 }, T2: { GEN: 0.0167, PF: 0.02 }, OPSRP: { GEN: 0.015, PF: 0.018 } };
-
-  function earlyFactor(monthsEarly) {
-    if (monthsEarly <= 0) return 1;
-    var y = Math.floor(monthsEarly / 12), m = monthsEarly % 12;
-    if (y >= EARLY_FACTORS.length - 1) return EARLY_FACTORS[EARLY_FACTORS.length - 1];
-    var a = EARLY_FACTORS[y], b = EARLY_FACTORS[y + 1];
-    return a + (b - a) * (m / 12);
-  }
-
-  // Full-benefit ("normal") and earliest retirement ages, in months, for the plan, job type and service at retirement.
-  function retirementAges(plan, cls, svc) {
-    if (plan === "OPSRP") {
-      if (cls === "PF") return { normal: (svc >= 25 ? 53 : 55) * 12, earliest: 50 * 12, rule: "OPSRP police and fire: full benefit at 55, or at 53 with 25 or more years. Earliest retirement at 50." };
-      return { normal: (svc >= 30 ? 58 : 65) * 12, earliest: 55 * 12, rule: "OPSRP general service: full benefit at 65, or at 58 with 30 or more years. Earliest retirement at 55." };
-    }
-    if (svc >= 30) return { normal: 0, earliest: 0, rule: "Tier One and Tier Two: with 30 years of service you get a full benefit at any age." };
-    if (cls === "PF") return { normal: (svc >= 25 ? 50 : 55) * 12, earliest: 50 * 12, rule: "Tier One and Tier Two police and fire: full benefit at 55, or at 50 with 25 or more years. Earliest retirement at 50." };
-    if (plan === "T1") return { normal: 58 * 12, earliest: 55 * 12, rule: "Tier One general service: full benefit at 58, or at any age with 30 years. Earliest retirement at 55." };
-    return { normal: 60 * 12, earliest: 55 * 12, rule: "Tier Two general service: full benefit at 60, or at any age with 30 years. Earliest retirement at 55." };
-  }
-
-  function calcPension(inp) {
-    var capped = inp.salaries.map(function (s) { return Math.min(s, SALARY_LIMIT); });
-    var fasAnnual = (capped[0] + capped[1] + capped[2]) / 3;
-    var fasMonthly = fasAnnual / 12;
-    var mult = MULT[inp.plan][inp.cls];
-    var ages = retirementAges(inp.plan, inp.cls, inp.svc);
-    var monthsEarly = Math.max(0, ages.normal - inp.ageMonths);
-    var factor = earlyFactor(monthsEarly);
-    var base = mult * inp.svc * fasMonthly;
-    return {
-      capped: capped, anyCapped: capped.some(function (c, i) { return c < inp.salaries[i]; }),
-      fasAnnual: fasAnnual, fasMonthly: fasMonthly, mult: mult, ages: ages,
-      monthsEarly: monthsEarly, eligible: inp.ageMonths >= ages.earliest, factor: factor,
-      baseMonthly: base, monthly: base * factor, vestedLikely: inp.svc >= 5
-    };
-  }
-
-  function calcIAP(inp) {
-    var over = inp.monthlySalary > REDIRECT_THRESHOLD;
-    var rate = inp.plan === "OPSRP" ? (over ? 0.0525 : 0.06) : (over ? 0.035 : 0.06);
-    var months = Math.round(inp.years * 12);
-    var r = Math.pow(1 + inp.ret, 1 / 12) - 1;
-    var contrib = inp.monthlySalary * rate;
-    var grow = Math.pow(1 + r, months);
-    var fvBal = inp.balance * grow;
-    var fvContrib = r === 0 ? contrib * months : contrib * (grow - 1) / r;
-    var total = fvBal + fvContrib;
-    var pay20 = r === 0 ? total / 240 : total * r / (1 - Math.pow(1 + r, -240));
-    return { over: over, rate: rate, months: months, r: r, contrib: contrib, fvBal: fvBal, fvContrib: fvContrib, total: total, pay20: pay20 };
-  }
+  // ---------- official numbers: ../assets/rules/oregon-pers.js ----------
+  var PERS = window.RetirementRules.pensions["or-pers"];
+  var calcPension = PERS.calcPension, calcIAP = PERS.calcIAP, earlyFactor = PERS.earlyFactor, retirementAges = PERS.retirementAges;
+  var SALARY_LIMIT = PERS.SALARY_LIMIT, REDIRECT_THRESHOLD = PERS.REDIRECT_THRESHOLD;
 
   // ---------- page ----------
   var $ = function (id) { return document.getElementById(id); };
@@ -411,13 +279,19 @@ details.how[open] > summary::before { content: "−"; }
       svcNow: Math.max(0, val("svc")),
       salaries: [val("sal1"), val("sal2"), val("sal3")].map(function (s) { return Math.max(0, s); }),
       iapBal: Math.max(0, val("iap-bal")), iapSal: Math.max(0, val("iap-sal")), iapRet: val("iap-ret") / 100,
+      acctBal: radio("plan") === "OPSRP" ? 0 : Math.max(0, val("acct-bal")),
       retMonths: Math.max(0, Math.round(val("ret-y"))) * 12 + Math.min(11, Math.max(0, Math.round(val("ret-m"))))
     };
   }
   function at(inp, retMonths) {
     var svc = inp.svcNow + Math.max(0, retMonths - inp.nowMonths) / 12;
     var p = calcPension({ plan: inp.plan, cls: inp.cls, ageMonths: retMonths, svc: svc, salaries: inp.salaries });
-    p.svc = svc; p.retMonths = retMonths; return p;
+    p.svc = svc; p.retMonths = retMonths; p.formulaMonthly = p.monthly;
+    // Tier One and Tier Two: PERS pays the higher of Full Formula and Money Match.
+    p.mm = inp.acctBal > 0 ? PERS.moneyMatch({ plan: inp.plan, balance: inp.acctBal, years: Math.max(0, retMonths - inp.nowMonths) / 12, ageMonths: retMonths, growth: inp.iapRet }) : null;
+    p.usesMM = !!(p.mm && p.mm.monthly > p.formulaMonthly);
+    if (p.usesMM) p.monthly = p.mm.monthly;
+    return p;
   }
   // Earliest age (in whole months, from today) with no early-retirement cut.
   function firstFullAge(inp) {
@@ -433,6 +307,7 @@ details.how[open] > summary::before { content: "−"; }
     $("back").style.visibility = n === 1 ? "hidden" : "visible";
     $("next").textContent = n === TOTAL ? "See my estimate" : "Next";
     $("opsrp-pay-tip").hidden = radio("plan") !== "OPSRP";
+    $("acct-box").hidden = radio("plan") === "OPSRP";
     var h = document.querySelector('.q[data-step="' + n + '"] h2'); if (h && focus) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
   }
 
@@ -457,7 +332,7 @@ details.how[open] > summary::before { content: "−"; }
     }
     var st = $("r-status"), stText = st.lastElementChild, ico = st.firstElementChild;
     if (!p.eligible) { st.className = "status no"; ico.textContent = "!"; stText.textContent = "Too early to retire under PERS rules."; }
-    else if (p.monthsEarly > 0) {
+    else if (p.monthsEarly > 0 && !p.usesMM) {
       st.className = "status early"; ico.textContent = "!";
       stText.textContent = "This is " + pctTxt(1 - p.factor) + " less than you'd get with no reduction, because you'd retire " + durTxt(p.monthsEarly) + " before your full-benefit age of " + ageTxt(p.ages.normal) + ". The reduction lasts for life.";
     } else { st.className = "status full"; ico.textContent = "✓"; stText.textContent = "No reduction. You'd be at or past your full-benefit age."; }
@@ -466,6 +341,7 @@ details.how[open] > summary::before { content: "−"; }
     more.push("<p><strong>Your IAP account</strong> could hold about <strong>" + usd(iap.total) + "</strong> when you retire. Taken over 20 years, that's roughly " + usd(iap.pay20) + " a month on top of your pension.</p>");
     more.push("<p>By then you'd have about " + yrsTxt(Math.round(p.svc * 10) / 10) + " of service, and your pension is based on average pay of " + usd(p.fasAnnual) + " a year.</p>");
     if (!p.vestedLikely) more.push('<p class="err">With fewer than 5 years of service you may not qualify for a pension yet. Check with PERS.</p>');
+    if (p.usesMM) more.push("<p><strong>Money Match pays you more.</strong> Your member account gives " + usd(p.mm.monthly) + " a month, compared with " + usd(p.formulaMonthly) + " from the Full Formula, so we show Money Match.</p>");
     if (p.anyCapped) more.push("<p>Pay above the state limit of " + usd(SALARY_LIMIT) + " a year doesn't count, so we capped it.</p>");
     $("r-more").innerHTML = more.join("");
 
@@ -484,7 +360,7 @@ details.how[open] > summary::before { content: "−"; }
       var diff = "";
       if (picked) diff = '<span class="tag">Your pick</span>';
       else if (q.eligible && pickAmt != null) { var d = q.monthly - pickAmt; diff = (d >= 0 ? "+" : "−") + usd(Math.abs(d)) + " a month"; }
-      var tag = !q.eligible ? "" : q.monthsEarly > 0 ? ' <span class="tag cut">' + pctTxt(1 - q.factor) + " cut</span>" : (full ? ' <span class="tag">Full benefit starts</span>' : "");
+      var tag = !q.eligible ? "" : q.monthsEarly > 0 && !q.usesMM ? ' <span class="tag cut">' + pctTxt(1 - q.factor) + " cut</span>" : (full ? ' <span class="tag">Full benefit starts</span>' : "");
       return '<tr class="' + (picked ? "picked " : "") + (full ? "fullrow" : "") + '"><td>' + ageTxt(m) + tag + '</td><td class="amt">' + amt + "</td><td>" + diff + "</td><td>" +
         (q.eligible && !picked ? '<button type="button" class="pick" data-m="' + m + '">Show</button>' : "") + "</td></tr>";
     }).join("");
@@ -499,8 +375,8 @@ details.how[open] > summary::before { content: "−"; }
       li("Pension before any reduction: " + usd2(p.baseMonthly) + " a month", num(p.mult * 100, 2) + "% × " + num(p.svc, 2) + " years × " + usd2(p.fasMonthly), multSrc),
       li("Full-benefit age: " + (p.ages.normal === 0 ? "any age" : ageTxt(p.ages.normal)), p.ages.rule, '<a href="#src-compare">Benefit component comparisons</a>'),
       li("Early retirement factor: " + num(p.factor, 3), p.monthsEarly === 0 ? "No reduction applies." : "You'd retire " + durTxt(p.monthsEarly) + " early. PERS's table gives " + num(earlyFactor(Math.floor(p.monthsEarly / 12) * 12), 3) + " per whole year" + (p.monthsEarly % 12 ? ", and we estimate the months in between" : "") + ".", '<a href="#src-aef">PERS early retirement factors, Table 1</a>'),
-      li("Estimated pension: " + usd2(p.monthly) + " a month", usd2(p.baseMonthly) + " × " + num(p.factor, 3) + ", paid only to you (Single Life option)", null)
-    ].join("");
+      li("Full Formula pension: " + usd2(p.formulaMonthly) + " a month", usd2(p.baseMonthly) + " × " + num(p.factor, 3) + ", paid only to you (Single Life option)", null)
+    ].concat(p.mm ? p.mm.steps.map(function (x) { return li(x[0], x[1], '<a href="#src-' + x[2] + '">' + x[3] + "</a>"); }).concat([li("PERS pays the higher amount: " + usd2(p.monthly) + " a month", p.usesMM ? "Money Match is higher than the Full Formula." : "The Full Formula is higher than Money Match.", null)]) : []).join("");
     $("iap-steps").innerHTML = [
       li("Share of pay going into your IAP: " + num(iap.rate * 100, 2) + "%", iap.over ? "Your pay is above PERS's 2026 limit of " + usd(REDIRECT_THRESHOLD) + " a month, so " + (inp.plan === "OPSRP" ? "0.75%" : "2.5%") + " of the usual 6% goes to a separate PERS account instead." : "Your pay is at or below " + usd(REDIRECT_THRESHOLD) + " a month, so the full 6% goes into your IAP.", '<a href="#src-redirect">Member Redirect</a>'),
       li("Added each month: " + usd2(iap.contrib), usd(inp.iapSal) + " × " + num(iap.rate * 100, 2) + "% for " + iap.months + " months", null),
@@ -535,21 +411,13 @@ details.how[open] > summary::before { content: "−"; }
   $("form").addEventListener("change", function () { save(); $("opsrp-pay-tip").hidden = radio("plan") !== "OPSRP"; });
   $("form").addEventListener("submit", function (e) { e.preventDefault(); });
 
-  function setSize(big) {
-    document.documentElement.classList.toggle("bigtext", big);
-    $("ts-large").setAttribute("aria-pressed", big); $("ts-normal").setAttribute("aria-pressed", !big);
-    try { localStorage.setItem("pers-guide-size", big ? "1" : "0"); } catch (e) {}
-  }
-  $("ts-normal").addEventListener("click", function () { setSize(false); });
-  $("ts-large").addEventListener("click", function () { setSize(true); });
 
-  var FIELDS = ["age-y", "age-m", "svc", "sal1", "sal2", "sal3", "iap-bal", "iap-sal", "iap-ret", "ret-y", "ret-m"];
+  var FIELDS = ["age-y", "age-m", "svc", "sal1", "sal2", "sal3", "iap-bal", "iap-sal", "iap-ret", "acct-bal", "ret-y", "ret-m"];
   function save() {
     try { var o = { plan: radio("plan"), cls: radio("cls") }; FIELDS.forEach(function (f) { o[f] = $(f).value; }); localStorage.setItem("pers-guide", JSON.stringify(o)); } catch (e) {}
   }
   function restore() {
     try {
-      if (localStorage.getItem("pers-guide-size") === "1") setSize(true);
       var o = JSON.parse(localStorage.getItem("pers-guide") || "null"); if (!o) return;
       FIELDS.forEach(function (f) { if (o[f] != null) $(f).value = o[f]; });
       var a = document.querySelector('input[name="plan"][value="' + o.plan + '"]'); if (a) a.checked = true;
