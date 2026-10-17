@@ -75,36 +75,10 @@
       <li><a class="nav-top" href="../about/">About</a></li>
       </ul>
     </nav>
-    <button type="button" class="head-btn" id="display-btn" aria-expanded="false" aria-controls="display-panel">Text &amp; colors</button>
-  </div>
-  <div class="display-panel" id="display-panel" hidden>
-    <div class="inner">
-      <h2>Make this site easier to read</h2>
-      <div class="setting" role="group" aria-label="Text size">
-        <span class="label">Text size</span>
-        <div class="choices">
-          <button type="button" class="sz1" data-set="size:1" aria-pressed="true">Normal</button>
-          <button type="button" class="sz2" data-set="size:2" aria-pressed="false">Large</button>
-          <button type="button" class="sz3" data-set="size:3" aria-pressed="false">Largest</button>
-        </div>
-      </div>
-      <div class="setting" role="group" aria-label="Colors">
-        <span class="label">Colors</span>
-        <div class="choices">
-          <button type="button" data-set="theme:light" aria-pressed="false">Light</button>
-          <button type="button" data-set="theme:dark" aria-pressed="false">Dark</button>
-          <button type="button" data-set="theme:auto" aria-pressed="true">Same as my device</button>
-        </div>
-      </div>
-      <div class="setting" role="group" aria-label="Letters">
-        <span class="label">Letters</span>
-        <div class="choices">
-          <button type="button" class="f-clear" data-set="font:clear" aria-pressed="true">Easy to read</button>
-          <button type="button" class="f-book" data-set="font:book" aria-pressed="false">Book style</button>
-          <button type="button" class="f-wide" data-set="font:wide" aria-pressed="false">Wide spacing</button>
-        </div>
-      </div>
-      <button type="button" class="btn primary done" id="display-done">Done</button>
+    <div class="quick" role="group" aria-label="Reading settings">
+      <button type="button" class="quick-btn" data-cycle="size" aria-label="Text size"><span class="q-ico q-size" aria-hidden="true">A<b>A</b></span><span class="q-label">Text size</span></button>
+      <button type="button" class="quick-btn" data-cycle="theme" aria-label="Colors"><span class="q-ico" aria-hidden="true"><svg class="q-sun" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg><svg class="q-moon" viewBox="0 0 24 24" focusable="false"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg></span><span class="q-label">Colors</span></button>
+      <button type="button" class="quick-btn" data-cycle="font" aria-label="Letter style"><span class="q-ico q-font" aria-hidden="true">Aa</span><span class="q-label">Letters</span></button>
     </div>
   </div>
 </header>
