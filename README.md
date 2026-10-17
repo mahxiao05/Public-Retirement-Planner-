@@ -27,7 +27,7 @@ It stamps the shared `<head>`, menu bar and footer into every `index.html` (betw
 ## Before going live with ads
 - `ADSENSE_ID` is set (pub-7867146450299069), so every page loads the AdSense script and `ads.txt` is written.
 - Put a real address in `contact/index.html` (it says `CONTACT_EMAIL`).
-- Connect a custom domain and update `SITE_URL` in `tools/build.py`. AdSense needs `ads.txt` at the domain root.
+- The site is served at https://publicpensionplanner.com (the `CNAME` file; DNS at Porkbun points to GitHub Pages). `SITE_URL` in `tools/build.py` matches.
 
 ## Oregon PERS rules used (verify each January)
 - Full Formula: Tier One/Two 1.67% general, 2.0% P&F; OPSRP 1.5% general, 1.8% P&F.

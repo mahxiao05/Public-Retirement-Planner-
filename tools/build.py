@@ -14,7 +14,7 @@ import pathlib
 import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SITE_URL = "https://mahxiao05.github.io/Public-Retirement-Planner-/"   # change when a custom domain is connected
+SITE_URL = "https://publicpensionplanner.com/"
 ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
 LAST_UPDATED = "October 17, 2026"
 
