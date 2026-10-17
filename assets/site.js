@@ -34,7 +34,21 @@
   function init() {
     var menuBtn = document.getElementById("menu-btn"), nav = document.getElementById("site-nav");
     var dispBtn = document.getElementById("display-btn"), panel = document.getElementById("display-panel");
-    if (menuBtn && nav) menuBtn.addEventListener("click", function () { toggle(menuBtn, nav); });
+    if (menuBtn && nav) menuBtn.addEventListener("click", function () { if (!toggle(menuBtn, nav)) closeGroups(); });
+    // Menu groups open on click or tap, one at a time. Escape or a click elsewhere closes them.
+    var groups = document.querySelectorAll(".nav-group > .nav-top");
+    function closeGroups(except) {
+      groups.forEach(function (b) { if (b !== except && b.getAttribute("aria-expanded") === "true") toggle(b, document.getElementById(b.getAttribute("aria-controls")), false); });
+    }
+    groups.forEach(function (b) {
+      b.addEventListener("click", function () { closeGroups(b); toggle(b, document.getElementById(b.getAttribute("aria-controls"))); });
+    });
+    document.addEventListener("click", function (e) { if (nav && !nav.contains(e.target)) closeGroups(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      var open = document.querySelector('.nav-group > .nav-top[aria-expanded="true"]');
+      if (open) { closeGroups(); open.focus(); }
+    });
     if (dispBtn && panel) {
       dispBtn.addEventListener("click", function () { if (toggle(dispBtn, panel)) { var f = panel.querySelector("h2"); if (f) { f.setAttribute("tabindex", "-1"); f.focus(); } } });
       var done = document.getElementById("display-done");
