@@ -34,13 +34,25 @@
   function toggle(btn, target, open) {
     var isOpen = open == null ? btn.getAttribute("aria-expanded") !== "true" : open;
     btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    if (target.classList.contains("site-nav")) target.classList.toggle("open", isOpen); else target.hidden = !isOpen;
+    target.hidden = !isOpen;
     return isOpen;
   }
 
   function init() {
-    var menuBtn = document.getElementById("menu-btn"), nav = document.getElementById("site-nav");
-    if (menuBtn && nav) menuBtn.addEventListener("click", function () { if (!toggle(menuBtn, nav)) closeGroups(); });
+    var nav = document.getElementById("site-nav");
+    // Phone menu: the Menu tab opens a full-screen list of every page; Close, Escape or the tab again shuts it.
+    var menuBtn = document.getElementById("menu-btn"), sheet = document.getElementById("menu-sheet");
+    function setSheet(open) {
+      if (!menuBtn || !sheet) return;
+      toggle(menuBtn, sheet, open);
+      document.body.classList.toggle("sheet-open", open);
+      menuBtn.querySelector("span").textContent = open ? "Close" : "Menu";
+      if (open) { sheet.scrollTop = 0; document.getElementById("sheet-title").focus(); } else menuBtn.focus();
+    }
+    if (menuBtn && sheet) {
+      menuBtn.addEventListener("click", function () { setSheet(sheet.hidden); });
+      sheet.querySelector(".sheet-close").addEventListener("click", function () { setSheet(false); });
+    }
     // Menu groups open on click or tap, one at a time. Escape or a click elsewhere closes them.
     var groups = document.querySelectorAll(".nav-group > .nav-top");
     function closeGroups(except) {
@@ -52,6 +64,7 @@
     document.addEventListener("click", function (e) { if (nav && !nav.contains(e.target)) closeGroups(); });
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Escape") return;
+      if (sheet && !sheet.hidden) { setSheet(false); return; }
       var open = document.querySelector('.nav-group > .nav-top[aria-expanded="true"]');
       if (open) { closeGroups(); open.focus(); }
     });
