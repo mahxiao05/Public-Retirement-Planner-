@@ -27,6 +27,8 @@
     credits: ["https://www.ssa.gov/benefits/retirement/planner/credits.html", "Social Security: Work credits"],
     working: ["https://www.ssa.gov/oact/cola/rtea.html", "Social Security: Earnings limits while you work"],
     fairness: ["https://www.ssa.gov/benefits/retirement/social-security-fairness-act.html", "Social Security: Social Security Fairness Act"],
+    drsPlans: ["https://www.drs.wa.gov/plan/", "Washington DRS: Plans and systems"],
+    drsErf: ["https://www.drs.wa.gov/sitemap/adminfactors/af-erf-pers-trs-and-sers-2-3/", "Washington DRS: Early retirement factors"],
     myacct: ["https://www.ssa.gov/myaccount/", "Social Security: my Social Security account (your statement)"],
     spouse: ["https://www.ssa.gov/oact/quickcalc/spouse.html", "Social Security: Benefits for a spouse"],
     survivor: ["https://www.ssa.gov/OP_Home/handbook/handbook.04/handbook-0407.html", "Social Security Handbook: Widow(er)'s benefit amount"],
@@ -98,6 +100,8 @@
       b: "<p>Each stop is a month when an income starts or stops. The amount is your total monthly income from that point on, before taxes.</p><p>All amounts are in today's dollars. We don't add raises or cost-of-living increases, so real checks will likely be larger, and so will prices.</p>" },
     "compare-dates": { t: "How we compare retirement dates", l: [],
       b: "<p>For each age we run your same answers again. The only changes are more years of service and a smaller early-retirement cut. Your Social Security start age stays as you picked it.</p><p>The <strong>% cut</strong> tag shows how much an early start lowers your pension for life. Tap <strong>Show</strong> to make that age your plan.</p>" },
+    "drs-plan": { t: "Which DRS plan am I in?", l: ["drsPlans", "drsErf"],
+      b: "<p>Your DRS online account and yearly statement name your system (PERS, TRS or SERS) and plan.</p><ul><li><strong>Plan 1:</strong> 2% of your average pay in your best 24 months in a row, for each year of service, up to 60%.</li><li><strong>Plan 2:</strong> 2% of your average pay in your best 60 months in a row, for each year.</li><li><strong>Plan 3:</strong> 1% for each year, plus your own investment account.</li></ul><p>Plans 2 and 3 pay a full pension at 65. You can start from 55 with a cut that depends on your years of service and on whether you started before May 1, 2013.</p>" },
     "compare-ss": { t: "How we compare Social Security ages", l: ["early", "delay"],
       b: "<p>Each row is the same Social Security benefit, started at a different age. The percentage shows how much more or less you'd get each month, for life, than at your full retirement age.</p><p>A later start pays more each month but for fewer years. Many people decide based on their health and on what their spouse would get as a survivor.</p>" }
   };
