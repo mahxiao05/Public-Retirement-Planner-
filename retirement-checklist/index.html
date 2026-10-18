@@ -120,6 +120,21 @@
   <button type="button" class="btn secondary" id="check-clear">Clear my ticks</button>
   <p class="checkcount" id="check-count" aria-live="polite"></p>
 </div>
+<section class="panel datebox no-print" aria-labelledby="dates-h">
+  <h2 id="dates-h" style="margin:0">Put these steps on your calendar</h2>
+  <p>Tell us your planned retirement month and your birth month, and we'll date every step below. Then add them all to your phone or computer calendar in one tap.</p>
+  <div class="fields">
+    <div class="field"><label for="cl-ret-m">Retirement month</label><select id="cl-ret-m"></select></div>
+    <div class="field"><label for="cl-ret-y">Retirement year</label><div class="plain"><input type="number" id="cl-ret-y" min="2025" max="2060" step="1" inputmode="numeric" placeholder="2029"></div></div>
+    <div class="field"><label for="cl-b-m">Birth month</label><select id="cl-b-m"></select></div>
+    <div class="field"><label for="cl-b-y">Birth year</label><div class="plain"><input type="number" id="cl-b-y" min="1940" max="2008" step="1" inputmode="numeric" placeholder="1964"></div></div>
+  </div>
+  <div class="checktools">
+    <button type="button" class="btn primary" id="cl-ics" disabled>Add all steps to my calendar</button>
+    <p class="preview" id="cl-note" aria-live="polite"></p>
+  </div>
+  <p class="help">The calendar file opens in Apple Calendar, Google Calendar and Outlook. Each step is an all-day reminder on the first of its month. Your dates stay on this device.</p>
+</section>
 <div class="print-only"><p>Printed <span class="print-date"></span> from publicpensionplanner.com. These are general steps, not advice. Your retirement system has the final word on dates and forms.</p></div>
 
 <h2>3 years or more before you retire</h2>

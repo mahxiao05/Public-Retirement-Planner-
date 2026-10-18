@@ -465,3 +465,14 @@ dl.terms dd { margin: 0; max-width: 66ch; }
 dl.terms dd .see { display: block; margin-top: .3rem; font-size: .95rem; }
 dl.terms dt:target { color: var(--accent); }
 dl.terms dt:target + dd { background: var(--answer); border-radius: 10px; padding: .6rem .8rem; }
+
+/* "Can I retire?" answer */
+.verdict-tag { justify-self: start; font-family: var(--font-head); font-weight: 800; font-size: 1.05rem; padding: .35rem .95rem; border-radius: 999px; background: var(--surface); border: 2px solid var(--line-strong); }
+.verdict-tag.yes { border-color: var(--c-pension); color: var(--c-pension); }
+.verdict-tag.close { border-color: var(--gold); color: var(--caution); }
+.verdict-tag.no { border-color: var(--stop); color: var(--stop); }
+.claimbtns { display: flex; flex-wrap: wrap; gap: .6rem; }
+.claimbtns .btn { flex: 1 1 9rem; padding-inline: 1rem; }
+.muted-note { color: var(--muted); font-size: .95rem; }
+.checklist .due { display: inline-block; margin-left: .4rem; font-size: .85rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: .1rem .6rem; }
+.datebox .help { color: var(--muted); font-size: .88rem; }

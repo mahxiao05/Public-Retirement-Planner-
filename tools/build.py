@@ -298,6 +298,8 @@ def crumbs(rel, page, text):
     trail = [("", "Home")]
     if page.startswith("guides/") and page != "guides/":
         trail.append(("guides/", "Guides"))
+    if page.startswith("calculators/") and page != "calculators/":
+        trail.append(("calculators/", "Calculators"))
     items = "".join(f'<li><a href="{href_of(rel, h)}">{t}</a></li>' for h, t in trail) + f'<li aria-current="page">{name}</li>'
     ld = ",".join(f'{{"@type":"ListItem","position":{i + 1},"name":"{t}","item":"{SITE_URL}{h}"}}' for i, (h, t) in enumerate(trail + [(page, name.replace(chr(34), ""))]))
     return f"""<!-- @crumbs -->
