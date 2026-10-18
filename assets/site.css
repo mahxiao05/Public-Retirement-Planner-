@@ -446,3 +446,22 @@ button.info:focus-visible { outline: 3px solid var(--accent); outline-offset: 0;
 /* page-level disclaimer under a tool */
 .legal { margin-top: 2.2rem; padding-top: 1.1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; display: grid; gap: .6rem; }
 .formula-line { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--radius-sm); padding: .8rem 1rem; }
+
+/* worked example inside a guide */
+.example { background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: var(--radius-sm); padding: 1.1rem 1.3rem; display: grid; gap: .6rem; box-shadow: var(--shadow-sm); }
+.example .label { font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .07em; font-size: .82rem; }
+.prose .example ol, .prose .example ul { gap: .35rem; }
+/* "Common questions" at the end of a guide (tools/build.py turns these into FAQ data for search engines) */
+.faq { display: grid; gap: .9rem; }
+.faq h3 { font-size: 1.1rem; margin: .5rem 0 0; }
+.faq h3 + p { margin-top: -.4rem; }
+/* glossary */
+.glossary-letters { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0 !important; margin: 0; }
+.glossary-letters a { display: grid; place-items: center; min-width: 48px; min-height: 48px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-weight: 700; text-decoration: none; }
+.glossary-letters a:hover { border-color: var(--accent); background: var(--accent-soft); }
+dl.terms { margin: 0; display: grid; gap: .5rem; }
+dl.terms dt { font-family: var(--font-head); font-weight: 700; font-size: 1.12rem; margin-top: 1rem; scroll-margin-top: 1rem; }
+dl.terms dd { margin: 0; max-width: 66ch; }
+dl.terms dd .see { display: block; margin-top: .3rem; font-size: .95rem; }
+dl.terms dt:target { color: var(--accent); }
+dl.terms dt:target + dd { background: var(--answer); border-radius: 10px; padding: .6rem .8rem; }
