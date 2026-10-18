@@ -139,7 +139,7 @@
     var lead, more = [];
     if (!pl.pen.eligible) {
       lead = "Your " + pl.pen.name.replace(/^\w+ /, "") + " can't start at " + ageTxt(inp.retMonths) + ". " + pl.pen.earliestText;
-      var e = earliest(inp); if (e != null) lead += " The earliest age that works with your answers is <strong>" + ageTxt(e) + "</strong>.";
+      var e = earliest(inp); if (e != null) lead += " Counting the years of service you entered, the earliest age that works is <strong>" + ageTxt(e) + "</strong>.";
     } else {
       lead = "If you retire at " + ageTxt(inp.retMonths) + " (" + dateAt(inp, inp.retMonths) + ")" + (hasSS ? " and start Social Security at " + ageTxt(claim) : "") + ", you'd have about<big>" + usd(pl.after) + " a month</big>";
       if (pl.before !== pl.after) lead += "once " + (hasSS && claim > inp.retMonths ? "Social Security starts in " + dateAt(inp, claim) : "the FERS supplement ends at 62") + ". In your first months of retirement you'd have about <strong>" + usd(pl.before) + " a month</strong>" + (pl.low < Math.min(pl.before, pl.after) ? ", dipping to " + usd(pl.low) + " between 62 and Social Security" : "") + ".";

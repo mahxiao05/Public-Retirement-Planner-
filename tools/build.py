@@ -31,54 +31,97 @@ START = ("guides/where-to-begin/", "Where to begin", "Six steps, in order, for a
 NAV = [
     ("", "Home"),
     ("guides/where-to-begin/", "Start here"),
-    ("Tools", "Free calculators that show every step of the math.", [
+    ("Calculators", "Free calculators that show every step of the math.", [
+        ("can-i-retire/", "Can I retire?", "A quick yes or not yet, with Social Security at 62, 67 or 70"),
         PLANNER,
         ("oregon-pers/", "Oregon PERS Pension Estimator", "Your monthly pension at any age, with Money Match"),
         ("planner/?system=fers", "FERS and TSP Planner", "Annuity, supplement and TSP for federal employees"),
-        ("retirement-checklist/", "Retirement Countdown Checklist", "Every deadline from 3 years out to Medicare at 65"),
+        ("calculators/survivor-option-comparison/", "Single life or survivor option", "What a survivor option costs, and when it pays off"),
+        ("calculators/retirement-income-after-tax/", "Take-home pay in retirement", "Federal tax on your pension and Social Security"),
+        ("retirement-checklist/", "Retirement Countdown Checklist", "Every deadline, with calendar reminders"),
+        ("calculators/", "All calculators", "Sick leave, military buyback, savings and more"),
     ]),
-    ("Oregon PERS", "For Oregon state, school, city and county employees.", [
-        ("guides/oregon-pers-explained/", "Oregon PERS explained", "The whole system in one guide: plans, pension, IAP and how to apply"),
-        ("oregon-pers/", "Pension Estimator", "How much your PERS pension will be"),
+    ("Pensions", "Complete guides to each retirement system.", [
+        ("guides/oregon-pers-explained/", "Oregon PERS explained", "Tier One, Tier Two, OPSRP, the IAP and how to apply"),
         ("guides/when-can-i-retire-oregon-pers/", "When can I retire from PERS?", "Full-benefit ages for each plan, and the early cut"),
-        ("guides/pers-tier-one-tier-two-opsrp/", "Tier One, Tier Two or OPSRP?", "Which plan you're in and how it changes your pension"),
-    ]),
-    ("Federal FERS", "For federal civilian employees.", [
-        ("fers/", "FERS explained", "Retirement ages, the annuity formula, supplement, TSP and how to apply"),
+        ("guides/washington-drs-explained/", "Washington DRS explained", "PERS, TRS and SERS, Plans 1, 2 and 3"),
+        ("guides/when-can-i-retire-washington-drs/", "When can I retire from DRS?", "Ages by plan, and the early retirement cuts"),
+        ("fers/", "FERS explained", "Retirement ages, the annuity formula, supplement and TSP"),
         ("guides/fers-retirement-age/", "When can I retire under FERS?", "Your Minimum Retirement Age and the MRA+10 cut"),
-        ("planner/?system=fers", "FERS and TSP Planner", "See your annuity, supplement and TSP by date"),
+        ("guides/calpers-explained/", "CalPERS explained", "Classic and PEPRA formulas, age factors and options"),
+        ("guides/calstrs-explained/", "CalSTRS explained", "2% at 60 and 2% at 62 for California teachers"),
+        ("guides/idaho-persi-explained/", "Idaho PERSI explained", "The formula, Rule of 90 and early retirement"),
     ]),
     ("Social Security & Medicare", "How they fit with a public pension.", [
         ("guides/social-security-explained/", "Social Security explained", "Who qualifies, how much you get, and how it fits with a pension"),
         ("guides/when-to-start-social-security/", "When should I start Social Security?", "Starting at 62, at full retirement age or at 70"),
         ("guides/does-a-pension-reduce-social-security/", "Does my pension lower my Social Security?", "What the 2025 Social Security Fairness Act changed"),
+        ("guides/social-security-spousal-benefits/", "Spousal benefits", "Up to half of your spouse's full benefit"),
+        ("guides/social-security-survivor-benefits/", "Survivor benefits", "What a widow or widower gets"),
+        ("guides/when-to-sign-up-for-medicare/", "When to sign up for Medicare", "The 7-month window and the penalties to avoid"),
         ("guides/health-insurance-before-medicare/", "Health insurance before 65", "FEHB, PERS retiree plans, COBRA and HealthCare.gov"),
+        ("guides/retirement-numbers-2027/", "Retirement numbers for 2027", "This year's raises, limits and premiums"),
     ]),
-    ("guides/", "Guides"),
-    ("about/", "About"),
+    ("guides/", "All guides"),
+    ("glossary/", "Glossary"),
 ]
 FOOT_COLS = [
-    ("Tools", [("planner/", "Retirement Date Planner"), ("oregon-pers/", "Oregon PERS Estimator"), ("planner/?system=fers", "FERS and TSP Planner"),
-               ("retirement-checklist/", "Countdown Checklist")]),
-    ("Guides", [("guides/where-to-begin/", "Where to begin"), ("guides/oregon-pers-explained/", "Oregon PERS explained"), ("fers/", "FERS explained"),
-                ("guides/social-security-explained/", "Social Security explained"), ("guides/", "All guides")]),
-    ("About us", [("about/", "About this site"), ("contact/", "Contact us"), ("privacy/", "Privacy policy"), ("terms/", "Terms of use")]),
+    ("Calculators", [("can-i-retire/", "Can I retire?"), ("planner/", "Retirement Date Planner"), ("oregon-pers/", "Oregon PERS Estimator"), ("planner/?system=fers", "FERS and TSP Planner"),
+                     ("retirement-checklist/", "Countdown Checklist"), ("calculators/", "All calculators"), ("my-plan/", "My plan")]),
+    ("Guides", [("guides/where-to-begin/", "Where to begin"), ("guides/oregon-pers-explained/", "Oregon PERS"), ("guides/washington-drs-explained/", "Washington DRS"), ("fers/", "Federal FERS"),
+                ("guides/calpers-explained/", "CalPERS"), ("guides/social-security-explained/", "Social Security"), ("guides/", "All guides"), ("glossary/", "Glossary")]),
+    ("About us", [("about/", "About this site"), ("how-we-check/", "How we check our numbers"), ("changes/", "What changed"), ("contact/", "Contact us"), ("privacy/", "Privacy policy"), ("terms/", "Terms of use")]),
 ]
 # Every guide, in the order the Guides page lists them. (path, section, title, summary)
 # Each one gets "Keep reading" links to the others in its section, and Google article dates.
-SECTIONS = ["Start here", "Oregon PERS", "Washington DRS", "Federal FERS", "Social Security", "Medicare and health care",
-            "Pension decisions", "Money, taxes and savings"]
+SECTIONS = ['Start here', 'Oregon PERS', 'Washington DRS', 'Federal FERS', 'California CalPERS and CalSTRS', 'Idaho PERSI', 'Social Security', 'Medicare and health care', 'Pension decisions', 'Money, taxes and savings']
 GUIDES = [
-    ("guides/where-to-begin/", "Start here", "Where to begin with retirement planning", "Six steps, in order: find your system, get your records, compare dates, plan health insurance and apply on time."),
-    ("guides/oregon-pers-explained/", "Oregon PERS", "Oregon PERS explained", "Plans, the pension formula, Money Match, the IAP, raises and how to apply, in one place."),
-    ("guides/when-can-i-retire-oregon-pers/", "Oregon PERS", "When can I retire from Oregon PERS?", "Earliest and full-benefit ages for every group, and what retiring early costs."),
-    ("guides/pers-tier-one-tier-two-opsrp/", "Oregon PERS", "Tier One, Tier Two and OPSRP: what's the difference?", "Formulas, retirement ages, Money Match and the IAP, side by side."),
-    ("fers/", "Federal FERS", "FERS explained", "Retirement ages, the annuity formula, the supplement, the TSP, raises and how to apply."),
-    ("guides/fers-retirement-age/", "Federal FERS", "When can I retire under FERS?", "Minimum Retirement Age, MRA+30, 60 with 20, 62 with 5, and MRA+10."),
-    ("guides/social-security-explained/", "Social Security", "Social Security explained", "Who qualifies, how much you get, when to start, and how it fits with your pension."),
-    ("guides/when-to-start-social-security/", "Social Security", "When should I start Social Security?", "What you get at 62, at full retirement age and at 70, and how it affects your spouse."),
-    ("guides/does-a-pension-reduce-social-security/", "Social Security", "Does my government pension lower my Social Security?", "The Social Security Fairness Act ended WEP and GPO. Here's what that means."),
-    ("guides/health-insurance-before-medicare/", "Medicare and health care", "How do I get health insurance if I retire before 65?", "FEHB, PERS retiree plans, COBRA, a spouse's plan and HealthCare.gov, and the Medicare penalty to avoid."),
+    ('guides/where-to-begin/', 'Start here', 'Where to begin with retirement planning', 'Six steps, in order: find your system, get your records, compare dates, plan health insurance and apply on time.'),
+    ('guides/retirement-numbers-2027/', 'Start here', 'Retirement numbers for 2027', 'The 2027 Social Security raise of 3.6%, FERS and CSRS raises, earnings limits, the wage cap, and figures still to come.'),
+    ('guides/oregon-pers-explained/', 'Oregon PERS', 'Oregon PERS explained', 'Plans, the pension formula, Money Match, the IAP, raises and how to apply, in one place.'),
+    ('guides/when-can-i-retire-oregon-pers/', 'Oregon PERS', 'When can I retire from Oregon PERS?', 'Earliest and full-benefit ages for every group, and what retiring early costs.'),
+    ('guides/pers-tier-one-tier-two-opsrp/', 'Oregon PERS', "Tier One, Tier Two and OPSRP: what's the difference?", 'Formulas, retirement ages, Money Match and the IAP, side by side.'),
+    ('guides/oregon-pers-iap-payout-options/', 'Oregon PERS', 'Oregon PERS IAP payout options', 'Lump sum, installments or rollover: how the PERS IAP pays out, minimum balances, taxes, the 10% early tax and death rules.'),
+    ('guides/oregon-pers-survivor-options/', 'Oregon PERS', 'Oregon PERS survivor options', "Option 1, Refund Annuity, Options 2, 2A, 3, 3A and OPSRP survivorship choices: what each costs and why it's nearly permanent."),
+    ('guides/oregon-pers-unused-sick-leave/', 'Oregon PERS', 'Unused sick leave and your PERS pension', 'Tier One and Tier Two members at participating employers get half their unused sick leave counted in final average salary. OPSRP gets none.'),
+    ('guides/working-after-retiring-oregon-pers/', 'Oregon PERS', 'Working after retiring from Oregon PERS', 'Most PERS retirees can work unlimited hours for PERS employers through 2034. Early retirees face 1,039 or 600 hour limits.'),
+    ('guides/oregon-pers-retiree-health-insurance/', 'Oregon PERS', 'Oregon PERS retiree health insurance', 'PHIP is open to all PERS retirees; Tier One and Tier Two get a $60 RHIA Medicare subsidy or, for state retirees, RHIPA.'),
+    ('guides/oregon-savings-growth-plan-457b/', 'Oregon PERS', 'Oregon Savings Growth Plan 457(b)', '2026 OSGP limits, catch-ups for 50+ and ages 60 to 63, the special 457 catch-up, Roth rules and penalty-free withdrawals.'),
+    ('guides/oregon-pers-divorce/', 'Oregon PERS', 'Oregon PERS and divorce', 'How PERS splits a pension and IAP in divorce: award forms, alternate payee rights, survivor effects and what to send PERS.'),
+    ('guides/washington-drs-explained/', 'Washington DRS', 'Washington DRS explained', 'How Washington DRS pensions work: the systems, Plans 1 to 3, the formula, retirement ages, COLA, survivors, PEBB and how to apply.'),
+    ('guides/washington-drs-plan-1-2-3/', 'Washington DRS', 'DRS Plan 1, Plan 2 and Plan 3 compared', 'Plans 1, 2 and 3 side by side: 2% vs 1% formulas, 24 vs 60 month AFC, early retirement cuts, COLA and Plan 3 options A to F.'),
+    ('guides/when-can-i-retire-washington-drs/', 'Washington DRS', 'When can I retire from Washington DRS?', 'Earliest and full-pension ages for DRS Plans 1, 2 and 3, PSERS and LEOFF 2, with the early retirement cuts and worked examples.'),
+    ('guides/washington-drs-survivor-options/', 'Washington DRS', 'Washington DRS survivor options', 'DRS survivor Options 1 to 4, what each costs, spousal consent, the pop-up, the Plan 1 optional COLA and death before retiring.'),
+    ('fers/', 'Federal FERS', 'FERS explained', 'Retirement ages, the annuity formula, the supplement, the TSP, raises and how to apply.'),
+    ('guides/fers-retirement-age/', 'Federal FERS', 'When can I retire under FERS?', 'Minimum Retirement Age, MRA+30, 60 with 20, 62 with 5, and MRA+10.'),
+    ('guides/fers-military-buyback/', 'Federal FERS', 'FERS military buyback', 'How to buy back post-1956 military service for FERS: the 3% deposit, interest timing, retired pay waivers and a worked example.'),
+    ('guides/fers-sick-leave-credit/', 'Federal FERS', 'FERS unused sick leave credit', "How unused sick leave adds to a FERS annuity at 100% since 2014, with OPM's 2,087-hour conversion chart and an example."),
+    ('guides/fers-deferred-and-postponed-retirement/', 'Federal FERS', 'Leaving federal service early: deferred or postponed', 'Deferred vs postponed MRA+10 annuities, keeping FEHB, what a refund costs, and part-time proration.'),
+    ('guides/fers-cola/', 'Federal FERS', 'FERS cost-of-living raises', 'The FERS "diet COLA" formula, why most retirees wait until 62, who gets raises early, and the 2026 and 2027 increases.'),
+    ('guides/fers-supplement-earnings-test/', 'Federal FERS', 'The FERS supplement and the earnings test', "Who gets the FERS supplement, how it's estimated, why it ends at 62, and how the 2026 and 2027 earnings limits work."),
+    ('guides/fehb-fegli-in-retirement/', 'Federal FERS', 'Keeping FEHB, PSHB and FEGLI in retirement', 'The five-year rule, premiums, Medicare Part B, FEGLI reductions and FEDVIP.'),
+    ('guides/tsp-withdrawal-options/', 'Federal FERS', 'TSP withdrawal options in retirement', 'Installments, partial withdrawals, annuities, the age 55 and 50 rules, Roth, required withdrawals and withholding.'),
+    ('guides/fers-special-provisions/', 'Federal FERS', 'FERS special retirement for police, firefighters and ATCs', 'Law enforcement, firefighters, air traffic controllers, CBP and Capitol Police: 50 with 20, mandatory age 57 and the 1.7% formula.'),
+    ('guides/fers-survivor-benefit/', 'Federal FERS', 'FERS survivor benefit: full, partial or none?', '50% for a 10% cut or 25% for 5%, spousal consent, insurable interest, FEHB and death benefits.'),
+    ('guides/calpers-explained/', 'California CalPERS and CalSTRS', 'CalPERS explained', 'Classic vs PEPRA, CalPERS formulas and age factors, final compensation, the 2% COLA, survivor options and health vesting.'),
+    ('guides/calstrs-explained/', 'California CalPERS and CalSTRS', 'CalSTRS explained', 'CalSTRS 2% at 60 vs 2% at 62, age factors, the career factor, the 2% raise, SBMA, options and Social Security for teachers.'),
+    ('guides/idaho-persi-explained/', 'Idaho PERSI', 'Idaho PERSI explained', 'Idaho PERSI Base Plan formula, Rule of 90 and 80, early retirement cuts, the PAA COLA, options, Choice Plan and sick leave.'),
+    ('guides/social-security-explained/', 'Social Security', 'Social Security explained', 'Who qualifies, how much you get, when to start, and how it fits with your pension.'),
+    ('guides/when-to-start-social-security/', 'Social Security', 'When should I start Social Security?', 'What you get at 62, at full retirement age and at 70, and how it affects your spouse.'),
+    ('guides/does-a-pension-reduce-social-security/', 'Social Security', 'Does my government pension lower my Social Security?', "The Social Security Fairness Act ended WEP and GPO. Here's what that means."),
+    ('guides/social-security-spousal-benefits/', 'Social Security', 'Social Security spousal benefits', "Up to 50% of a spouse's full benefit: early-claim cuts, deemed filing, divorced-spouse rules and what the GPO repeal changed."),
+    ('guides/social-security-survivor-benefits/', 'Social Security', 'Social Security survivor benefits', 'Widow(er) benefits from 60 (50 if disabled) at 71.5% to 100%, the 82.5% limit, switching strategies, remarriage and the $255 payment.'),
+    ('guides/social-security-earnings-test/', 'Social Security', 'Working while on Social Security', "Earnings limits for 2026 and 2027, $1 for $2 and $1 for $3, the first-year monthly rule, and why pensions don't count."),
+    ('guides/are-social-security-benefits-taxed/', 'Social Security', 'Are Social Security benefits taxed?', 'Combined-income thresholds, the 50% and 85% rules, how a pension pushes you over, the $6,000 senior deduction and W-4V.'),
+    ('guides/health-insurance-before-medicare/', 'Medicare and health care', 'How do I get health insurance if I retire before 65?', "FEHB, PERS retiree plans, COBRA, a spouse's plan and HealthCare.gov, and the Medicare penalty to avoid."),
+    ('guides/when-to-sign-up-for-medicare/', 'Medicare and health care', 'When to sign up for Medicare', 'The 7-month window, the special period for current job coverage, the retiree-coverage and COBRA trap, and late penalties.'),
+    ('guides/medicare-irmaa/', 'Medicare and health care', 'Medicare IRMAA explained', '2026 IRMAA brackets for Parts B and D, the two-year lookback, how lump sums trigger it, and lowering it with form SSA-44.'),
+    ('guides/single-life-or-survivor-pension/', 'Pension decisions', 'Single-life or survivor pension: how to choose', 'How single-life and joint-and-survivor pension options compare across PERS, DRS, FERS and CalPERS, and what to weigh.'),
+    ('guides/pension-lump-sum-or-monthly/', 'Pension decisions', 'Pension lump sum or monthly payments?', 'Which public plans offer lump sums, the trade-offs against a lifetime pension, and the rollover and early-tax rules.'),
+    ('guides/state-tax-on-public-pensions/', 'Money, taxes and savings', 'State tax on public pensions', 'How Oregon, Washington, Idaho, Arizona, Nevada and California tax pensions and Social Security, plus the source tax law and the PERS tax remedy.'),
+    ('guides/retirement-budget/', 'Money, taxes and savings', 'Building your first-year retirement budget', 'Turn your gross pension into a real monthly budget, with taxes, health premiums, gap years and cost-of-living raises.'),
+    ('guides/how-pensions-are-taxed/', 'Money, taxes and savings', 'How public pensions are taxed by the IRS', 'The taxable and tax-free parts of a pension, the Simplified Method, W-4P withholding and the $3,000 public safety exclusion.'),
+    ('guides/457b-deferred-compensation/', 'Money, taxes and savings', '457(b) deferred compensation plans explained', '2026 457(b) limits, the catch-ups (including the special 3-year one), Roth catch-up rules and penalty-free access.'),
 ]
 GUIDE_PATHS = {g[0] for g in GUIDES}
 # Phone tab bar: always on screen below 940px wide. The last tab opens the full menu.
@@ -246,9 +289,9 @@ def phone_nav(rel, page):
             continue
         label, intro, links = entry
         rows = "".join(f'\n        <li><a href="{href_of(rel, h)}"{" aria-current=\"page\"" if h == page else ""}><strong>{t}</strong><span>{d}</span></a></li>'
-                       for h, t, d in links if label == "Tools" or (h, t, d) != PLANNER)
+                       for h, t, d in links if label == "Calculators" or (h, t, d) != PLANNER)
         sections.append(f'    <section>\n      <h2>{label}</h2>\n      <ul>{rows}\n      </ul>\n    </section>')
-    more = "".join(f'<li><a href="{href_of(rel, h)}"><strong>{t}</strong></a></li>' for h, t in [("guides/", "All guides"), ("about/", "About this site"), ("contact/", "Contact us")])
+    more = "".join(f'<li><a href="{href_of(rel, h)}"><strong>{t}</strong></a></li>' for h, t in [("guides/", "All guides"), ("glossary/", "Glossary"), ("my-plan/", "My plan"), ("how-we-check/", "How we check our numbers"), ("about/", "About this site"), ("contact/", "Contact us")])
     return f"""<nav class="tabbar" aria-label="Shortcuts">{tabs}
     <button type="button" class="tab" id="menu-btn" aria-expanded="false" aria-controls="menu-sheet">{icon("menu")}<span>Menu</span></button>
 </nav>
