@@ -1,9 +1,10 @@
 // Retirement Date Planner. The rules live in ../assets/rules/*.js; this file asks the questions and draws the plan.
-// Each retirement system is an adapter in SYSTEMS below (Oregon PERS, Washington DRS, FERS), so a new system means a new rules file,
-// its question screens, and one more adapter.
+// Each retirement system is an adapter in SYSTEMS below (Oregon PERS, Washington DRS, FERS, and CalPERS, CalSTRS and Idaho PERSI,
+// which share one set of question screens through stateSystem()), so a new system means a new rules file, its questions, and one more adapter.
 (function () {
   var RULES = window.RetirementRules;
   var SS = RULES.socialSecurity, PERS = RULES.pensions["or-pers"], FERS = RULES.pensions.fers, DRS = RULES.pensions.drs;
+  var CALPERS = RULES.pensions.calpers, CALSTRS = RULES.pensions.calstrs, PERSI = RULES.pensions.persi;
   var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var MEDICARE = 65 * 12;
 
@@ -58,6 +59,16 @@
     "drs-630": ["https://app.leg.wa.gov/RCW/default.aspx?cite=41.40.630", "RCW 41.40.630: Plan 2 early retirement with 30 years"],
     "drs-820": ["https://app.leg.wa.gov/RCW/default.aspx?cite=41.40.820", "RCW 41.40.820: Plan 3 early retirement with 30 years"],
     "drs-surv": ["https://app.leg.wa.gov/WAC/default.aspx?cite=415-02-380", "WAC 415-02-380: DRS survivor options"],
+    "cp-charts": [CALPERS.SRC.charts, "CalPERS: Benefit factor charts"],
+    "cp-plan": [CALPERS.SRC.plan, "CalPERS: Planning Your Service Retirement"],
+    "cp-limits": [CALPERS.SRC.limits, "CalPERS: 2026 compensation limits"],
+    "cs-age": [CALSTRS.SRC.age, "CalSTRS: Age factor"],
+    "cs-handbook": [CALSTRS.SRC.handbook, "CalSTRS: Member Handbook 2026"],
+    "cs-enh": [CALSTRS.SRC.enh, "CalSTRS: Benefit enhancements (career factor)"],
+    "cs-options": [CALSTRS.SRC.options, "CalSTRS: Electing an option"],
+    "id-handbook": [PERSI.SRC.handbook, "PERSI: Member Handbook"],
+    "id-early": [PERSI.SRC.early, "PERSI: Early Retirement"],
+    "id-options": [PERSI.SRC.options, "PERSI: Retirement Options"],
     "medicare": ["https://www.medicare.gov/basics/get-started-with-medicare/sign-up/when-does-medicare-coverage-start", "Medicare.gov: When Medicare coverage starts"]
   };
 
@@ -76,6 +87,8 @@
       acctBal: Math.max(0, val("acct-bal")),
       special: radio("fjob") === "spec", fSvcNow: Math.max(0, val("fsvc")), sickHours: Math.max(0, val("sick")), high3: Math.max(0, val("high3")),
       dplan: radio("dplan"), dhire: radio("dhire"), dSvcNow: Math.max(0, val("dsvc")), dafc: Math.max(0, val("dafc")),
+      cpform: radio("cpform"), csform: radio("csform"), idcls: radio("idcls"), xSvcNow: Math.max(0, val("xsvc")), xfc: Math.max(0, val("xfc")),
+      xBal: Math.max(0, val("xacct-bal")), xPay: Math.max(0, val("xacct-pay")), xPct: Math.max(0, val("xacct-pct")), xRet: val("xacct-ret") / 100,
       dBal: Math.max(0, val("dacct-bal")), dPay: Math.max(0, val("dacct-pay")), dPct: Math.max(0, val("dacct-pct")), dRet: val("dacct-ret") / 100,
       tspBal: Math.max(0, val("tsp-bal")), tspPay: Math.max(0, val("tsp-pay")), tspPct: Math.max(0, val("tsp-pct")), tspRet: val("tsp-ret") / 100,
       ssMode: radio("ssmode"), ssStmt: Math.max(0, val("ss-stmt")), ssPay: Math.max(0, val("ss-pay")), ssYrs: Math.max(0, val("ss-yrs")), ssCont: radio("sscont") === "yes",
@@ -115,6 +128,47 @@
   function defaultClaim(inp) { var o = claimOptions(inp), f = SS.fraMonths(inp.by); return o.indexOf(f) >= 0 ? f : (o.filter(function (x) { return x >= f; })[0] || o[o.length - 1]); }
 
   // ---------- retirement systems ----------
+  // CalPERS, CalSTRS and Idaho PERSI ask the same questions (formula, service, pay, savings), so one adapter serves all three.
+  // c: { R: rules, agency, pensionLabel, form(inp) → the rules' formula input, who(inp), infoX keys, srcs(inp), leavesOut, phone, site }
+  function stateSystem(c) {
+    return {
+      name: c.name, agency: c.agency, savingsName: "savings", savingsLong: "savings account", pensionLabel: c.pensionLabel, pensionWord: "pension",
+      infoEarly: c.infoEarly, infoFormula: c.infoFormula, infoSurv: c.infoSurv,
+      pension: function (inp, retMonths) {
+        var svc = inp.xSvcNow + workYears(inp, retMonths), q = c.form(inp);
+        q.ageMonths = retMonths; q.svc = svc; q.fc = inp.xfc;
+        var p = c.R.calcPension(q);
+        p.svc = svc; p.formulaMonthly = p.monthly; p.single = p.monthly;
+        var opt = c.R.survivorOption(inp.married ? inp.survivor : "single");
+        p.opt = opt; p.monthly = p.single * opt.factor;
+        p.survivorMonthly = opt.known ? p.monthly * opt.survivorShare : null;
+        p.optUnknown = !opt.known;
+        return p;
+      },
+      savings: function (inp, retMonths) { return DRS.calcAccount({ balance: inp.xBal, monthlyPay: inp.xPay, pct: inp.xPct, years: workYears(inp, retMonths), ret: inp.xRet }); },
+      supplement: function () { return null; },
+      tooEarly: function (inp, p) { return c.agency + " doesn't let you start a pension at that age with your service. " + p.earliestText; },
+      cutText: function (inp, p) { return p.monthsEarly > 0 ? p.cutText : null; },
+      survivorChoices: function () { return c.R.SURVIVOR_OPTIONS; },
+      who: c.who,
+      mathSteps: function (inp, p, years) {
+        var out = [li("Service at retirement: " + num(p.svc, 2) + " years", num(inp.xSvcNow, 2) + " years today + " + num(years, 2) + " more years of work", null)];
+        out = out.concat(p.steps.map(function (s) { return li(s[0], s[1], s[2] ? '<a href="' + s[2] + '" target="_blank" rel="noopener">' + s[3] + "</a>" : null); }));
+        out.push(li("Payment option: " + p.opt.name, p.optUnknown ? "We show the amount that pays only you, " + usd2(p.monthly) + " a month. " + p.opt.how : "Pays only you, for life: " + usd2(p.monthly) + " a month.", null));
+        return out;
+      },
+      savingsSteps: function (inp, s) {
+        return [
+          li("Going into your account: " + num(s.rate * 100, 1) + "% of pay", "What you put in from each paycheck, for example to a 457(b), 403(b) or 401(k) plan.", null),
+          li("Added each month: " + usd2(s.contrib), usd(inp.xPay) + " × " + num(s.rate * 100, 1) + "% for " + s.months + " months", null),
+          li("Account at retirement: " + usd(s.total), usd(inp.xBal) + " today growing " + num(inp.xRet * 100, 1) + "% a year, plus new deposits. Paid in equal monthly amounts over 20 years while the rest keeps growing: about " + usd(s.pay20) + " a month.", null)
+        ];
+      },
+      sources: c.srcs,
+      leavesOut: c.leavesOut,
+      nextSteps: function () { return ["<li><strong>Ask " + c.agency + " for an official estimate.</strong> " + c.site + " Only " + c.agency + " can confirm your pension.</li>", "<li><strong>Decide how to take your savings.</strong> We show your account paid over 20 years. Most plans also allow lump sums, rollovers or other schedules. Ask a tax professional how each choice affects your taxes.</li>"]; }
+    };
+  }
   var SYSTEMS = {
     pers: {
       name: "Oregon PERS", savingsName: "IAP", savingsLong: "IAP account", pensionLabel: "PERS pension", pensionWord: "pension",
@@ -267,6 +321,33 @@
       nextSteps: function () { return ["<li><strong>Ask your agency for an official estimate.</strong> Your human resources or benefits office can run a FERS annuity estimate. Questions about retirement applications go to OPM at <span class=\"phone\">888-767-6738</span>.</li>", "<li><strong>Decide how to take your TSP.</strong> We show monthly installments over 20 years. The TSP also offers single withdrawals, a life annuity, or a mix. Call the TSP at <span class=\"phone\">877-968-3778</span>.</li>"]; }
     }
   };
+  SYSTEMS.calpers = stateSystem({
+    name: "CalPERS", agency: "CalPERS", pensionLabel: "CalPERS pension", R: CALPERS,
+    infoEarly: "calpers-formula", infoFormula: "calpers-formula", infoSurv: "calpers-options",
+    form: function (inp) { return { formula: inp.cpform || "2@62" }; },
+    who: function (inp) { return "CalPERS " + CALPERS.NAMES[inp.cpform || "2@62"]; },
+    srcs: function () { return ["cp-charts", "cp-plan", "cp-limits"]; },
+    leavesOut: "raises, CalPERS cost-of-living increases, the $133.33 Social Security offset some state jobs have, unused sick leave credit, safety and other formulas, and careers split between classic and PEPRA service.",
+    site: "Run one in your myCalPERS account, or call CalPERS at <span class=\"phone\">888-225-7377</span>."
+  });
+  SYSTEMS.calstrs = stateSystem({
+    name: "CalSTRS", agency: "CalSTRS", pensionLabel: "CalSTRS pension", R: CALSTRS,
+    infoEarly: "calstrs-formula", infoFormula: "calstrs-formula", infoSurv: "calstrs-options",
+    form: function (inp) { return { formula: inp.csform || "2@60" }; },
+    who: function (inp) { return "CalSTRS " + CALSTRS.NAMES[inp.csform || "2@60"]; },
+    srcs: function (inp) { return ["cs-age", "cs-handbook"].concat(inp.csform === "2@62" ? [] : ["cs-enh"]).concat(["cs-options"]); },
+    leavesOut: "raises, the 2% yearly benefit adjustment, the longevity bonus, unused sick leave credit, the Defined Benefit Supplement, and retiring before 55.",
+    site: "Run one in your myCalSTRS account, or call CalSTRS at <span class=\"phone\">800-228-5453</span>."
+  });
+  SYSTEMS.persi = stateSystem({
+    name: "Idaho PERSI", agency: "PERSI", pensionLabel: "PERSI pension", R: PERSI,
+    infoEarly: "persi-early", infoFormula: "persi-formula", infoSurv: "persi-options",
+    form: function (inp) { return { cls: inp.idcls || "GEN" }; },
+    who: function (inp) { return "PERSI " + PERSI.CLS[inp.idcls || "GEN"].name; },
+    srcs: function () { return ["id-handbook", "id-early", "id-options"]; },
+    leavesOut: "raises, PERSI cost-of-living increases (the PAA), different multipliers for service before July 2000, mixed general and police or fire service, sick leave for insurance, and the Choice 401(k) Plan unless you enter it as savings.",
+    site: "Ask through your myPERSI account, or call PERSI at <span class=\"phone\">800-451-8228</span>."
+  });
   function sys(inp) { return SYSTEMS[inp.system] || SYSTEMS.pers; }
 
   // ---------- the plan ----------
@@ -328,6 +409,7 @@
     var s = ["birth", "system"], system = radio("system");
     if (system === "fers") s = s.concat(["fers-job", "fers-svc", "fers-pay", "fers-tsp"]);
     else if (system === "drs") s = s.concat(["drs-plan", "drs-svc", "drs-pay", "drs-acct"]);
+    else if (system === "calpers" || system === "calstrs" || system === "persi") s = s.concat([{ calpers: "cp-plan", calstrs: "cs-plan", persi: "id-plan" }[system], "x-svc", "x-pay", "x-acct"]);
     else { s = s.concat(["pers-group", "pers-svc", "pers-pay", "pers-iap"]); if (radio("plan") !== "OPSRP") s.push("pers-acct"); }
     s = s.concat(["ss", "spouse", "retire"]);
     if (radio("ssmode") !== "none") s.push("claim");
@@ -357,6 +439,14 @@
     $("dhire-box").hidden = p1;
     $("drs-pay-h").firstChild.nodeValue = "What's your average yearly pay in your best " + (p1 ? "2" : "5") + " years in a row?";
     $("drs-acct-h").firstChild.nodeValue = p3 ? "What's in your Plan 3 investment account?" : "Do you have other retirement savings, like DCP?";
+    var xs = SYSTEMS[radio("system")];
+    if (xs && xs.agency && $("x-svc-h")) {
+      var sysName = radio("system");
+      $("x-svc-h").firstChild.nodeValue = "How many years of " + xs.agency + " service do you have?";
+      $("x-pay-h").firstChild.nodeValue = sysName === "persi" ? "What's your average yearly pay over your best 42 months in a row?" : sysName === "calstrs" ? "What's your average yearly pay in your best 3 years in a row?" : "What's your average yearly pay in your best 1 or 3 years in a row?";
+      $("x-pay-why").textContent = sysName === "persi" ? "PERSI calls this your average monthly salary, but enter it here as a yearly amount before taxes." : sysName === "calstrs" ? "CalSTRS calls this final compensation. If you're on 2% at 60 with 25 or more years, use your best 12 months instead." : "CalPERS calls this final compensation. Most PEPRA members use 3 years; many classic members use their best 12 months. Your statement says which.";
+      setInfo("x-svc-info", xs.infoFormula); setInfo("x-pay-info", xs.infoFormula);
+    }
     $("drs-acct-why").textContent = p3 ? "Plan 3 members put 5% to 15% of each paycheck into their own investment account. If you don't know, leave the balance at 0." : "Many DRS members also save in the Deferred Compensation Program (DCP) or another 457(b) or 403(b) plan. If you don't have one, leave the balance at 0.";
   }
   function renderSurvOpts() {
@@ -490,8 +580,8 @@
     if (sp) {
       var survPension = p.survivorMonthly || 0;
       var sTotal = survPension + sp.survivorSS;
-      var agency = inp.system === "drs" ? "DRS" : "PERS";
-      var unknownLine = p.optUnknown ? "<li>" + pctTxt(p.opt.survivorShare) + " of your reduced " + agency + " pension, for life. " + agency + " figures the reduction from both your ages, so the exact amount comes from " + (agency === "DRS" ? "a DRS" : "a PERS") + " estimate.</li>" : null;
+      var agency = S.agency || (inp.system === "drs" ? "DRS" : "PERS");
+      var unknownLine = p.optUnknown ? "<li>" + pctTxt(p.opt.survivorShare) + " of your reduced " + agency + " pension, for life. " + agency + " figures the reduction from both your ages, so the exact amount comes from " + "a " + agency + " estimate.</li>" : null;
       $("surv-body").innerHTML = "<p>Your " + S.pensionWord + " and your Social Security would stop. Your spouse would " + (unknownLine ? "get" : "have about <strong>" + usd(sTotal) + " a month</strong>") + ":</p><ul style=\"margin:0;padding-left:1.3rem;display:grid;gap:.3rem\">" +
         (unknownLine || "<li>" + (survPension > 0 ? usd(survPension) + " a month from your " + (S.name === "FERS" ? "survivor annuity" : "pension (" + p.opt.name + ")") : "Nothing from your " + S.pensionWord + ", because the payment option you picked pays only you") + "</li>") +
         "<li>" + usd(sp.survivorSS) + " a month from Social Security: the larger of their own benefit and yours, if they're at full retirement age " + srcLink("survivor", "(survivor rules)") + "</li></ul>" +
@@ -552,6 +642,10 @@
       ans.push("Washington " + S.who(inp) + (inp.dplan === "P1" ? "" : inp.dhire === "before" ? ", started before May 1, 2013" : ", started May 1, 2013 or later") + ", " + num(inp.dSvcNow, 1) + " years of service so far");
       ans.push("Average yearly pay " + usd(inp.dafc));
       ans.push((inp.dplan === "P3" ? "Plan 3 account" : "Other savings") + " balance " + usd(inp.dBal) + ", monthly pay " + usd(inp.dPay) + ", you put in " + num(inp.dPct, 1) + "%, growth " + num(inp.dRet * 100, 1) + "% a year");
+    } else if (S.agency) {
+      ans.push(S.who(inp) + ", " + num(inp.xSvcNow, 1) + " years of service so far");
+      ans.push("Average yearly pay " + usd(inp.xfc));
+      ans.push("Savings balance " + usd(inp.xBal) + ", monthly pay " + usd(inp.xPay) + ", you put in " + num(inp.xPct, 1) + "%, growth " + num(inp.xRet * 100, 1) + "% a year");
     } else {
       ans.push(S.who(inp) + ", " + num(inp.fSvcNow, 1) + " years of service so far" + (inp.sickHours ? ", " + num(inp.sickHours, 0) + " hours of sick leave" : ""));
       ans.push("High-3 average pay " + usd(inp.high3));
@@ -633,20 +727,23 @@
   });
   $("form").addEventListener("submit", function (e) { e.preventDefault(); });
 
-  var FIELDS = ["birth-m", "birth-y", "dsvc", "dafc", "dacct-bal", "dacct-pay", "dacct-pct", "dacct-ret", "svc", "sal1", "sal2", "sal3", "iap-bal", "iap-sal", "iap-ret", "acct-bal", "fsvc", "sick", "high3", "tsp-bal", "tsp-pay", "tsp-pct", "tsp-ret", "ss-stmt", "ss-pay", "ss-yrs", "sp-m", "sp-y", "sp-ss", "ret-y", "ret-m"];
-  var RADIOS = ["system", "plan", "cls", "dplan", "dhire", "fjob", "ssmode", "sscont", "married", "surv"];
-  function save() {
-    try {
-      var o = { claim: claimChoice };
-      RADIOS.forEach(function (r) { o[r] = radio(r); });
-      FIELDS.forEach(function (f) { o[f] = $(f).value; });
-      localStorage.setItem("retirement-planner", JSON.stringify(o));
-    } catch (e) {}
+  var FIELDS = ["birth-m", "birth-y", "xsvc", "xfc", "xacct-bal", "xacct-pay", "xacct-pct", "xacct-ret", "dsvc", "dafc", "dacct-bal", "dacct-pay", "dacct-pct", "dacct-ret", "svc", "sal1", "sal2", "sal3", "iap-bal", "iap-sal", "iap-ret", "acct-bal", "fsvc", "sick", "high3", "tsp-bal", "tsp-pay", "tsp-pct", "tsp-ret", "ss-stmt", "ss-pay", "ss-yrs", "sp-m", "sp-y", "sp-ss", "ret-y", "ret-m"];
+  var RADIOS = ["system", "plan", "cls", "cpform", "csform", "idcls", "dplan", "dhire", "fjob", "ssmode", "sscont", "married", "surv"];
+  function snapshot() {
+    var o = { claim: claimChoice };
+    RADIOS.forEach(function (r) { o[r] = radio(r); });
+    FIELDS.forEach(function (f) { o[f] = $(f).value; });
+    return o;
   }
+  function save() { try { localStorage.setItem("retirement-planner", JSON.stringify(snapshot())); } catch (e) {} }
+  // A link to the plan: the answers go after the # sign (see SiteShare in site.js), so opening it elsewhere shows the same plan.
+  function shareUrl() { return location.href.split("#")[0].split("?")[0] + "#p=" + window.SiteShare.pack(snapshot()); }
+  $("share").addEventListener("click", function () { window.SiteShare.copy(shareUrl(), $("share-note")); });
+  $("email").addEventListener("click", function () { window.SiteShare.email(shareUrl(), "My retirement plan", "Here is a link to my retirement plan from the Retirement Date Planner."); });
   var savedSurv = null;
   function restore() {
     try {
-      var o = JSON.parse(localStorage.getItem("retirement-planner") || "null"); if (!o) return;
+      var o = (window.SiteShare && window.SiteShare.unpack("p")) || JSON.parse(localStorage.getItem("retirement-planner") || "null"); if (!o) return;
       FIELDS.forEach(function (f) { if (o[f] != null) $(f).value = o[f]; });
       RADIOS.forEach(function (r) { var el = document.querySelector('input[name="' + r + '"][value="' + o[r] + '"]'); if (el) el.checked = true; });
       if (o.claim != null) claimChoice = +o.claim;
@@ -655,10 +752,12 @@
   }
 
   restore();
-  // ?system=fers or ?system=drs (from the FERS page and DRS guides) picks the system.
-  var qs = /[?&]system=(pers|drs|fers)/.exec(location.search); if (qs) { var r = document.querySelector('input[name="system"][value="' + qs[1] + '"]'); if (r) r.checked = true; }
+  // ?system=fers, drs, calpers, calstrs or persi (from the system pages and guides) picks the system.
+  var qs = /[?&]system=(persi|pers|drs|fers|calpers|calstrs)\b/.exec(location.search); if (qs) { var r = document.querySelector('input[name="system"][value="' + qs[1] + '"]'); if (r) r.checked = true; }
   renderSurvOpts();
   if (savedSurv) { var sv = document.querySelector('input[name="surv"][value="' + savedSurv + '"]'); if (sv) sv.checked = true; }
   showStep("birth");
+  window.addEventListener("hashchange", function () { if (/[#&]p=/.test(location.hash)) location.reload(); });
+  if (window.SiteShare && window.SiteShare.unpack("p")) { showResults(); history.replaceState(null, "", location.pathname); }
   window.Planner = { inputs: inputs, buildPlan: buildPlan, incomeAt: incomeAt, fullIncome: fullIncome, ssAt: ssAt, showResults: showResults, showStep: showStep, SYSTEMS: SYSTEMS };
 })();

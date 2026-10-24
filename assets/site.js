@@ -105,4 +105,21 @@
   window.addEventListener("afterprint", function () { document.querySelectorAll("details[data-was-open]").forEach(function (d) { d.open = d.getAttribute("data-was-open") === "1"; }); });
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+
+  // Moving answers to another device without an account: the answers ride in a link, after the # sign, which browsers
+  // never send to a website. Pages copy that link or open the reader's own email app with it (nothing goes through us).
+  window.SiteShare = {
+    pack: function (o) { return encodeURIComponent(btoa(JSON.stringify(o))); },
+    unpack: function (key) {
+      try { var m = location.hash.match(new RegExp("[#&]" + key + "=([^&]+)")); return m ? JSON.parse(atob(decodeURIComponent(m[1]))) : null; } catch (e) { return null; }
+    },
+    copy: function (url, note, done) {
+      var ok = function () { if (note) note.textContent = done || "Link copied. Open it on your other phone or computer."; };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(ok, function () { window.prompt("Copy this link:", url); });
+      else window.prompt("Copy this link:", url);
+    },
+    email: function (url, subject, intro) {
+      location.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(intro + "\n\n" + url + "\n\nOpen the link on any phone or computer to see the same answers. Public Retirement Planner (publicpensionplanner.com) gives estimates, not advice.");
+    }
+  };
 })();
