@@ -349,7 +349,14 @@ details.how[open] > summary::before { content: "−"; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .toolcta .btn.primary { color: #0f1d30; background: #ffffff; } }
 /* "On this page" list at the top of long guides */
 .toc { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.2rem; display: grid; gap: .4rem; }
-.toc h2 { margin: 0 !important; font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.toc h2, .toc summary { margin: 0 !important; font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+/* "On this page" opens on wide screens (site.js) and folds to one line on phones. */
+.toc { padding: 0 1.2rem; }
+.toc summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; min-height: 52px; }
+.toc summary::-webkit-details-marker { display: none; }
+.toc summary::after { content: "Show"; text-transform: none; letter-spacing: 0; font-size: .95rem; color: var(--accent); }
+.toc details[open] summary::after { content: "Hide"; }
+.toc details[open] { padding-bottom: .8rem; }
 .prose .toc ol { padding-left: 1.4rem; gap: 0; }
 .toc li::marker { color: var(--accent); font-weight: 700; }
 .toc a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
@@ -396,6 +403,19 @@ ol.path h2, ol.path h3 { margin: 0; font-size: 1.2rem; }
 .foot-legal strong { color: var(--foot-link); }
 @media (max-width: 860px) { .foot-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .foot-about { grid-column: 1 / -1; } }
 @media (max-width: 420px) { .foot-top { grid-template-columns: minmax(0, 1fr); } }
+/* Phones already have every calculator and guide in the Menu tab, so the footer keeps only the About links. */
+@media (max-width: 640px) {
+  .foot-col.dup, .foot-about p { display: none; }
+  .foot-top { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .foot-col ul { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 1rem; }
+  .site-foot .inner { padding-block: 1.6rem 1.8rem; }
+  .site-foot { margin-top: 2rem; }
+  /* Shorter guide cards: the topic is already the heading above them. */
+  .guides-index .card { padding: 1rem 1.1rem; gap: .3rem; }
+  .guides-index .card .label, .guides-index .card .go { display: none; }
+  .related .linklist a { min-height: 52px; padding: .55rem 1rem; }
+}
+.byline .reviewer { white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 @media (max-width: 520px) { .q, .answer, .panel { padding: 1.1rem; } .answer .lead big { font-size: 2.1rem; } .btn { flex: 1 1 auto; } .stopi { padding-left: 1.4rem; } .infobox { padding: .85rem .9rem; } .stopi > .infobox { margin-left: calc(-1.4rem - 3px - .6rem); } h1 { font-size: 1.65rem; } }
@@ -422,8 +442,8 @@ button.info:focus-visible { outline: 3px solid var(--accent); outline-offset: 0;
 .checkcount { font-weight: 700; }
 .checklist { list-style: none; padding: 0 !important; display: grid; gap: .75rem !important; }
 .checklist > li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .5rem .85rem; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-sm); padding: 1.05rem 1.15rem; max-width: none; transition: background .15s, border-color .15s; }
-.checklist input[type="checkbox"] { width: 30px; height: 30px; margin: .1rem 0 0; accent-color: var(--accent); cursor: pointer; }
-.checklist .step-title label { font-weight: 700; font-size: 1.08rem; cursor: pointer; }
+.checklist input[type="checkbox"] { width: 40px; height: 40px; margin: -.2rem 0 0; accent-color: var(--accent); cursor: pointer; }
+.checklist .step-title label { font-weight: 700; font-size: 1.08rem; cursor: pointer; display: block; min-height: 40px; padding-top: .3rem; }
 .checklist > li:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); box-shadow: none; }
 .checklist > li:has(input:checked) .step-title label { text-decoration: line-through; text-decoration-thickness: 2px; color: var(--muted); }
 .checklist > li > p, .checklist > li > .infobox { grid-column: 1 / -1; margin: 0; }
@@ -452,10 +472,21 @@ button.info:focus-visible { outline: 3px solid var(--accent); outline-offset: 0;
 .example .label { font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .07em; font-size: .82rem; }
 .prose .example ol, .prose .example ul { gap: .35rem; }
 /* "Common questions" at the end of a guide (tools/build.py turns these into FAQ data for search engines) */
-.faq { display: grid; gap: .9rem; }
-.faq h3 { font-size: 1.1rem; margin: .5rem 0 0; }
-.faq h3 + p { margin-top: -.4rem; }
+/* Each question is a tap-to-open row, so the section stays short until a reader wants an answer. */
+.faq { display: grid; gap: .5rem; }
+.faq h2 { margin-bottom: .3rem; }
+details.qa { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+details.qa > summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: .8rem; min-height: 56px; padding: .6rem 1rem; }
+details.qa > summary::-webkit-details-marker { display: none; }
+details.qa > summary::after { content: "+"; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; flex: none; }
+details.qa[open] > summary::after { content: "−"; }
+details.qa > summary:hover { background: var(--surface-2); border-radius: 12px; }
+details.qa > summary h3 { font-size: 1.05rem; margin: 0; text-wrap: pretty; flex: 1 1 auto; max-width: none; }
+details.qa > :not(summary) { margin: 0 1rem .9rem; }
 /* glossary */
+.glossary-find { max-width: 420px; }
+.glossary-find input[type="search"] { width: 100%; font-family: var(--font-body); font-size: 1.15rem; padding: .65rem .85rem; min-height: 56px; border: 2px solid var(--line-strong); border-radius: 12px; background: var(--surface); color: var(--ink); }
+.glossary-find input[type="search"]:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); outline: none; }
 .glossary-letters { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0 !important; margin: 0; }
 .glossary-letters a { display: grid; place-items: center; min-width: 48px; min-height: 48px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-weight: 700; text-decoration: none; }
 .glossary-letters a:hover { border-color: var(--accent); background: var(--accent-soft); }

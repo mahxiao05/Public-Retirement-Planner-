@@ -8,8 +8,16 @@
   function apply(kind, value) {
     if (kind === "theme") { if (value === "auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", value); set(KEYS.theme, value === "auto" ? null : value); }
     if (kind === "size") { root.setAttribute("data-size", value); set(KEYS.size, value); }
-    if (kind === "font") { root.setAttribute("data-font", value); set(KEYS.font, value); }
+    if (kind === "font") { root.setAttribute("data-font", value); set(KEYS.font, value); loadFont(value); }
     sync();
+  }
+  // Only the default letters load with every page. Book-style and wide-spaced letters load the first time someone picks them.
+  var FONT_CSS = { book: "Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700", wide: "Lexend:wght@400;600;700" };
+  function loadFont(v) {
+    if (!FONT_CSS[v] || document.getElementById("font-" + v)) return;
+    var l = document.createElement("link"); l.id = "font-" + v; l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=" + FONT_CSS[v] + "&display=swap";
+    document.head.appendChild(l);
   }
   function current(kind) {
     if (kind === "theme") return root.getAttribute("data-theme") || "auto";
@@ -87,6 +95,9 @@
     document.querySelectorAll("[data-print]").forEach(function (b) { b.addEventListener("click", function () { window.print(); }); });
     var stamp = document.querySelectorAll(".print-date");
     stamp.forEach(function (s) { s.textContent = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }); });
+    loadFont(current("font"));
+    // "On this page" starts open on wide screens and folded on phones.
+    if (window.matchMedia && window.matchMedia("(min-width: 900px)").matches) document.querySelectorAll(".toc > details").forEach(function (d) { d.open = true; });
     sync();
   }
   // Show the folded-away math on paper.
