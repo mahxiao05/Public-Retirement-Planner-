@@ -5,7 +5,7 @@ The site stays plain static HTML (no build step is needed to view it). Run this 
 changing the menu:  python3 tools/build.py
 
 Each page marks the shared parts with comment pairs, and the text between them is replaced:
-  <!-- @head --> ... <!-- /@head -->        fonts, site.css, saved reader settings, AdSense loader
+  <!-- @head --> ... <!-- /@head -->        default fonts (site.js loads the other two on demand), site.css, saved reader settings, AdSense loader
   <!-- @header --> ... <!-- /@header -->    skip link, menu bar, reading-setting icons
   <!-- @crumbs --> ... <!-- /@crumbs -->    "Home > Guides > page" trail; added after <main> on every page but home
   <!-- @footer --> ... <!-- /@footer -->    footer, phone tab bar and menu sheet, site.js
@@ -22,8 +22,12 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE_URL = "https://publicpensionplanner.com/"
 ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
-LAST_UPDATED = "October 18, 2026"
+LAST_UPDATED = "October 24, 2026"
 SITE_NAME = "Public Retirement Planner"
+EDITOR = {"@type": "Person", "name": "Max Ma", "url": SITE_URL + "about/#editor"}
+# Guides and calculators get "Reviewed by Max Ma" at the end of their byline (the "Rules checked" line).
+REVIEWED_PAGES = {"fers/", "oregon-pers/", "can-i-retire/", "retirement-checklist/", "glossary/"}
+REVIEWED = ' <span class="reviewer">· Reviewed by <a href="{rel}about/#editor">Max Ma</a></span>'
 
 # Top menu. A group is (label, intro, [(href, title, description)]); a plain link is (href, label).
 PLANNER = ("planner/", "Retirement Date Planner", "Pension, savings and Social Security on one timeline, with dates compared")
@@ -154,7 +158,7 @@ def esc(v):
 
 
 def structured(page, url, text):
-    """schema.org data: the site and its owner on the home page, article dates on guides."""
+    """schema.org data: the site and its owner on the home page, article dates on guides, and FAQ data on any page with a FAQ."""
     if page == "":
         data = {"@context": "https://schema.org", "@graph": [
             {"@type": "WebSite", "@id": SITE_URL + "#site", "name": SITE_NAME, "url": SITE_URL, "publisher": {"@id": SITE_URL + "#org"}},
@@ -166,11 +170,11 @@ def structured(page, url, text):
                 "headline": re.sub(r"<[^>]+>", "", h1.group(1)).strip() if h1 else title_of(text),
                 "description": meta(text, "description"), "mainEntityOfPage": url, "image": SITE_URL + "assets/og-default.png",
                 "datePublished": meta(text, "published") or "2026-10-17", "dateModified": meta(text, "updated") or meta(text, "published") or "2026-10-17",
-                "author": {"@type": "Organization", "name": SITE_NAME + " editorial team", "url": SITE_URL + "how-we-check/"},
+                "author": EDITOR, "reviewedBy": EDITOR,
                 "publisher": {"@type": "Organization", "name": "X Ventures LLC", "logo": {"@type": "ImageObject", "url": SITE_URL + "icon-512.png"}}}
     else:
-        return ""
-    out = '\n<script type="application/ld+json">' + json.dumps(data, separators=(",", ":")) + "</script>"
+        data = None
+    out = '\n<script type="application/ld+json">' + json.dumps(data, separators=(",", ":")) + "</script>" if data else ""
     faq = re.search(r'<section class="faq"[^>]*>(.*?)</section>', text, re.S)
     if faq:   # each <h3> question and the paragraphs after it
         pairs = re.findall(r"<h3[^>]*>(.*?)</h3>(.*?)(?=<h3|$)", faq.group(1), re.S)
@@ -206,7 +210,7 @@ def head(rel, url, page="", text=""):
 <meta name="theme-color" content="#14325c">{social}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lexend:wght@400;600;700&family=Public+Sans:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@600;700;800&display=swap">
 <link rel="stylesheet" href="{rel}assets/site.css">
 <script>{EARLY}</script>
 {adsense}{structured(page, url, text) if url else ""}
@@ -309,7 +313,8 @@ def phone_nav(rel, page):
 
 
 def footer(rel, page=""):
-    cols = "\n".join(f'      <div class="foot-col">\n        <h2>{title}</h2>\n        <ul>' + "".join(f'\n          <li><a href="{href_of(rel, h)}">{t}</a></li>' for h, t in links) + '\n        </ul>\n      </div>'
+    # The Calculators and Guides columns repeat the phone menu, so phones hide them (site.css) to keep the footer short.
+    cols = "\n".join(f'      <div class="foot-col{"" if title == "About us" else " dup"}">\n        <h2>{title}</h2>\n        <ul>' + "".join(f'\n          <li><a href="{href_of(rel, h)}">{t}</a></li>' for h, t in links) + '\n        </ul>\n      </div>'
                      for title, links in FOOT_COLS)
     return f"""<!-- @footer -->
 <footer class="site-foot">
@@ -356,7 +361,7 @@ def related(rel, page):
     section = next(g[1] for g in GUIDES if g[0] == page)
     same = [g for g in GUIDES if g[1] == section and g[0] != page]
     extra = [g for g in GUIDES if g[0] == "guides/where-to-begin/" and g[0] != page and g not in same]
-    rows = "".join(f'\n    <li><a href="{href_of(rel, h)}">{t}</a></li>' for h, _, t, _ in (same + extra)[:6])
+    rows = "".join(f'\n    <li><a href="{href_of(rel, h)}">{t}</a></li>' for h, _, t, _ in (same + extra)[:4])
     return f"""<!-- @related -->
 <section class="related keep">
   <h2>Keep reading</h2>
@@ -413,6 +418,13 @@ def main():
             if "<!-- @related -->" not in text:
                 text = text.replace("</article>", "<!-- @related --><!-- /@related -->\n</article>", 1)
             text = replace(text, "related", related(rel, page))
+        if page in GUIDE_PATHS or page in REVIEWED_PAGES or (page.startswith("calculators/") and page != "calculators/"):
+            # One text span inside the byline, so the checked date and the reviewer wrap together on a narrow phone.
+            m = re.search(r'<p class="byline">(.*?)</p>', text, re.S)
+            if m:
+                inner = re.sub(r'\s*<span class="reviewer">.*?</a></span>', "", m.group(1))
+                inner = re.sub(r'^<span class="byline-text">(.*)</span>$', r"\1", inner, flags=re.S)
+                text = text[:m.start()] + f'<p class="byline"><span class="byline-text">{inner}{REVIEWED.format(rel=rel)}</span></p>' + text[m.end():]
         if "<!-- @guidelist -->" in text:
             text = replace(text, "guidelist", guidelist(rel))
         p.write_text(text)

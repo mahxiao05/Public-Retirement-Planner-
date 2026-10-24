@@ -1,9 +1,9 @@
 // Retirement Date Planner. The rules live in ../assets/rules/*.js; this file asks the questions and draws the plan.
-// Each retirement system is an adapter in SYSTEMS below, so a new system (Washington DRS next) means a new rules file,
+// Each retirement system is an adapter in SYSTEMS below (Oregon PERS, Washington DRS, FERS), so a new system means a new rules file,
 // its question screens, and one more adapter.
 (function () {
   var RULES = window.RetirementRules;
-  var SS = RULES.socialSecurity, PERS = RULES.pensions["or-pers"], FERS = RULES.pensions.fers;
+  var SS = RULES.socialSecurity, PERS = RULES.pensions["or-pers"], FERS = RULES.pensions.fers, DRS = RULES.pensions.drs;
   var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var MEDICARE = 65 * 12;
 
@@ -51,6 +51,13 @@
     "spouse": ["https://www.ssa.gov/oact/quickcalc/spouse.html", "Social Security: Benefits for a spouse"],
     "survivor": ["https://www.ssa.gov/OP_Home/handbook/handbook.04/handbook-0407.html", "Social Security Handbook 407: Widow(er)'s benefit amount"],
     "survivor-limit": ["https://secure.ssa.gov/poms.nsf/lnx/0300615320", "Social Security POMS RS 00615.320: survivor limit when the worker claimed early"],
+    "drs-p1": ["https://www.drs.wa.gov/plan/pers1/", "Washington DRS: PERS Plan 1 (benefit formula and retirement ages)"],
+    "drs-p2": ["https://www.drs.wa.gov/plan/pers2/", "Washington DRS: PERS Plan 2 (benefit formula and retirement ages)"],
+    "drs-p3": ["https://www.drs.wa.gov/plan/pers3/", "Washington DRS: PERS Plan 3 (pension and investment account)"],
+    "drs-erf": ["https://www.drs.wa.gov/sitemap/adminfactors/af-erf-pers-trs-and-sers-2-3/", "Washington DRS: 2027 early retirement factors, Plans 2 and 3"],
+    "drs-630": ["https://app.leg.wa.gov/RCW/default.aspx?cite=41.40.630", "RCW 41.40.630: Plan 2 early retirement with 30 years"],
+    "drs-820": ["https://app.leg.wa.gov/RCW/default.aspx?cite=41.40.820", "RCW 41.40.820: Plan 3 early retirement with 30 years"],
+    "drs-surv": ["https://app.leg.wa.gov/WAC/default.aspx?cite=415-02-380", "WAC 415-02-380: DRS survivor options"],
     "medicare": ["https://www.medicare.gov/basics/get-started-with-medicare/sign-up/when-does-medicare-coverage-start", "Medicare.gov: When Medicare coverage starts"]
   };
 
@@ -68,6 +75,8 @@
       iapBal: Math.max(0, val("iap-bal")), iapSal: Math.max(0, val("iap-sal")), iapRet: val("iap-ret") / 100,
       acctBal: Math.max(0, val("acct-bal")),
       special: radio("fjob") === "spec", fSvcNow: Math.max(0, val("fsvc")), sickHours: Math.max(0, val("sick")), high3: Math.max(0, val("high3")),
+      dplan: radio("dplan"), dhire: radio("dhire"), dSvcNow: Math.max(0, val("dsvc")), dafc: Math.max(0, val("dafc")),
+      dBal: Math.max(0, val("dacct-bal")), dPay: Math.max(0, val("dacct-pay")), dPct: Math.max(0, val("dacct-pct")), dRet: val("dacct-ret") / 100,
       tspBal: Math.max(0, val("tsp-bal")), tspPay: Math.max(0, val("tsp-pay")), tspPct: Math.max(0, val("tsp-pct")), tspRet: val("tsp-ret") / 100,
       ssMode: radio("ssmode"), ssStmt: Math.max(0, val("ss-stmt")), ssPay: Math.max(0, val("ss-pay")), ssYrs: Math.max(0, val("ss-yrs")), ssCont: radio("sscont") === "yes",
       married: radio("married") === "yes", spBy: spBy, spBm: spBm, spSS: Math.max(0, val("sp-ss")),
@@ -108,7 +117,8 @@
   // ---------- retirement systems ----------
   var SYSTEMS = {
     pers: {
-      name: "Oregon PERS", savingsName: "IAP", savingsLong: "IAP account",
+      name: "Oregon PERS", savingsName: "IAP", savingsLong: "IAP account", pensionLabel: "PERS pension", pensionWord: "pension",
+      infoEarly: "pers-early", infoFormula: "pers-formula", infoSurv: "pers-options",
       pension: function (inp, retMonths) {
         var svc = inp.svcNow + workYears(inp, retMonths);
         var p = PERS.calcPension({ plan: inp.plan, cls: inp.cls, ageMonths: retMonths, svc: svc, salaries: inp.salaries });
@@ -159,8 +169,53 @@
       nextSteps: function () { return ["<li><strong>Ask PERS for an official estimate.</strong> Request one through your Online Member Services account or by calling PERS at <span class=\"phone\">888-320-7377</span>. Only PERS can confirm your pension and IAP.</li>", "<li><strong>Decide how to take your IAP.</strong> We show it paid over 20 years. PERS also offers one lump sum, or payments over 5, 10 or 15 years, or over your expected lifetime. Ask a tax professional how each choice affects your taxes.</li>"]; }
     },
 
+    drs: {
+      name: "Washington DRS", savingsName: "savings", savingsLong: "savings account", pensionLabel: "DRS pension", pensionWord: "pension",
+      infoEarly: "drs-early", infoFormula: "drs-afc", infoSurv: "drs-options",
+      pension: function (inp, retMonths) {
+        var svc = inp.dSvcNow + workYears(inp, retMonths);
+        var p = DRS.calcPension({ plan: inp.dplan, hire: inp.dhire, ageMonths: retMonths, svc: svc, afc: inp.dafc });
+        p.svc = svc; p.formulaMonthly = p.monthly; p.single = p.monthly;
+        p.monthsEarly = p.cut > 0 ? Math.max(0, 65 * 12 - retMonths) : 0;
+        p.full = p.eligible && p.cut === 0;
+        var opt = DRS.survivorOption(inp.married ? inp.survivor : "single");
+        p.opt = opt; p.monthly = p.single * opt.factor;
+        p.survivorMonthly = opt.known ? p.monthly * opt.survivorShare : null;
+        p.optUnknown = !opt.known;
+        return p;
+      },
+      savings: function (inp, retMonths) { return DRS.calcAccount({ balance: inp.dBal, monthlyPay: inp.dPay, pct: inp.dPct, years: workYears(inp, retMonths), ret: inp.dRet }); },
+      supplement: function () { return null; },
+      tooEarly: function (inp, p) { return "DRS doesn't let you start a pension at that age with your service. " + p.earliestText; },
+      cutText: function (inp, p) { return p.cut > 0 ? p.cutText : null; },
+      survivorChoices: function () { return DRS.SURVIVOR_OPTIONS; },
+      who: function (inp) { return "DRS " + DRS.NAMES[inp.dplan]; },
+      mathSteps: function (inp, p, years) {
+        var plan = { P1: "drs-p1", P2: "drs-p2", P3: "drs-p3" }[inp.dplan];
+        var out = [li("Service at retirement: " + num(p.svc, 2) + " years", num(inp.dSvcNow, 2) + " years today + " + num(years, 2) + " more years of work", srcLink(plan, "DRS: " + DRS.NAMES[inp.dplan]))];
+        out = out.concat(p.steps.slice(0, -1).map(function (s) {
+          var id = !s[2] ? null : s[2].indexOf("41.40.630") >= 0 ? "drs-630" : s[2].indexOf("41.40.820") >= 0 ? "drs-820" : s[2].indexOf("adminfactors") >= 0 ? "drs-erf" : plan;
+          return li(s[0], s[1], id ? srcLink(id, s[3]) : null);
+        }));
+        out.push(li("DRS pension: " + usd2(p.single) + " a month", p.cut > 0 ? "After the early-retirement cut of " + num(p.cut * 100, 1) + "%." : "No early-retirement cut.", null));
+        out.push(li("Payment option: " + p.opt.name, p.optUnknown ? "We show the amount that pays only you, " + usd2(p.monthly) + " a month. " + p.opt.how : "Pays only you, for life: " + usd2(p.monthly) + " a month.", p.optUnknown ? srcLink("drs-surv", "DRS survivor options") : null));
+        return out;
+      },
+      savingsSteps: function (inp, s) {
+        return [
+          li("Going into your account: " + num(s.rate * 100, 1) + "% of pay", inp.dplan === "P3" ? "The Plan 3 contribution rate you picked. Your employer's share goes to the pension, not this account." : "What you put in from each paycheck, for example to the Deferred Compensation Program (DCP).", srcLink("drs-p3", "DRS: Plan 3")),
+          li("Added each month: " + usd2(s.contrib), usd(inp.dPay) + " × " + num(s.rate * 100, 1) + "% for " + s.months + " months", null),
+          li("Account at retirement: " + usd(s.total), usd(inp.dBal) + " today growing " + num(inp.dRet * 100, 1) + "% a year, plus new deposits. Paid in equal monthly amounts over 20 years while the rest keeps growing: about " + usd(s.pay20) + " a month.", null)
+        ];
+      },
+      sources: function (inp) { return [{ P1: "drs-p1", P2: "drs-p2", P3: "drs-p3" }[inp.dplan]].concat(inp.dplan === "P1" ? [] : ["drs-erf", inp.dplan === "P3" ? "drs-820" : "drs-630"]).concat(inp.dplan === "P3" ? [] : ["drs-p3"]).concat(["drs-surv"]); },
+      leavesOut: "raises, DRS cost-of-living increases (Plans 2 and 3 get up to 3% a year; Plan 1 has an optional COLA), split careers across plans or systems, and LEOFF, PSERS and WSPRS rules.",
+      nextSteps: function () { return ["<li><strong>Ask DRS for an official estimate.</strong> You can run one in your online account at drs.wa.gov, or call DRS at <span class=\"phone\">800-547-6657</span>. Only DRS can confirm your pension.</li>", "<li><strong>Decide how to take your savings.</strong> We show your account paid over 20 years. Plan 3 and DCP also allow lump sums, rollovers or other payment schedules. Ask a tax professional how each choice affects your taxes.</li>"]; }
+    },
+
     fers: {
-      name: "FERS", savingsName: "TSP", savingsLong: "TSP account",
+      name: "FERS", savingsName: "TSP", savingsLong: "TSP account", pensionLabel: "FERS annuity", pensionWord: "annuity",
+      infoEarly: "fers-mra", infoFormula: "fers-formula", infoSurv: "fers-survivor",
       pension: function (inp, retMonths) {
         var svc = inp.fSvcNow + workYears(inp, retMonths);
         var p = FERS.calcPension({ ageMonths: retMonths, svc: svc, sickHours: inp.sickHours, high3: inp.high3, by: inp.by, special: inp.special, survivor: inp.married ? inp.survivor : "none" });
@@ -240,7 +295,7 @@
   }
   function incomeAt(inp, plan, age) {
     var S = sys(inp), parts = [];
-    if (age >= plan.ret) parts.push({ k: "pension", label: S.name === "FERS" ? "FERS annuity" : "PERS pension", v: plan.pension.monthly });
+    if (age >= plan.ret) parts.push({ k: "pension", label: S.pensionLabel, v: plan.pension.monthly });
     if (plan.sup && age >= plan.ret && age < plan.sup.ends) parts.push({ k: "supp", label: "FERS supplement", v: plan.sup.monthly });
     if (age >= plan.ret && age < plan.ret + plan.sav.payoutMonths && plan.sav.pay20 > 0.5) parts.push({ k: "iap", label: S.savingsName, v: plan.sav.pay20 });
     if (!plan.ss.none && plan.ss.monthly > 0 && age >= plan.ss.claim) parts.push({ k: "ss", label: "Your Social Security", v: plan.ss.monthly });
@@ -272,6 +327,7 @@
   function steps() {
     var s = ["birth", "system"], system = radio("system");
     if (system === "fers") s = s.concat(["fers-job", "fers-svc", "fers-pay", "fers-tsp"]);
+    else if (system === "drs") s = s.concat(["drs-plan", "drs-svc", "drs-pay", "drs-acct"]);
     else { s = s.concat(["pers-group", "pers-svc", "pers-pay", "pers-iap"]); if (radio("plan") !== "OPSRP") s.push("pers-acct"); }
     s = s.concat(["ss", "spouse", "retire"]);
     if (radio("ssmode") !== "none") s.push("claim");
@@ -290,13 +346,18 @@
     syncSub(); previews();
     if (n === "claim") renderClaimOpts();
     if (n === "spouse") renderSurvOpts();
-    var fers = radio("system") === "fers";
-    setInfo("surv-info", fers ? "fers-survivor" : "pers-options"); setInfo("ret-info", fers ? "fers-mra" : "pers-early");
+    var S = SYSTEMS[radio("system")] || SYSTEMS.pers;
+    setInfo("surv-info", S.infoSurv); setInfo("ret-info", S.infoEarly);
     var h = document.querySelector('.q[data-step="' + n + '"] h2'); if (h && focus) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
   }
   function syncSub() {
     var m = radio("ssmode"); $("ss-stmt-box").hidden = m !== "stmt"; $("ss-est-box").hidden = m !== "est";
     $("spouse-box").hidden = radio("married") !== "yes";
+    var p3 = radio("dplan") === "P3", p1 = radio("dplan") === "P1";
+    $("dhire-box").hidden = p1;
+    $("drs-pay-h").firstChild.nodeValue = "What's your average yearly pay in your best " + (p1 ? "2" : "5") + " years in a row?";
+    $("drs-acct-h").firstChild.nodeValue = p3 ? "What's in your Plan 3 investment account?" : "Do you have other retirement savings, like DCP?";
+    $("drs-acct-why").textContent = p3 ? "Plan 3 members put 5% to 15% of each paycheck into their own investment account. If you don't know, leave the balance at 0." : "Many DRS members also save in the Deferred Compensation Program (DCP) or another 457(b) or 403(b) plan. If you don't have one, leave the balance at 0.";
   }
   function renderSurvOpts() {
     var inp = inputs(), choices = sys(inp).survivorChoices(inp);
@@ -373,12 +434,12 @@
 
     var st = $("r-status"), stText = st.lastElementChild, ico = st.firstElementChild, cut = S.cutText(inp, p);
     if (cut) { st.className = "status early"; ico.textContent = "!"; stText.textContent = cut; }
-    else { st.className = "status full"; ico.textContent = "✓"; stText.textContent = "No early-retirement cut to your " + (S.name === "FERS" ? "annuity" : "pension") + "."; }
-    stText.insertAdjacentHTML("beforeend", info(S.name === "FERS" ? "fers-mra" : "pers-early"));
+    else { st.className = "status full"; ico.textContent = "✓"; stText.textContent = "No early-retirement cut to your " + S.pensionWord + "."; }
+    stText.insertAdjacentHTML("beforeend", info(S.infoEarly));
 
     var more = [];
-    more.push("<p>By then you'd have about " + yrsTxt(Math.round(p.svc * 10) / 10) + " of service." + info(S.name === "FERS" ? "fers-formula" : "pers-formula") + "</p>");
-    if (p.optUnknown) more.push("<p><strong>About your payment option:</strong> these amounts are for the option that pays only you. " + p.opt.name + " pays less while you're alive. " + p.opt.how + info("pers-options") + "</p>");
+    more.push("<p>By then you'd have about " + yrsTxt(Math.round(p.svc * 10) / 10) + " of service." + info(S.infoFormula) + "</p>");
+    if (p.optUnknown) more.push("<p><strong>About your payment option:</strong> these amounts are for the option that pays only you. " + p.opt.name + " pays less while you're alive. " + p.opt.how + info(S.infoSurv) + "</p>");
     if (p.usesMM) more.push("<p><strong>Money Match pays you more.</strong> Your member account would give " + usd(p.mm.monthly) + " a month, compared with " + usd(p.formulaMonthly) + " from the Full Formula, so we use Money Match." + info("money-match") + "</p>");
     if (sup) more.push("<p>From retirement until age 62 you'd also get a <strong>FERS supplement</strong> of about " + usd(sup.monthly) + " a month, which bridges the gap until Social Security." + info("supplement") + "</p>");
     if (sp) {
@@ -402,7 +463,7 @@
     marks = marks.filter(function (m, i, a) { return a.indexOf(m) === i && m >= inp.nowMonths; }).sort(function (a, b) { return a - b; });
     var stops = marks.map(function (m) {
       var ev = [];
-      if (m === inp.retMonths) ev.push("You retire and your " + (S.name === "FERS" ? "FERS annuity" : "PERS pension") + " starts" + (sav.pay20 > 0.5 ? ". " + S.savingsName + " payments start too" : "") + (sup ? ". So does the FERS supplement" : ""));
+      if (m === inp.retMonths) ev.push("You retire and your " + S.pensionLabel + " starts" + (sav.pay20 > 0.5 ? ". " + S.savingsName + " payments start too" : "") + (sup ? ". So does the FERS supplement" : ""));
       if (hasSS && m === ss.claim) ev.push("Your Social Security starts" + (m < inp.retMonths ? " while you're still working" : ""));
       if (sup && m === sup.ends && m !== inp.retMonths) ev.push("The FERS supplement ends at 62");
       if (sav.pay20 > 0.5 && m === inp.retMonths + sav.payoutMonths) ev.push("Your " + S.savingsName + " payments end (after 20 years)");
@@ -429,9 +490,10 @@
     if (sp) {
       var survPension = p.survivorMonthly || 0;
       var sTotal = survPension + sp.survivorSS;
-      var unknownLine = p.optUnknown ? "<li>" + pctTxt(p.opt.survivorShare) + " of your reduced PERS pension, for life. PERS figures the reduction from both your ages, so the exact amount comes from a PERS estimate.</li>" : null;
-      $("surv-body").innerHTML = "<p>Your " + (S.name === "FERS" ? "annuity" : "pension") + " and your Social Security would stop. Your spouse would " + (unknownLine ? "get" : "have about <strong>" + usd(sTotal) + " a month</strong>") + ":</p><ul style=\"margin:0;padding-left:1.3rem;display:grid;gap:.3rem\">" +
-        (unknownLine || "<li>" + (survPension > 0 ? usd(survPension) + " a month from your " + (S.name === "FERS" ? "survivor annuity" : "pension (" + p.opt.name + ")") : "Nothing from your " + (S.name === "FERS" ? "annuity" : "pension") + ", because the payment option you picked pays only you") + "</li>") +
+      var agency = inp.system === "drs" ? "DRS" : "PERS";
+      var unknownLine = p.optUnknown ? "<li>" + pctTxt(p.opt.survivorShare) + " of your reduced " + agency + " pension, for life. " + agency + " figures the reduction from both your ages, so the exact amount comes from " + (agency === "DRS" ? "a DRS" : "a PERS") + " estimate.</li>" : null;
+      $("surv-body").innerHTML = "<p>Your " + S.pensionWord + " and your Social Security would stop. Your spouse would " + (unknownLine ? "get" : "have about <strong>" + usd(sTotal) + " a month</strong>") + ":</p><ul style=\"margin:0;padding-left:1.3rem;display:grid;gap:.3rem\">" +
+        (unknownLine || "<li>" + (survPension > 0 ? usd(survPension) + " a month from your " + (S.name === "FERS" ? "survivor annuity" : "pension (" + p.opt.name + ")") : "Nothing from your " + S.pensionWord + ", because the payment option you picked pays only you") + "</li>") +
         "<li>" + usd(sp.survivorSS) + " a month from Social Security: the larger of their own benefit and yours, if they're at full retirement age " + srcLink("survivor", "(survivor rules)") + "</li></ul>" +
         (sav.pay20 > 0.5 ? "<p>Whatever is left in your " + S.savingsLong + " would go to your beneficiary.</p>" : "") +
         "<p>Choosing a survivor option lowers your payment now but protects your spouse later. Compare options on the <button type=\"button\" class=\"linkbtn\" id=\"to-spouse\">spouse question</button>.</p>";
@@ -486,6 +548,10 @@
       ans.push("Three best years of pay: " + inp.salaries.map(usd).join(", "));
       ans.push("IAP balance " + usd(inp.iapBal) + ", monthly pay " + usd(inp.iapSal) + ", growth " + num(inp.iapRet * 100, 1) + "% a year");
       if (inp.plan !== "OPSRP") ans.push("Member account balance " + (inp.acctBal ? usd(inp.acctBal) : "not entered"));
+    } else if (inp.system === "drs") {
+      ans.push("Washington " + S.who(inp) + (inp.dplan === "P1" ? "" : inp.dhire === "before" ? ", started before May 1, 2013" : ", started May 1, 2013 or later") + ", " + num(inp.dSvcNow, 1) + " years of service so far");
+      ans.push("Average yearly pay " + usd(inp.dafc));
+      ans.push((inp.dplan === "P3" ? "Plan 3 account" : "Other savings") + " balance " + usd(inp.dBal) + ", monthly pay " + usd(inp.dPay) + ", you put in " + num(inp.dPct, 1) + "%, growth " + num(inp.dRet * 100, 1) + "% a year");
     } else {
       ans.push(S.who(inp) + ", " + num(inp.fSvcNow, 1) + " years of service so far" + (inp.sickHours ? ", " + num(inp.sickHours, 0) + " hours of sick leave" : ""));
       ans.push("High-3 average pay " + usd(inp.high3));
@@ -497,7 +563,7 @@
     $("answers").innerHTML = ans.map(function (a) { return "<li>" + a + "</li>"; }).join("");
 
     // the math
-    $("pension-h").textContent = S.name === "FERS" ? "Your FERS annuity" : "Your PERS pension";
+    $("pension-h").textContent = "Your " + S.pensionLabel;
     $("savings-h").textContent = "Your " + S.savingsLong;
     var pSteps = S.mathSteps(inp, p, years);
     if (sup) pSteps.push(li("FERS supplement: " + usd2(sup.monthly) + " a month until 62", "Your Social Security estimate at 62 (" + usd2(sup.ssAt62) + ") × " + sup.years + " years of FERS service ÷ 40. It's reduced if you earn more than Social Security's yearly limit after retiring.", srcLink("fers-supp", "5 U.S.C. 8421")));
@@ -567,8 +633,8 @@
   });
   $("form").addEventListener("submit", function (e) { e.preventDefault(); });
 
-  var FIELDS = ["birth-m", "birth-y", "svc", "sal1", "sal2", "sal3", "iap-bal", "iap-sal", "iap-ret", "acct-bal", "fsvc", "sick", "high3", "tsp-bal", "tsp-pay", "tsp-pct", "tsp-ret", "ss-stmt", "ss-pay", "ss-yrs", "sp-m", "sp-y", "sp-ss", "ret-y", "ret-m"];
-  var RADIOS = ["system", "plan", "cls", "fjob", "ssmode", "sscont", "married", "surv"];
+  var FIELDS = ["birth-m", "birth-y", "dsvc", "dafc", "dacct-bal", "dacct-pay", "dacct-pct", "dacct-ret", "svc", "sal1", "sal2", "sal3", "iap-bal", "iap-sal", "iap-ret", "acct-bal", "fsvc", "sick", "high3", "tsp-bal", "tsp-pay", "tsp-pct", "tsp-ret", "ss-stmt", "ss-pay", "ss-yrs", "sp-m", "sp-y", "sp-ss", "ret-y", "ret-m"];
+  var RADIOS = ["system", "plan", "cls", "dplan", "dhire", "fjob", "ssmode", "sscont", "married", "surv"];
   function save() {
     try {
       var o = { claim: claimChoice };
@@ -589,8 +655,8 @@
   }
 
   restore();
-  // ?system=fers (from the FERS page) picks the system.
-  var qs = /[?&]system=(pers|fers)/.exec(location.search); if (qs) { var r = document.querySelector('input[name="system"][value="' + qs[1] + '"]'); if (r) r.checked = true; }
+  // ?system=fers or ?system=drs (from the FERS page and DRS guides) picks the system.
+  var qs = /[?&]system=(pers|drs|fers)/.exec(location.search); if (qs) { var r = document.querySelector('input[name="system"][value="' + qs[1] + '"]'); if (r) r.checked = true; }
   renderSurvOpts();
   if (savedSurv) { var sv = document.querySelector('input[name="surv"][value="' + savedSurv + '"]'); if (sv) sv.checked = true; }
   showStep("birth");

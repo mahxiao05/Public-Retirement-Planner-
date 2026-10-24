@@ -63,9 +63,39 @@
     r.steps = steps;
     return r;
   }
+  // Survivor options (WAC 415-02-380). The cut depends on both ages and DRS's current factor tables, so we explain it
+  // instead of computing it, the same way the planner handles Oregon PERS Options 2 and 3.
+  var SURVIVOR_OPTIONS = [
+    { id: "single", label: "Pays only me", desc: "Option 1, the largest payment. It stops when you die." },
+    { id: "opt2", label: "Keeps paying my spouse the full amount", desc: "Option 2. Your payment is lower, and your spouse gets 100% of it for life after you die." },
+    { id: "opt4", label: "Keeps paying my spouse two-thirds", desc: "Option 4. Your payment is lower, and your spouse gets 66.67% of it for life after you die." },
+    { id: "opt3", label: "Keeps paying my spouse half", desc: "Option 3. Your payment is a little lower, and your spouse gets 50% of it for life after you die." }
+  ];
+  function survivorOption(id) {
+    var how = "DRS lowers your payment by a factor based on your age and your spouse's age. In DRS's 2022 PERS table, a Plan 2 or 3 member the same age as the survivor kept about ";
+    if (id === "opt2") return { id: id, name: "Option 2 (100% to your spouse)", factor: 1, known: false, survivorShare: 1, how: how + "82% of the Option 1 amount. Ask DRS for an estimate that shows it." };
+    if (id === "opt4") return { id: id, name: "Option 4 (66.67% to your spouse)", factor: 1, known: false, survivorShare: 2 / 3, how: how + "87% of the Option 1 amount. Ask DRS for an estimate that shows it." };
+    if (id === "opt3") return { id: id, name: "Option 3 (50% to your spouse)", factor: 1, known: false, survivorShare: 0.5, how: how + "90% of the Option 1 amount. Ask DRS for an estimate that shows it." };
+    return { id: "single", name: "Pays only you (Option 1)", factor: 1, known: true, survivorShare: 0, how: "" };
+  }
+  // A savings account you add to from each paycheck: the Plan 3 investment account, or DCP savings.
+  // inp: { balance, monthlyPay, pct (% of pay you put in), years, ret (yearly growth) }. Paid out evenly over 20 years.
+  function calcAccount(inp) {
+    var rate = Math.max(0, inp.pct) / 100;
+    var months = Math.round(inp.years * 12);
+    var r = Math.pow(1 + inp.ret, 1 / 12) - 1;
+    var contrib = inp.monthlyPay * rate;
+    var grow = Math.pow(1 + r, months);
+    var fvBal = inp.balance * grow;
+    var fvContrib = r === 0 ? contrib * months : contrib * (grow - 1) / r;
+    var total = fvBal + fvContrib;
+    var pay20 = r === 0 ? total / 240 : total * r / (1 - Math.pow(1 + r, -240));
+    return { rate: rate, months: months, contrib: contrib, fvBal: fvBal, fvContrib: fvContrib, total: total, pay20: pay20, payoutMonths: 240 };
+  }
   function money(v) { return v.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   function round1(v) { return Math.round(v * 10) / 10; }
 
   R.pensions = R.pensions || {};
-  R.pensions.drs = { name: "Washington DRS", NAMES: NAMES, ACTUARIAL: ACTUARIAL, ERF2008: ERF2008, actuarial: actuarial, calcPension: calcPension };
+  R.pensions.drs = { name: "Washington DRS", NAMES: NAMES, ACTUARIAL: ACTUARIAL, ERF2008: ERF2008, actuarial: actuarial, calcPension: calcPension,
+    SURVIVOR_OPTIONS: SURVIVOR_OPTIONS, survivorOption: survivorOption, calcAccount: calcAccount };
 })(window.RetirementRules = window.RetirementRules || {});
