@@ -24,7 +24,7 @@
     return {
       system: radio("system"), by: by, bm: bm, nowMonths: (today.getFullYear() - by) * 12 + (today.getMonth() + 1 - bm),
       retMonths: Math.max(0, Math.round(val("ret-y"))) * 12 + (+$("ret-m").value),
-      plan: radio("plan"), cls: radio("cls"), dplan: radio("dplan"), dhire: radio("dhire"), special: radio("fjob") === "spec",
+      plan: radio("plan"), cls: radio("cls"), cpform: radio("cpform"), csform: radio("csform"), idcls: radio("idcls"), dplan: radio("dplan"), dhire: radio("dhire"), special: radio("fjob") === "spec",
       svc: Math.max(0, val("svc")), pay: Math.max(0, val("pay")), otherPen: Math.max(0, val("other-pen")),
       savBal: Math.max(0, val("sav-bal")), savAdd: Math.max(0, val("sav-add")),
       ssMode: radio("ssmode"), ssStmt: Math.max(0, val("ss-stmt")), ssPay: Math.max(0, val("ss-pay")), ssYrs: Math.max(0, val("ss-yrs")),
@@ -79,10 +79,23 @@
         ]
       };
     },
+    calpers: function (inp) { return stateSys(inp, P.calpers, "CalPERS pension", { formula: inp.cpform || "2@62" }, inp.cpform === "2@62" || !inp.cpform ? "If your job also pays into Social Security, CalPERS may subtract $133.33 from your monthly final compensation first. Your CalPERS estimate shows it." : null); },
+    calstrs: function (inp) { return stateSys(inp, P.calstrs, "CalSTRS pension", { formula: inp.csform || "2@60" }, null); },
+    persi: function (inp) { return stateSys(inp, P.persi, "PERSI pension", { cls: inp.idcls || "GEN" }, null); },
     other: function (inp) {
       return { name: "Pension", eligible: true, monthly: inp.otherPen, cut: 0, cutText: inp.otherPen > 0 ? "We use the pension amount you entered from your own estimate." : "", earliestText: "", steps: [step("Pension: " + usd(inp.otherPen) + " a month", "The amount you entered.", null)] };
     }
   };
+
+  // CalPERS, CalSTRS and Idaho PERSI share one shape: the rules return eligible, monthly, cut, cutText, earliestText and steps.
+  function stateSys(inp, rules, name, q, note) {
+    q.ageMonths = inp.retMonths; q.svc = inp.svc; q.fc = inp.pay;
+    var p = rules.calcPension(q);
+    return {
+      name: name, eligible: p.eligible, monthly: p.monthly, cut: p.monthsEarly > 0 ? p.cut : 0, cutText: p.cutText, earliestText: p.earliestText, note: note,
+      steps: p.steps.map(function (s) { return step(s[0], s[1], s[2] ? link(s[2], s[3]) : null); })
+    };
+  }
 
   // ---------- savings and Social Security ----------
   function savings(inp) {
@@ -192,6 +205,9 @@
     var nx = [];
     if (inp.system === "pers") nx.push("<li><strong>Ask PERS for an official estimate</strong> in your Online Member Services account, or call <span class=\"phone\">888-320-7377</span>.</li>");
     if (inp.system === "drs") nx.push("<li><strong>Get a DRS estimate</strong> in your online account at drs.wa.gov, or call DRS at <span class=\"phone\">800-547-6657</span>.</li>");
+    if (inp.system === "calpers") nx.push("<li><strong>Get a CalPERS estimate</strong> in myCalPERS, or call CalPERS at <span class=\"phone\">888-225-7377</span>.</li>");
+    if (inp.system === "calstrs") nx.push("<li><strong>Get a CalSTRS estimate</strong> in myCalSTRS, or call CalSTRS at <span class=\"phone\">800-228-5453</span>.</li>");
+    if (inp.system === "persi") nx.push("<li><strong>Get a PERSI estimate</strong> through myPERSI, or call PERSI at <span class=\"phone\">800-451-8228</span>.</li>");
     if (inp.system === "fers") nx.push("<li><strong>Ask your agency's benefits office for a FERS annuity estimate.</strong> It includes service only your records show, like military time and sick leave.</li>");
     nx.push("<li><strong>Check your Social Security statement</strong> at ssa.gov/myaccount, so the amount we use matches your record.</li>");
     nx.push("<li><strong>Compare several dates</strong> in the full <a href=\"../planner/\">Retirement Date Planner</a>, which also covers your spouse.</li>");
@@ -219,6 +235,7 @@
   function steps() {
     var s = ["system", "birth", "when"], sys = radio("system");
     if (sys === "pers") s.push("pers"); if (sys === "drs") s.push("drs"); if (sys === "fers") s.push("fers");
+    if (sys === "calpers" || sys === "calstrs" || sys === "persi") s.push(sys);
     s.push(sys === "other" ? "other" : "service");
     return s.concat(["savings", "ss", "need"]);
   }
@@ -232,7 +249,7 @@
     $("back").style.visibility = i === 1 ? "hidden" : "visible";
     $("next").textContent = i === list.length ? "See my answer" : "Next";
     var sys = radio("system");
-    $("pay-label").textContent = sys === "fers" ? "Your high-3: average yearly pay in your best 3 years in a row" : sys === "drs" ? "Average yearly pay in your best " + (radio("dplan") === "P1" ? "2" : "5") + " years in a row" : "Average yearly pay in your 3 best-paid years";
+    $("pay-label").textContent = sys === "fers" ? "Your high-3: average yearly pay in your best 3 years in a row" : sys === "drs" ? "Average yearly pay in your best " + (radio("dplan") === "P1" ? "2" : "5") + " years in a row" : sys === "persi" ? "Average yearly pay over your best 42 months in a row" : sys === "calpers" || sys === "calstrs" ? "Average yearly pay in your best 1 or 3 years in a row (your final compensation)" : "Average yearly pay in your 3 best-paid years";
     $("pay-help").textContent = sys === "fers" ? "Basic pay, before taxes. Locality pay counts; overtime and bonuses don't." : "Before taxes.";
     $("ss-stmt-box").hidden = radio("ssmode") !== "stmt"; $("ss-est-box").hidden = radio("ssmode") !== "est";
     previews();
@@ -266,7 +283,7 @@
 
   // ---------- saving and sharing answers ----------
   var FIELDS = ["birth-m", "birth-y", "ret-y", "ret-m", "svc", "pay", "other-pen", "sav-bal", "sav-add", "ss-stmt", "ss-pay", "ss-yrs", "need"];
-  var RADIOS = ["system", "plan", "cls", "dplan", "dhire", "fjob", "ssmode"];
+  var RADIOS = ["system", "plan", "cls", "cpform", "csform", "idcls", "dplan", "dhire", "fjob", "ssmode"];
   function snapshot() {
     var o = {}; FIELDS.forEach(function (f) { o[f] = $(f).value; }); RADIOS.forEach(function (r) { o[r] = radio(r); }); o.claim = claim; return o;
   }
@@ -291,6 +308,11 @@
     var done = function () { $("share-note").textContent = "Link copied. Anyone you send it to will see these same answers."; };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () { prompt("Copy this link:", url); });
     else prompt("Copy this link:", url);
+  });
+
+  $("email").addEventListener("click", function () {
+    var url = location.href.split("#")[0] + "#a=" + encodeURIComponent(btoa(JSON.stringify(snapshot())));
+    window.SiteShare.email(url, "My Can I retire? answers", "Here is a link to my answers from Can I retire?");
   });
 
   var fromLink = null;

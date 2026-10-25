@@ -11,12 +11,14 @@ Each page marks the shared parts with comment pairs, and the text between them i
   <!-- @footer --> ... <!-- /@footer -->    footer, phone tab bar and menu sheet, site.js
   <!-- @related --> ... <!-- /@related -->  "Keep reading" links on a guide; added before </article> on every page in GUIDES
   <!-- @guidelist --> ... <!-- /@guidelist -->  every guide, grouped by topic (the Guides page)
+  <!-- @faqhub --> ... <!-- /@faqhub -->      every guide's "Common questions", grouped by topic, with a search box (the Questions page)
 A page names its menu item with <meta name="nav" content="planner">, and its dates with
 <meta name="published" content="2026-10-17"> and <meta name="updated" content="2026-10-18"> (used for Google's
 article dates and the sitemap). 404.html is stamped too, with links that start at the site root.
 """
 import json
 import pathlib
+import posixpath
 import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -29,51 +31,80 @@ EDITOR = {"@type": "Person", "name": "Max Ma", "url": SITE_URL + "about/#editor"
 REVIEWED_PAGES = {"fers/", "oregon-pers/", "can-i-retire/", "retirement-checklist/", "glossary/"}
 REVIEWED = ' <span class="reviewer">· Reviewed by <a href="{rel}about/#editor">Max Ma</a></span>'
 
-# Top menu. A group is (label, intro, [(href, title, description)]); a plain link is (href, label).
-PLANNER = ("planner/", "Retirement Date Planner", "Pension, savings and Social Security on one timeline, with dates compared")
+# Top menu. A plain link is (href, label). A group is (label, [(column heading, [(href, title, description)])], (href, "see all" text)):
+# on wide screens it opens a panel of columns on click or tap; in the phone menu it is a fold-out section. Empty descriptions are fine.
+PLANNER = ("planner/", "Retirement Date Planner", "Pension, savings and Social Security on one timeline")
 START = ("guides/where-to-begin/", "Where to begin", "Six steps, in order, for anyone a few years from retiring")
 NAV = [
-    ("", "Home"),
     ("guides/where-to-begin/", "Start here"),
-    ("Calculators", "Free calculators that show every step of the math.", [
-        ("can-i-retire/", "Can I retire?", "A quick yes or not yet, with Social Security at 62, 67 or 70"),
-        PLANNER,
-        ("oregon-pers/", "Oregon PERS Pension Estimator", "Your monthly pension at any age, with Money Match"),
-        ("planner/?system=fers", "FERS and TSP Planner", "Annuity, supplement and TSP for federal employees"),
-        ("calculators/survivor-option-comparison/", "Single life or survivor option", "What a survivor option costs, and when it pays off"),
-        ("calculators/retirement-income-after-tax/", "Take-home pay in retirement", "Federal tax on your pension and Social Security"),
-        ("retirement-checklist/", "Retirement Countdown Checklist", "Every deadline, with calendar reminders"),
-        ("calculators/", "All calculators", "Sick leave, military buyback, savings and more"),
-    ]),
-    ("Pensions", "Complete guides to each retirement system.", [
-        ("guides/oregon-pers-explained/", "Oregon PERS explained", "Tier One, Tier Two, OPSRP, the IAP and how to apply"),
-        ("guides/when-can-i-retire-oregon-pers/", "When can I retire from PERS?", "Full-benefit ages for each plan, and the early cut"),
-        ("guides/washington-drs-explained/", "Washington DRS explained", "PERS, TRS and SERS, Plans 1, 2 and 3"),
-        ("guides/when-can-i-retire-washington-drs/", "When can I retire from DRS?", "Ages by plan, and the early retirement cuts"),
-        ("fers/", "FERS explained", "Retirement ages, the annuity formula, supplement and TSP"),
-        ("guides/fers-retirement-age/", "When can I retire under FERS?", "Your Minimum Retirement Age and the MRA+10 cut"),
-        ("guides/calpers-explained/", "CalPERS explained", "Classic and PEPRA formulas, age factors and options"),
-        ("guides/calstrs-explained/", "CalSTRS explained", "2% at 60 and 2% at 62 for California teachers"),
-        ("guides/idaho-persi-explained/", "Idaho PERSI explained", "The formula, Rule of 90 and early retirement"),
-    ]),
-    ("Social Security & Medicare", "How they fit with a public pension.", [
-        ("guides/social-security-explained/", "Social Security explained", "Who qualifies, how much you get, and how it fits with a pension"),
-        ("guides/when-to-start-social-security/", "When should I start Social Security?", "Starting at 62, at full retirement age or at 70"),
-        ("guides/does-a-pension-reduce-social-security/", "Does my pension lower my Social Security?", "What the 2025 Social Security Fairness Act changed"),
-        ("guides/social-security-spousal-benefits/", "Spousal benefits", "Up to half of your spouse's full benefit"),
-        ("guides/social-security-survivor-benefits/", "Survivor benefits", "What a widow or widower gets"),
-        ("guides/when-to-sign-up-for-medicare/", "When to sign up for Medicare", "The 7-month window and the penalties to avoid"),
-        ("guides/health-insurance-before-medicare/", "Health insurance before 65", "FEHB, PERS retiree plans, COBRA and HealthCare.gov"),
-        ("guides/retirement-numbers-2027/", "Retirement numbers for 2027", "This year's raises, limits and premiums"),
-    ]),
+    ("Calculators", [
+        ("Quick answers", [
+            ("can-i-retire/", "Can I retire?", "A plain yes or not yet, with Social Security at 62, 67 or 70"),
+            ("calculators/social-security-calculator/", "Social Security calculator", "Your monthly amount at every age from 62 to 70"),
+            ("calculators/retirement-income-after-tax/", "Take-home pay in retirement", "Federal tax on your pension and Social Security"),
+        ]),
+        ("Full planners", [
+            PLANNER,
+            ("oregon-pers/", "Oregon PERS Pension Estimator", "Your monthly pension at any age, with Money Match"),
+            ("planner/?system=fers", "FERS and TSP Planner", "Annuity, supplement and TSP for federal employees"),
+        ]),
+        ("Decisions and deadlines", [
+            ("calculators/survivor-option-comparison/", "Single life or survivor option", "What a survivor option costs, and when it pays off"),
+            ("calculators/how-long-will-savings-last/", "How long will my savings last?", "Monthly withdrawals, year by year"),
+            ("retirement-checklist/", "Retirement Countdown Checklist", "Every deadline, with calendar reminders"),
+        ]),
+    ], ("calculators/", "See all calculators")),
+    ("Pensions", [
+        ("Oregon PERS", [
+            ("guides/oregon-pers-explained/", "Oregon PERS explained", ""),
+            ("guides/when-can-i-retire-oregon-pers/", "When can I retire?", ""),
+            ("guides/pers-tier-one-tier-two-opsrp/", "Tier One, Tier Two or OPSRP", ""),
+            ("guides/oregon-pers-iap-payout-options/", "IAP payout options", ""),
+        ]),
+        ("Washington DRS", [
+            ("guides/washington-drs-explained/", "Washington DRS explained", ""),
+            ("guides/when-can-i-retire-washington-drs/", "When can I retire?", ""),
+            ("guides/washington-drs-plan-1-2-3/", "Plans 1, 2 and 3 compared", ""),
+        ]),
+        ("Federal FERS", [
+            ("fers/", "FERS explained", ""),
+            ("guides/fers-retirement-age/", "When can I retire?", ""),
+            ("guides/tsp-withdrawal-options/", "TSP withdrawal options", ""),
+            ("guides/fers-survivor-benefit/", "Survivor benefit", ""),
+        ]),
+        ("California and Idaho", [
+            ("guides/calpers-explained/", "CalPERS explained", ""),
+            ("guides/calstrs-explained/", "CalSTRS explained", ""),
+            ("guides/idaho-persi-explained/", "Idaho PERSI explained", ""),
+        ]),
+    ], ("guides/", "See all guides")),
+    ("Social Security & Medicare", [
+        ("Social Security", [
+            ("guides/social-security-explained/", "Social Security explained", ""),
+            ("guides/when-to-start-social-security/", "When should I start it?", ""),
+            ("guides/does-a-pension-reduce-social-security/", "Does my pension lower it?", ""),
+            ("guides/social-security-spousal-benefits/", "Spousal benefits", ""),
+            ("guides/social-security-survivor-benefits/", "Survivor benefits", ""),
+        ]),
+        ("Medicare and health care", [
+            ("guides/when-to-sign-up-for-medicare/", "When to sign up for Medicare", ""),
+            ("guides/health-insurance-before-medicare/", "Health insurance before 65", ""),
+            ("guides/medicare-irmaa/", "Medicare IRMAA", ""),
+        ]),
+        ("This year", [
+            ("guides/retirement-numbers-2027/", "Retirement numbers for 2027", ""),
+            ("calculators/social-security-calculator/", "Social Security calculator", ""),
+        ]),
+    ], ("faq/", "See common questions")),
     ("guides/", "All guides"),
+    ("faq/", "Questions"),
     ("glossary/", "Glossary"),
 ]
 FOOT_COLS = [
     ("Calculators", [("can-i-retire/", "Can I retire?"), ("planner/", "Retirement Date Planner"), ("oregon-pers/", "Oregon PERS Estimator"), ("planner/?system=fers", "FERS and TSP Planner"),
-                     ("retirement-checklist/", "Countdown Checklist"), ("calculators/", "All calculators"), ("my-plan/", "My plan")]),
+                     ("calculators/social-security-calculator/", "Social Security calculator"), ("retirement-checklist/", "Countdown Checklist"), ("calculators/", "All calculators"), ("my-plan/", "My plan")]),
     ("Guides", [("guides/where-to-begin/", "Where to begin"), ("guides/oregon-pers-explained/", "Oregon PERS"), ("guides/washington-drs-explained/", "Washington DRS"), ("fers/", "Federal FERS"),
-                ("guides/calpers-explained/", "CalPERS"), ("guides/social-security-explained/", "Social Security"), ("guides/", "All guides"), ("glossary/", "Glossary")]),
+                ("guides/calpers-explained/", "CalPERS"), ("guides/social-security-explained/", "Social Security"), ("guides/", "All guides"), ("faq/", "Common questions"), ("glossary/", "Glossary")]),
     ("About us", [("about/", "About this site"), ("how-we-check/", "How we check our numbers"), ("changes/", "What changed"), ("contact/", "Contact us"), ("privacy/", "Privacy policy"), ("terms/", "Terms of use")]),
 ]
 # Every guide, in the order the Guides page lists them. (path, section, title, summary)
@@ -238,17 +269,18 @@ def header(rel, page):
         if len(entry) == 2:
             items.append("      <li>" + link(entry[0], entry[1], "nav-top") + "</li>")
             continue
-        label, intro, links = entry
+        label, cols, see = entry
         current = ""
-        if any(h == page for h, _, _ in links) and not marked:   # highlight only the first group that holds this page
+        if any(h == page for _, links in cols for h, _, _ in links) and not marked:   # highlight only the first group that holds this page
             current = " has-current"
-        cards = "".join(f'\n            <li>{link(h, f"<strong>{t}</strong><span>{d}</span>", "nav-card")}</li>' for h, t, d in links)
+        body = "".join(f'\n            <div class="nav-col">\n              <h3>{head}</h3>\n              <ul>' + "".join(f'\n                <li>{link(h, f"<strong>{t}</strong>" + (f"<span>{d}</span>" if d else ""), "nav-link")}</li>' for h, t, d in links) + '\n              </ul>\n            </div>'
+                       for head, links in cols)
         items.append(f"""      <li class="nav-group{current}">
         <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-{n}">{label}<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-panel" id="menu-{n}" hidden>
-          <p class="nav-intro">{intro}</p>
-          <ul class="nav-cards">{cards}
-          </ul>
+          <div class="nav-cols">{body}
+          </div>
+          <p class="nav-all"><a href="{href_of(rel, see[0])}">{see[1]} <span aria-hidden="true">→</span></a></p>
         </div>
       </li>""")
     links = "\n".join(items)
@@ -291,11 +323,12 @@ def phone_nav(rel, page):
     for entry in NAV:
         if len(entry) == 2:
             continue
-        label, intro, links = entry
-        rows = "".join(f'\n        <li><a href="{href_of(rel, h)}"{" aria-current=\"page\"" if h == page else ""}><strong>{t}</strong><span>{d}</span></a></li>'
-                       for h, t, d in links if label == "Calculators" or (h, t, d) != PLANNER)
-        sections.append(f'    <section>\n      <h2>{label}</h2>\n      <ul>{rows}\n      </ul>\n    </section>')
-    more = "".join(f'<li><a href="{href_of(rel, h)}"><strong>{t}</strong></a></li>' for h, t in [("guides/", "All guides"), ("glossary/", "Glossary"), ("my-plan/", "My plan"), ("how-we-check/", "How we check our numbers"), ("about/", "About this site"), ("contact/", "Contact us")])
+        label, cols, see = entry
+        here_in = any(h == page for _, links in cols for h, _, _ in links)
+        body = "".join(f'\n        <h3>{head}</h3>\n        <ul>' + "".join(f'\n          <li><a href="{href_of(rel, h)}"{" aria-current=\"page\"" if h == page else ""}><strong>{t}</strong>' + (f"<span>{d}</span>" if d else "") + "</a></li>" for h, t, d in links) + "\n        </ul>"
+                       for head, links in cols)
+        sections.append(f'    <details class="sheet-group"{" open" if here_in else ""}>\n      <summary>{label}</summary>\n      <div class="sheet-group-body">{body}\n        <a class="sheet-all" href="{href_of(rel, see[0])}">{see[1]}</a>\n      </div>\n    </details>')
+    more = "".join(f'<li><a href="{href_of(rel, h)}"><strong>{t}</strong></a></li>' for h, t in [("guides/", "All guides"), ("faq/", "Common questions"), ("glossary/", "Glossary"), ("my-plan/", "My plan"), ("how-we-check/", "How we check our numbers"), ("about/", "About this site"), ("contact/", "Contact us")])
     return f"""<nav class="tabbar" aria-label="Shortcuts">{tabs}
     <button type="button" class="tab" id="menu-btn" aria-expanded="false" aria-controls="menu-sheet">{icon("menu")}<span>Menu</span></button>
 </nav>
@@ -303,7 +336,9 @@ def phone_nav(rel, page):
   <div class="sheet-head"><h2 id="sheet-title" tabindex="-1">Menu</h2><button type="button" class="btn secondary sheet-close">Close</button></div>
   <div class="sheet-body">
     <a class="sheet-start" href="{href_of(rel, START[0])}"><span class="label">New here?</span><strong>Start with "Where to begin"</strong><span>{START[2]}.</span></a>
+    <div class="sheet-groups">
 {chr(10).join(sections)}
+    </div>
     <section>
       <h2>More</h2>
       <ul class="sheet-more">{more}</ul>
@@ -343,6 +378,7 @@ def crumbs(rel, page, text):
     """Breadcrumb trail plus its schema.org markup, so people and search engines see where a page sits."""
     m = re.search(r"<h1[^>]*>(.*?)</h1>", text, re.S)
     name = re.sub(r"<[^>]+>", "", m.group(1)).strip() if m else page.strip("/")
+    name = next((g[2] for g in GUIDES if g[0] == page), name)   # a guide's short title keeps the trail on one line
     trail = [("", "Home")]
     if page.startswith("guides/") and page != "guides/":
         trail.append(("guides/", "Guides"))
@@ -387,6 +423,67 @@ def guidelist(rel):
     return "\n".join(out)
 
 
+# The questions the Questions page shows first: (guide path, question text).
+TOP_QUESTIONS = [
+    ("guides/where-to-begin/", "How far ahead should I start planning to retire?"),
+    ("guides/social-security-explained/", "Can I get Social Security and a public pension at the same time?"),
+    ("guides/when-to-start-social-security/", "Can I change my mind after I start Social Security?"),
+    ("guides/where-to-begin/", "What if I retire before 65?"),
+    ("guides/when-to-sign-up-for-medicare/", "Do I have to sign up for Medicare at 65 if I'm retired?"),
+    ("guides/single-life-or-survivor-pension/", "Does my spouse automatically get my pension if I die?"),
+    ("guides/where-to-begin/", "How do I get an official pension estimate?"),
+    ("guides/where-to-begin/", "Do I need a financial adviser?"),
+]
+
+
+def guide_faqs(page_path):
+    """The (question, answer HTML) pairs in a guide's Common questions section."""
+    text = (ROOT / page_path / "index.html").read_text()
+    faq = re.search(r'<section class="faq"[^>]*>(.*?)</section>', text, re.S)
+    if not faq:
+        return []
+    return [(re.sub(r"<[^>]+>", "", q).strip(), a.strip()) for q, a in re.findall(r"<summary><h3[^>]*>(.*?)</h3></summary>(.*?)</details>", faq.group(1), re.S)]
+
+
+def faqhub(rel):
+    """The Questions page: every guide's common questions, grouped like the Guides page. Answers link back to their guide."""
+    def fix(html, page):   # relative links in an answer point from its guide; rewrite them to point from this page
+        def one(m):
+            target = posixpath.normpath(posixpath.join("/" + page, m.group(1))).lstrip("/")
+            return f'href="{rel}{target}{"/" if m.group(1).endswith("/") and target else ""}"'
+        return re.sub(r'href="(\.\./[^"#]*)"', one, html)
+    def item(page, title, q, a):
+        return (f'  <details class="qa hub-q"><summary><h3>{q}</h3></summary>\n    {fix(a, page)}\n'
+                f'    <p class="hub-from">From <a href="{href_of(rel, page)}">{title}</a></p>\n  </details>')
+    titles = {g[0]: g[2] for g in GUIDES}
+    out = ["<!-- @faqhub -->", '<div class="hub-sections">']
+    top = []
+    for page, q in TOP_QUESTIONS:
+        a = dict(guide_faqs(page)).get(q)
+        if a is None:
+            raise SystemExit(f"TOP_QUESTIONS: {q!r} is not in {page}")
+        top.append(item(page, titles[page], q, a))
+    out.append('<section class="hub-sec" id="most-asked">\n<h2>Most asked</h2>\n' + "\n".join(top) + "\n</section>")
+    count = 0
+    for sec in SECTIONS:
+        rows = []
+        for page, section, title, _ in GUIDES:
+            if section != sec:
+                continue
+            for q, a in guide_faqs(page):
+                if (page, q) in TOP_QUESTIONS:
+                    continue
+                rows.append(item(page, title, q, a))
+        if not rows:
+            continue
+        count += len(rows)
+        anchor = re.sub(r"[^a-z]+", "-", sec.lower()).strip("-")
+        out.append(f'<section class="hub-sec" id="{anchor}">\n<h2>{sec}</h2>\n' + "\n".join(rows) + "\n</section>")
+    out.append("</div>")
+    out.append("<!-- /@faqhub -->")
+    return "\n".join(out)
+
+
 def replace(text, tag, block):
     pat = re.compile(r"<!-- @" + tag + r" -->.*?<!-- /@" + tag + r" -->", re.S)
     if not pat.search(text):
@@ -427,6 +524,8 @@ def main():
                 text = text[:m.start()] + f'<p class="byline"><span class="byline-text">{inner}{REVIEWED.format(rel=rel)}</span></p>' + text[m.end():]
         if "<!-- @guidelist -->" in text:
             text = replace(text, "guidelist", guidelist(rel))
+        if "<!-- @faqhub -->" in text:
+            text = replace(text, "faqhub", faqhub(rel))
         p.write_text(text)
         urls.append((url, meta(text, "updated") or meta(text, "published")))
         print("stamped", p.relative_to(ROOT))
