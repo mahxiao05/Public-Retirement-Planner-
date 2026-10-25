@@ -74,6 +74,23 @@
 .pledge li strong { font-size: 1.05rem; }
 .pledge li span { opacity: .9; font-size: .95rem; }
 .pledge a { color: inherit; font-weight: 700; }
+.hero-photo { margin: .4rem 0 0; width: 100%; border-radius: var(--radius); overflow: hidden; background: var(--surface-2); box-shadow: var(--shadow); aspect-ratio: 3 / 2; }
+.hero-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pledge { position: relative; overflow: hidden; isolation: isolate; }
+.pledge-photo { position: absolute; inset: 0 0 auto 0; height: 12rem; width: 100%; object-fit: cover; z-index: -2; }
+.pledge::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(20, 50, 92, .15) 0, var(--brand) 12rem); }
+.pledge h2 { margin-top: 9rem; text-shadow: 0 1px 3px rgba(0, 0, 0, .35); }
+@media (min-width: 900px) {
+  .pledge { padding-right: 38%; }
+  .pledge-photo { inset: 0 0 0 auto; height: 100%; width: 46%; }
+  .pledge::before { background: linear-gradient(to right, var(--brand) 54%, rgba(20, 50, 92, 0) 80%); }
+  .pledge h2 { margin-top: 0; text-shadow: none; }
+  .pledge ul { grid-template-columns: minmax(0, 1fr); }
+}
+:root[data-size="3"] .pledge { padding-right: 1.6rem; }
+:root[data-size="3"] .pledge-photo { inset: 0 0 auto 0; height: 12rem; width: 100%; }
+:root[data-size="3"] .pledge::before { background: linear-gradient(to bottom, rgba(20, 50, 92, .15) 0, var(--brand) 12rem); }
+:root[data-size="3"] .pledge h2 { margin-top: 9rem; }
 .soonline { margin-top: 2rem; padding: 1.1rem 1.3rem; border: 1px dashed var(--line-strong); border-radius: var(--radius); color: var(--muted); }
 .soonline strong { color: var(--ink); }
 @media (min-width: 900px) { .hero { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2.4rem; margin-top: 2.4rem; } .hero h1 { font-size: 2.7rem; } }
@@ -83,6 +100,7 @@
   .home .cards, .home .linklist, .pledge ul, .steps4 { grid-template-columns: minmax(0, 1fr); }
   .hero .actions .btn { width: 100%; }
   .pledge { padding: 1.4rem 1.2rem; }
+  .hero-photo { aspect-ratio: 16 / 9; }
 }
 </style>
 </head>
@@ -231,6 +249,7 @@
         <li>Checked every year</li>
         <li>Your answers stay on your device</li>
       </ul>
+      <figure class="hero-photo"><img src="assets/photos/home-hero-640.webp" srcset="assets/photos/home-hero-640.webp 640w, assets/photos/home-hero-1200.webp 1200w" sizes="(min-width: 900px) 600px, 100vw" width="1200" height="800" alt="HERO_ALT" decoding="async" fetchpriority="high"></figure>
     </div>
     <div class="picker">
       <h2>Which system are you in?</h2>
@@ -314,6 +333,7 @@
   <p class="more-link"><a href="guides/">See all guides</a></p>
 
   <section class="pledge">
+    <img class="pledge-photo" src="assets/photos/home-band-640.webp" srcset="assets/photos/home-band-640.webp 640w, assets/photos/home-band-1200.webp 1200w" sizes="(min-width: 900px) 520px, 100vw" width="1200" height="800" alt="" loading="lazy" decoding="async">
     <h2>How we keep our numbers right</h2>
     <ul>
       <li><strong>Official sources only</strong><span>Every rule comes from the agency that publishes it, with a link so you can check it. <a href="how-we-check/">How we check</a>.</span></li>
