@@ -10,6 +10,8 @@ Each page marks the shared parts with comment pairs, and the text between them i
   <!-- @crumbs --> ... <!-- /@crumbs -->    "Home > Guides > page" trail; added after <main> on every page but home
   <!-- @footer --> ... <!-- /@footer -->    footer, phone tab bar and menu sheet, site.js
   <!-- @related --> ... <!-- /@related -->  "Keep reading" links on a guide; added before </article> on every page in GUIDES
+  <!-- @side --> ... <!-- /@side -->        side column for wide screens: "On this page", tool and help links; added before </main> on every page
+                                           but home, with <div class="layout"><div class="main-col"> after the crumbs (the block closes both)
   <!-- @guidelist --> ... <!-- /@guidelist -->  every guide, grouped by topic (the Guides page)
   <!-- @faqhub --> ... <!-- /@faqhub -->      every guide's "Common questions", grouped by topic, with a search box (the Questions page)
 A page names its menu item with <meta name="nav" content="planner">, and its dates with
@@ -27,9 +29,12 @@ ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from Ad
 LAST_UPDATED = "October 24, 2026"
 SITE_NAME = "Public Retirement Planner"
 EDITOR = {"@type": "Person", "name": "Max Ma", "url": SITE_URL + "about/#editor"}
-# Guides and calculators get "Reviewed by Max Ma" at the end of their byline (the "Rules checked" line).
-REVIEWED_PAGES = {"fers/", "oregon-pers/", "can-i-retire/", "retirement-checklist/", "glossary/"}
-REVIEWED = ' <span class="reviewer">· Reviewed by <a href="{rel}about/#editor">Max Ma</a></span>'
+
+# Side column on wide screens (see side()). Step-by-step tools ask one question per heading, so they get no "On this page" list.
+STEP_TOOLS = {"planner/", "can-i-retire/", "oregon-pers/"}
+SIDE_TOOLS = [("planner/", "Retirement Date Planner"), ("can-i-retire/", "Can I retire?"), ("calculators/social-security-calculator/", "Social Security calculator"),
+              ("retirement-checklist/", "Countdown Checklist"), ("calculators/", "All calculators")]
+SIDE_HELP = [("guides/where-to-begin/", "Where to begin"), ("guides/", "All guides"), ("faq/", "Common questions"), ("glossary/", "Glossary")]
 
 # Top menu. A plain link is (href, label). A group is (label, [(column heading, [(href, title, description)])], (href, "see all" text)):
 # on wide screens it opens a panel of columns on click or tap; in the phone menu it is a fold-out section. Empty descriptions are fine.
@@ -201,7 +206,7 @@ def structured(page, url, text):
                 "headline": re.sub(r"<[^>]+>", "", h1.group(1)).strip() if h1 else title_of(text),
                 "description": meta(text, "description"), "mainEntityOfPage": url, "image": SITE_URL + "assets/og-default.png",
                 "datePublished": meta(text, "published") or "2026-10-17", "dateModified": meta(text, "updated") or meta(text, "published") or "2026-10-17",
-                "author": EDITOR, "reviewedBy": EDITOR,
+                "author": EDITOR,
                 "publisher": {"@type": "Organization", "name": "X Ventures LLC", "logo": {"@type": "ImageObject", "url": SITE_URL + "icon-512.png"}}}
     else:
         data = None
@@ -408,6 +413,51 @@ def related(rel, page):
 <!-- /@related -->"""
 
 
+def section_links(page, text):
+    """The page's sections for "On this page": its own contents list if it has one, otherwise every <h2> in the
+    page (an id is added to any heading without one). Returns (links, text)."""
+    toc = re.search(r'<nav class="toc".*?</nav>', text, re.S)
+    if toc:
+        return [(i, re.sub(r"<[^>]+>", "", t).strip()) for i, t in re.findall(r'<a href="#([^"]+)"[^>]*>(.*?)</a>', toc.group(0), re.S)], text
+    if page in STEP_TOOLS:
+        return [], text
+    links, used = [], set(re.findall(r'id="([^"]+)"', text))
+    def visit(m):
+        before, attrs, label = m.group(1), m.group(2), re.sub(r"<[^>]+>", "", m.group(3)).strip()
+        if "style=" in attrs or label == "Keep reading":   # headings inside tool panels, and the related links
+            return m.group(0)
+        own = re.search(r'id="([^"]+)"', attrs)
+        box = re.search(r'id="([^"]+)"[^>]*>\s*$', before)
+        if own or box:
+            links.append(((own or box).group(1), label))
+            return m.group(0)
+        slug = base = re.sub(r"[^a-z0-9]+", "-", label.lower()).strip("-") or "section"
+        n = 2
+        while slug in used:
+            slug, n = f"{base}-{n}", n + 1
+        used.add(slug)
+        links.append((slug, label))
+        return f'{before}<h2 id="{slug}"{attrs}>{m.group(3)}</h2>'
+    body = re.search(r"(<!-- /@crumbs -->)(.*?)(<!-- @side -->)", text, re.S)
+    inner = re.sub(r"((?:<[^>]*>\s*)?)<h2([^>]*)>(.*?)</h2>", visit, body.group(2), flags=re.S)
+    return links, text[:body.start(2)] + inner + text[body.end(2):]
+
+
+def side(rel, page, links):
+    """Side column on wide screens: what's on this page, then tools and help (minus the page itself)."""
+    def items(rows):
+        return "".join(f'\n        <li><a href="{href_of(rel, h)}">{t}</a></li>' for h, t in rows if h != page)
+    out = ['<!-- @side -->\n</div>\n<aside class="side" aria-label="More on this site">\n  <div class="side-inner">']
+    if len(links) >= 3:
+        short = all(len(t) <= 8 for _, t in links)    # the glossary's letters sit in rows
+        out.append(f'    <nav class="side-box side-toc{" letters" if short else ""}" aria-label="On this page">\n      <p class="side-h">On this page</p>\n      <ol>'
+                   + "".join(f'\n        <li><a href="#{i}">{t}</a></li>' for i, t in links) + "\n      </ol>\n    </nav>")
+    out.append(f'    <div class="side-box">\n      <p class="side-h">Run your numbers</p>\n      <ul>{items(SIDE_TOOLS)}\n      </ul>\n    </div>')
+    out.append(f'    <div class="side-box">\n      <p class="side-h">New to this?</p>\n      <ul>{items(SIDE_HELP)}\n      </ul>\n    </div>')
+    out.append("  </div>\n</aside>\n</div>\n<!-- /@side -->")
+    return "\n".join(out)
+
+
 def guidelist(rel):
     out = ["<!-- @guidelist -->"]
     for sec in SECTIONS:
@@ -515,17 +565,20 @@ def main():
             if "<!-- @related -->" not in text:
                 text = text.replace("</article>", "<!-- @related --><!-- /@related -->\n</article>", 1)
             text = replace(text, "related", related(rel, page))
-        if page in GUIDE_PATHS or page in REVIEWED_PAGES or (page.startswith("calculators/") and page != "calculators/"):
-            # One text span inside the byline, so the checked date and the reviewer wrap together on a narrow phone.
-            m = re.search(r'<p class="byline">(.*?)</p>', text, re.S)
-            if m:
-                inner = re.sub(r'\s*<span class="reviewer">.*?</a></span>', "", m.group(1))
-                inner = re.sub(r'^<span class="byline-text">(.*)</span>$', r"\1", inner, flags=re.S)
-                text = text[:m.start()] + f'<p class="byline"><span class="byline-text">{inner}{REVIEWED.format(rel=rel)}</span></p>' + text[m.end():]
+        # Old pages had "Reviewed by" after the checked date; the editor is named on the About page only.
+        text = re.sub(r'\s*<span class="reviewer">.*?</a></span>', "", text)
         if "<!-- @guidelist -->" in text:
             text = replace(text, "guidelist", guidelist(rel))
         if "<!-- @faqhub -->" in text:
             text = replace(text, "faqhub", faqhub(rel))
+        if page:
+            if "<!-- @side -->" not in text:
+                text = text.replace("<!-- /@crumbs -->", '<!-- /@crumbs -->\n<div class="layout"><div class="main-col">', 1)
+                text = text.replace("</main>", "<!-- @side --><!-- /@side -->\n</main>", 1)
+            links, text = section_links(page, text)
+            text = replace(text, "side", side(rel, page, links))
+            if len(links) >= 3:   # the side column lists the sections, so wide screens hide the page's own list
+                text = text.replace('<div class="layout">', '<div class="layout has-toc">', 1)
         p.write_text(text)
         urls.append((url, meta(text, "updated") or meta(text, "published")))
         print("stamped", p.relative_to(ROOT))

@@ -99,6 +99,22 @@
     // "On this page" starts open on wide screens and folded on phones.
     if (window.matchMedia && window.matchMedia("(min-width: 900px)").matches) document.querySelectorAll(".toc > details").forEach(function (d) { d.open = true; });
     sync();
+    sideSpy();
+  }
+  // Side column: mark the section being read in its "On this page" list.
+  function sideSpy() {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.side-toc a[href^="#"]'));
+    var rows = links.map(function (a) { return { a: a, el: document.getElementById(a.getAttribute("href").slice(1)) }; }).filter(function (r) { return r.el; });
+    if (!rows.length) return;
+    var queued = false;
+    function mark() {
+      queued = false;
+      var cur = null;
+      rows.forEach(function (r) { if (r.el.getBoundingClientRect().top < window.innerHeight * 0.3) cur = r; });
+      rows.forEach(function (r) { if (r === cur) r.a.setAttribute("aria-current", "true"); else r.a.removeAttribute("aria-current"); });
+    }
+    window.addEventListener("scroll", function () { if (!queued) { queued = true; requestAnimationFrame(mark); } }, { passive: true });
+    mark();
   }
   // Show the folded-away math on paper.
   window.addEventListener("beforeprint", function () { document.querySelectorAll("details").forEach(function (d) { d.setAttribute("data-was-open", d.open ? "1" : "0"); d.open = true; }); });
