@@ -26,7 +26,7 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE_URL = "https://publicpensionplanner.com/"
 ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
-LAST_UPDATED = "October 24, 2026"
+LAST_UPDATED = "October 31, 2026"
 SITE_NAME = "Public Retirement Planner"
 EDITOR = {"@type": "Person", "name": "Max Ma", "url": SITE_URL + "about/#editor"}
 
@@ -102,6 +102,7 @@ NAV = [
         ]),
         ("This year", [
             ("guides/retirement-numbers-2027/", "Retirement numbers for 2027", ""),
+            ("guides/medicare-open-enrollment/", "Medicare open enrollment", ""),
             ("calculators/social-security-calculator/", "Social Security calculator", ""),
         ]),
     ], ("faq/", "See common questions")),
@@ -146,6 +147,8 @@ GUIDES = [
     ('guides/fehb-fegli-in-retirement/', 'Federal FERS', 'Keeping FEHB, PSHB and FEGLI in retirement', 'The five-year rule, premiums, Medicare Part B, FEGLI reductions and FEDVIP.'),
     ('guides/tsp-withdrawal-options/', 'Federal FERS', 'TSP withdrawal options in retirement', 'Installments, partial withdrawals, annuities, the age 55 and 50 rules, Roth, required withdrawals and withholding.'),
     ('guides/fers-special-provisions/', 'Federal FERS', 'FERS special retirement for police, firefighters and ATCs', 'Law enforcement, firefighters, air traffic controllers, CBP and Capitol Police: 50 with 20, mandatory age 57 and the 1.7% formula.'),
+    ('guides/fehb-open-season-retirees/', 'Federal FERS', 'FEHB open season for retirees', 'November 9 to December 14, 2026: what retirees can change, the 2027 premium rise and Medicare.'),
+    ('guides/retiring-at-end-of-year-fers/', 'Federal FERS', 'Retiring at the end of the year under FERS', 'When the annuity starts, the annual leave payout, taxes and FEHB for a December 31 exit.'),
     ('guides/fers-survivor-benefit/', 'Federal FERS', 'FERS survivor benefit: full, partial or none?', '50% for a 10% cut or 25% for 5%, spousal consent, insurable interest, FEHB and death benefits.'),
     ('guides/calpers-explained/', 'California CalPERS and CalSTRS', 'CalPERS explained', 'Classic vs PEPRA, CalPERS formulas and age factors, final compensation, the 2% COLA, survivor options and health vesting.'),
     ('guides/calstrs-explained/', 'California CalPERS and CalSTRS', 'CalSTRS explained', 'CalSTRS 2% at 60 vs 2% at 62, age factors, the career factor, the 2% raise, SBMA, options and Social Security for teachers.'),
@@ -158,6 +161,7 @@ GUIDES = [
     ('guides/social-security-earnings-test/', 'Social Security', 'Working while on Social Security', "Earnings limits for 2026 and 2027, $1 for $2 and $1 for $3, the first-year monthly rule, and why pensions don't count."),
     ('guides/are-social-security-benefits-taxed/', 'Social Security', 'Are Social Security benefits taxed?', 'Combined-income thresholds, the 50% and 85% rules, how a pension pushes you over, the $6,000 senior deduction and W-4V.'),
     ('guides/health-insurance-before-medicare/', 'Medicare and health care', 'How do I get health insurance if I retire before 65?', "FEHB, PERS retiree plans, COBRA, a spouse's plan and HealthCare.gov, and the Medicare penalty to avoid."),
+    ('guides/medicare-open-enrollment/', 'Medicare and health care', 'Medicare open enrollment', 'October 15 to December 7: what you can change, five things to check, and care with retiree coverage.'),
     ('guides/when-to-sign-up-for-medicare/', 'Medicare and health care', 'When to sign up for Medicare', 'The 7-month window, the special period for current job coverage, the retiree-coverage and COBRA trap, and late penalties.'),
     ('guides/medicare-irmaa/', 'Medicare and health care', 'Medicare IRMAA explained', '2026 IRMAA brackets for Parts B and D, the two-year lookback, how lump sums trigger it, and lowering it with form SSA-44.'),
     ('guides/single-life-or-survivor-pension/', 'Pension decisions', 'Single-life or survivor pension: how to choose', 'How single-life and joint-and-survivor pension options compare across PERS, DRS, FERS and CalPERS, and what to weigh.'),
