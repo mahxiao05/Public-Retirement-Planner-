@@ -557,3 +557,9 @@ dl.terms dt:target + dd { background: var(--answer); border-radius: 10px; paddin
 .hub-sec { scroll-margin-top: 1rem; margin-bottom: 1.6rem; display: grid; gap: .5rem; }
 .hub-sec h2 { margin-bottom: .3rem; }
 .hub-from { font-size: .92rem; color: var(--muted); }
+/* One-system pension calculators: the row for the age you entered */
+table.compact tr.now td { background: var(--accent-soft); font-weight: 700; }
+/* "Want your own number?" link under a system guide's short answer */
+.runbox { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .8rem; margin: 0; padding: .85rem 1.1rem; border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: var(--radius-sm); background: var(--surface); font-weight: 700; }
+.runbox span:first-child { color: var(--muted); font-weight: 400; }
+.runbox a { min-height: 44px; display: inline-flex; align-items: center; }
