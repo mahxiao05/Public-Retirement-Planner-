@@ -1,4 +1,4 @@
-// Public Retirement Planner: the "i" buttons. Tapping one opens a short plain-English explanation right below it,
+// Public Pension Planner: the "i" buttons. Tapping one opens a short plain-English explanation right below it,
 // with links to the official pages the rule comes from. Markup: <button type="button" class="info" data-info="KEY">.
 // Explanations live in TOPICS below; keep them in step with the numbers in assets/rules/*.js.
 (function () {

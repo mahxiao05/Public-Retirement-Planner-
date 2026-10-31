@@ -1,4 +1,4 @@
-// Public Retirement Planner: menu bar and reader settings (text size, colors, letters), shared by every page.
+// Public Pension Planner: menu bar and reader settings (text size, colors, letters), shared by every page.
 // The early part of this (applying saved settings before the page paints) is inlined in each page's <head> by tools/build.py.
 (function () {
   var root = document.documentElement;
@@ -137,7 +137,7 @@
       else window.prompt("Copy this link:", url);
     },
     email: function (url, subject, intro) {
-      location.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(intro + "\n\n" + url + "\n\nOpen the link on any phone or computer to see the same answers. Public Retirement Planner (publicpensionplanner.com) gives estimates, not advice.");
+      location.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(intro + "\n\n" + url + "\n\nOpen the link on any phone or computer to see the same answers. Public Pension Planner (publicpensionplanner.com) gives estimates, not advice.");
     }
   };
 })();

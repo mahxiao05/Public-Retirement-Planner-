@@ -5,7 +5,7 @@
 @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/public-sans-latin-600-normal.woff2) format("woff2"); }
 @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/public-sans-latin-700-normal.woff2) format("woff2"); }
 @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/public-sans-latin-800-normal.woff2) format("woff2"); }
-/* Public Retirement Planner: shared styles for every page.
+/* Public Pension Planner: shared styles for every page.
    Phone first: most readers arrive on a phone, so the base layout is one column with a tab bar along the bottom
    of the screen; wider screens add the full menu bar. Built for readers in their 50s, 60s and 70s: big type,
    high contrast, large tap targets, no sliders, nothing hidden behind hover. The look is calm and institutional:
@@ -577,7 +577,7 @@ details.qa > summary h3 { min-width: 0; overflow-wrap: anywhere; }
 @media (max-width: 400px) {
   table.stack td { min-width: 0; overflow-wrap: anywhere; }
   table.stack td.amt { white-space: normal; }
-  .prose li li { overflow-wrap: anywhere; }
+  .prose li, .prose p { overflow-wrap: anywhere; }
   .prose li ul, .prose li ol { padding-left: 1.1rem; }
 }
 details.how > summary { overflow-wrap: anywhere; }

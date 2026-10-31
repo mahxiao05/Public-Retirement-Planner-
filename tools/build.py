@@ -27,7 +27,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE_URL = "https://publicpensionplanner.com/"
 ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
 LAST_UPDATED = "October 31, 2026"
-SITE_NAME = "Public Retirement Planner"
+SITE_NAME = "Public Pension Planner"
 EDITOR = {"@type": "Person", "name": "Max Ma", "url": SITE_URL + "about/#editor"}
 
 # Side column on wide screens (see side()). Step-by-step tools ask one question per heading, so they get no "On this page" list.
@@ -339,7 +339,7 @@ def header(rel, page):
 <div class="topstrip"><div class="inner"><span>Free retirement guides and calculators for public employees</span><span>Independent: not a government website</span></div></div>
 <header class="site-head">
   <div class="headbar">
-    <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name"><span>Public</span> <span>Retirement</span> <span>Planner</span></span></a>
+    <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name"><span>Public</span> <span>Pension</span> <span>Planner</span></span></a>
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul class="nav-list">
 {links}
@@ -406,7 +406,7 @@ def footer(rel, page=""):
   <div class="inner">
     <div class="foot-top">
       <div class="foot-about">
-        <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name">Public Retirement Planner</span></a>
+        <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name">Public Pension Planner</span></a>
         <p>Plain-English retirement guides and calculators for public employees, built from the official rules and checked against the agencies that publish them.</p>
       </div>
 {cols}
@@ -414,7 +414,7 @@ def footer(rel, page=""):
     <div class="foot-legal">
       <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
       <p>Your answers stay on your device. Last updated {LAST_UPDATED}.</p>
-      <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
+      <p>© 2026 X Ventures LLC. Public Pension Planner is owned and operated by X Ventures LLC.</p>
     </div>
   </div>
 </footer>

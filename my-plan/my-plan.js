@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   $("mp-email").addEventListener("click", function () {
     if (!hasAny()) { $("mp-note").textContent = "There's nothing saved on this device yet."; return; }
-    window.SiteShare.email(moveUrl(), "My retirement plan", "Here is a link to everything I saved on Public Retirement Planner: my answers and my checklist.");
+    window.SiteShare.email(moveUrl(), "My retirement plan", "Here is a link to everything I saved on Public Pension Planner: my answers and my checklist.");
   });
   window.addEventListener("hashchange", function () { if (/[#&]all=/.test(location.hash)) location.reload(); });
   var incoming = window.SiteShare && window.SiteShare.unpack("all");

@@ -65,7 +65,7 @@
   $("cl-ics").addEventListener("click", function () {
     var ds = dates(); if (!ds) return;
     var stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
-    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Public Retirement Planner//Countdown checklist//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Public Pension Planner//Countdown checklist//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
     boxes.forEach(function (b) {
       if (ds[b.id] == null) return;
       var y = Math.floor(ds[b.id] / 12), m = ds[b.id] % 12 + 1;

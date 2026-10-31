@@ -1,4 +1,4 @@
-# Public Retirement Planner
+# Public Pension Planner
 
 Help people plan for retirement. Free, plain-language tools for public employees near retirement, built around official rules with cited sources.
 
