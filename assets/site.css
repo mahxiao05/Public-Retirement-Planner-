@@ -570,3 +570,15 @@ table.compact tr.now td { background: var(--accent-soft); font-weight: 700; }
 .runbox { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .8rem; margin: 0; padding: .85rem 1.1rem; border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: var(--radius-sm); background: var(--surface); font-weight: 700; }
 .runbox span:first-child { color: var(--muted); font-weight: 400; }
 .runbox a { min-height: 44px; display: inline-flex; align-items: center; }
+/* Largest text on a 320px phone: let long questions and the byline wrap instead of pushing the page sideways */
+details.qa > summary h3 { min-width: 0; overflow-wrap: anywhere; }
+.prose .byline { max-width: 100%; flex-wrap: wrap; }
+.prose > *, .main-col, .fields, .field { min-width: 0; }
+@media (max-width: 400px) {
+  table.stack td { min-width: 0; overflow-wrap: anywhere; }
+  table.stack td.amt { white-space: normal; }
+  .prose li li { overflow-wrap: anywhere; }
+  .prose li ul, .prose li ol { padding-left: 1.1rem; }
+}
+details.how > summary { overflow-wrap: anywhere; }
+details.how { min-width: 0; }
