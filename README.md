@@ -12,7 +12,7 @@ It stamps the shared `<head>`, menu bar, breadcrumbs, footer and phone tab bar i
 
 ## Pages
 - `index.html`: home.
-- `planner/`: Retirement Date Planner (`planner.js`). Oregon PERS or FERS, Social Security, optional spouse, income timeline, retirement-date and Social Security start-age comparisons, "If you die first", and a print view. `?system=fers` preselects FERS.
+- `planner/`: Full retirement planner (`planner.js`). Oregon PERS or FERS, Social Security, optional spouse, income timeline, retirement-date and Social Security start-age comparisons, "If you die first", and a print view. `?system=fers` preselects FERS.
 - `oregon-pers/`: Oregon PERS Pension Estimator, including Money Match for Tier One and Tier Two.
 - `fers/`: FERS explained (the complete FERS guide), with links into the planner.
 - `guides/`: plain-English articles. `where-to-begin/` is the "Start here" page; `oregon-pers-explained/` and `social-security-explained/` are the complete system guides.

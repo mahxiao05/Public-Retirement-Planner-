@@ -210,7 +210,7 @@
     if (inp.system === "persi") nx.push("<li><strong>Get a PERSI estimate</strong> through myPERSI, or call PERSI at <span class=\"phone\">800-451-8228</span>.</li>");
     if (inp.system === "fers") nx.push("<li><strong>Ask your agency's benefits office for a FERS annuity estimate.</strong> It includes service only your records show, like military time and sick leave.</li>");
     nx.push("<li><strong>Check your Social Security statement</strong> at ssa.gov/myaccount, so the amount we use matches your record.</li>");
-    nx.push("<li><strong>Compare several dates</strong> in the full <a href=\"../planner/\">Retirement Date Planner</a>, which also covers your spouse.</li>");
+    nx.push("<li><strong>Compare several dates</strong> in the <a href=\"../planner/\">full retirement planner</a>, which also covers your spouse.</li>");
     nx.push("<li><strong>Follow the deadlines</strong> in our <a href=\"../retirement-checklist/\">countdown checklist</a>.</li>");
     $("next-steps").innerHTML = nx.join("");
 
