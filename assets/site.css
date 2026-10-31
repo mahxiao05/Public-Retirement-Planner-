@@ -5,7 +5,7 @@
 @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/public-sans-latin-600-normal.woff2) format("woff2"); }
 @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/public-sans-latin-700-normal.woff2) format("woff2"); }
 @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/public-sans-latin-800-normal.woff2) format("woff2"); }
-/* Public Retirement Planner: shared styles for every page.
+/* Public Pension Planner: shared styles for every page.
    Phone first: most readers arrive on a phone, so the base layout is one column with a tab bar along the bottom
    of the screen; wider screens add the full menu bar. Built for readers in their 50s, 60s and 70s: big type,
    high contrast, large tap targets, no sliders, nothing hidden behind hover. The look is calm and institutional:
@@ -577,8 +577,31 @@ details.qa > summary h3 { min-width: 0; overflow-wrap: anywhere; }
 @media (max-width: 400px) {
   table.stack td { min-width: 0; overflow-wrap: anywhere; }
   table.stack td.amt { white-space: normal; }
-  .prose li li { overflow-wrap: anywhere; }
+  .prose li, .prose p { overflow-wrap: anywhere; }
   .prose li ul, .prose li ol { padding-left: 1.1rem; }
 }
 details.how > summary { overflow-wrap: anywhere; }
 details.how { min-width: 0; }
+/* "Which tool should I use?" chooser (home and Calculators pages) */
+.chooser { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+.chooser a { display: grid; gap: .35rem; height: 100%; box-sizing: border-box; padding: 1.1rem 3rem 1.1rem 1.2rem; position: relative; background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); color: var(--ink); text-decoration: none; }
+.chooser a:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
+.chooser a::after { content: "›"; position: absolute; right: 1.1rem; top: 50%; transform: translateY(-50%); font-size: 1.8rem; line-height: 1; color: var(--accent); }
+.chooser strong { font-family: var(--font-head); font-size: 1.15rem; line-height: 1.3; }
+.chooser span { color: var(--muted); font-size: .95rem; line-height: 1.45; }
+.chooser-more { margin: .9rem 0 0; font-size: .98rem; }
+/* Guides page: jump buttons and fold-out topic sections */
+.jump { margin: .4rem 0 1rem; }
+.jump-h { font-weight: 700; margin: 0 0 .5rem; }
+.jump ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.jump a { display: inline-flex; align-items: center; min-height: 44px; padding: .35rem .95rem; border: 2px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--accent); font-weight: 700; text-decoration: none; }
+.jump a:hover { border-color: var(--accent); background: var(--accent-soft); }
+details.guide-sec { border-top: 1px solid var(--line); }
+details.guide-sec > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: .8rem; min-height: 64px; padding: .7rem 0; }
+details.guide-sec > summary::-webkit-details-marker { display: none; }
+details.guide-sec > summary h2 { margin: 0; flex: 1 1 auto; min-width: 0; }
+details.guide-sec > summary .count { color: var(--muted); font-size: .92rem; white-space: nowrap; }
+details.guide-sec > summary::after { content: "+"; display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; flex: none; }
+details.guide-sec[open] > summary::after { content: "−"; }
+details.guide-sec > .cards { padding-bottom: 1.4rem; }
+@media (max-width: 899px) { .jump { display: none; } }   /* on phones the folded topic list is the menu */

@@ -1,4 +1,4 @@
-// Retirement Date Planner. The rules live in ../assets/rules/*.js; this file asks the questions and draws the plan.
+// Full retirement planner. The rules live in ../assets/rules/*.js; this file asks the questions and draws the plan.
 // Each retirement system is an adapter in SYSTEMS below (Oregon PERS, Washington DRS, FERS, and CalPERS, CalSTRS and Idaho PERSI,
 // which share one set of question screens through stateSystem()), so a new system means a new rules file, its questions, and one more adapter.
 (function () {
@@ -739,7 +739,7 @@
   // A link to the plan: the answers go after the # sign (see SiteShare in site.js), so opening it elsewhere shows the same plan.
   function shareUrl() { return location.href.split("#")[0].split("?")[0] + "#p=" + window.SiteShare.pack(snapshot()); }
   $("share").addEventListener("click", function () { window.SiteShare.copy(shareUrl(), $("share-note")); });
-  $("email").addEventListener("click", function () { window.SiteShare.email(shareUrl(), "My retirement plan", "Here is a link to my retirement plan from the Retirement Date Planner."); });
+  $("email").addEventListener("click", function () { window.SiteShare.email(shareUrl(), "My retirement plan", "Here is a link to my retirement plan from the full retirement planner."); });
   var savedSurv = null;
   function restore() {
     try {

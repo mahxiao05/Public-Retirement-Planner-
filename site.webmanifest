@@ -1,6 +1,6 @@
 {
-  "name": "Public Retirement Planner",
-  "short_name": "Retirement",
+  "name": "Public Pension Planner",
+  "short_name": "Pensions",
   "start_url": "/",
   "display": "browser",
   "background_color": "#f4f6f9",

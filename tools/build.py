@@ -26,19 +26,18 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE_URL = "https://publicpensionplanner.com/"
 ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
-LAST_UPDATED = "October 31, 2026"
-SITE_NAME = "Public Retirement Planner"
+SITE_NAME = "Public Pension Planner"
 EDITOR = {"@type": "Person", "name": "Max Ma", "url": SITE_URL + "about/#editor"}
 
 # Side column on wide screens (see side()). Step-by-step tools ask one question per heading, so they get no "On this page" list.
 STEP_TOOLS = {"planner/", "can-i-retire/", "oregon-pers/"}
-SIDE_TOOLS = [("planner/", "Retirement Date Planner"), ("can-i-retire/", "Can I retire?"), ("calculators/social-security-calculator/", "Social Security calculator"),
-              ("retirement-checklist/", "Countdown Checklist"), ("calculators/", "All calculators")]
+SIDE_TOOLS = [("planner/", "Full retirement planner"), ("can-i-retire/", "Can I retire?"), ("calculators/social-security-calculator/", "Social Security calculator"),
+              ("retirement-checklist/", "Retirement countdown checklist"), ("calculators/", "All calculators")]
 SIDE_HELP = [("guides/where-to-begin/", "Where to begin"), ("guides/", "All guides"), ("faq/", "Common questions"), ("glossary/", "Glossary")]
 
 # Top menu. A plain link is (href, label). A group is (label, [(column heading, [(href, title, description)])], (href, "see all" text)):
 # on wide screens it opens a panel of columns on click or tap; in the phone menu it is a fold-out section. Empty descriptions are fine.
-PLANNER = ("planner/", "Retirement Date Planner", "Pension, savings and Social Security on one timeline")
+PLANNER = ("planner/", "Full retirement planner", "Pension, savings and Social Security on one timeline")
 START = ("guides/where-to-begin/", "Where to begin", "Six steps, in order, for anyone a few years from retiring")
 NAV = [
     ("guides/where-to-begin/", "Start here"),
@@ -60,7 +59,7 @@ NAV = [
             PLANNER,
             ("calculators/survivor-option-comparison/", "Single life or survivor option", "What a survivor option costs, and when it pays off"),
             ("calculators/how-long-will-savings-last/", "How long will my savings last?", "Monthly withdrawals, year by year"),
-            ("retirement-checklist/", "Retirement Countdown Checklist", "Every deadline, with calendar reminders"),
+            ("retirement-checklist/", "Retirement countdown checklist", "Every deadline, with calendar reminders"),
         ]),
     ], ("calculators/", "See all calculators")),
     ("Pensions", [
@@ -111,8 +110,8 @@ NAV = [
     ("glossary/", "Glossary"),
 ]
 FOOT_COLS = [
-    ("Calculators", [("can-i-retire/", "Can I retire?"), ("planner/", "Retirement Date Planner"), ("oregon-pers/", "Oregon PERS calculator"), ("calculators/fers-retirement-calculator/", "FERS calculator"),
-                     ("calculators/social-security-calculator/", "Social Security calculator"), ("retirement-checklist/", "Countdown Checklist"), ("calculators/", "All calculators"), ("my-plan/", "My plan")]),
+    ("Calculators", [("can-i-retire/", "Can I retire?"), ("planner/", "Full retirement planner"), ("oregon-pers/", "Oregon PERS calculator"), ("calculators/fers-retirement-calculator/", "FERS calculator"),
+                     ("calculators/social-security-calculator/", "Social Security calculator"), ("retirement-checklist/", "Retirement countdown checklist"), ("calculators/", "All calculators"), ("my-plan/", "My plan")]),
     ("Guides", [("guides/where-to-begin/", "Where to begin"), ("guides/oregon-pers-explained/", "Oregon PERS"), ("guides/washington-drs-explained/", "Washington DRS"), ("fers/", "Federal FERS"),
                 ("guides/calpers-explained/", "CalPERS"), ("guides/social-security-explained/", "Social Security"), ("guides/", "All guides"), ("faq/", "Common questions"), ("glossary/", "Glossary")]),
     ("About us", [("about/", "About this site"), ("how-we-check/", "How we check our numbers"), ("changes/", "What changed"), ("contact/", "Contact us"), ("privacy/", "Privacy policy"), ("terms/", "Terms of use")]),
@@ -339,7 +338,7 @@ def header(rel, page):
 <div class="topstrip"><div class="inner"><span>Free retirement guides and calculators for public employees</span><span>Independent: not a government website</span></div></div>
 <header class="site-head">
   <div class="headbar">
-    <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name"><span>Public</span> <span>Retirement</span> <span>Planner</span></span></a>
+    <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name"><span>Public</span> <span>Pension</span> <span>Planner</span></span></a>
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul class="nav-list">
 {links}
@@ -406,15 +405,14 @@ def footer(rel, page=""):
   <div class="inner">
     <div class="foot-top">
       <div class="foot-about">
-        <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name">Public Retirement Planner</span></a>
+        <a class="brand" href="{rel or './'}"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name">Public Pension Planner</span></a>
         <p>Plain-English retirement guides and calculators for public employees, built from the official rules and checked against the agencies that publish them.</p>
       </div>
 {cols}
     </div>
     <div class="foot-legal">
-      <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
-      <p>Your answers stay on your device. Last updated {LAST_UPDATED}.</p>
-      <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
+      <p><strong>Estimates, not advice.</strong> Not financial, legal or tax advice, and not affiliated with any government agency. See our <a href="{href_of(rel, "terms/")}">terms of use</a>.</p>
+      <p>© 2026 X Ventures LLC, which owns and runs Public Pension Planner.</p>
     </div>
   </div>
 </footer>
@@ -446,6 +444,21 @@ def runbox(rel, page):
     target = RUNBOX[page]
     return (f'<!-- @runbox -->\n<p class="runbox"><span>Want your own number?</span> '
             f'<a href="{href_of(rel, target)}">Open the {CALC_FOR[target]} calculator <span aria-hidden="true">›</span></a></p>\n<!-- /@runbox -->')
+
+
+# "Which tool should I use?" on the home and Calculators pages: (href, question, answer).
+CHOOSER = [
+    ("calculators/#pensions", "Just my pension amount", "Pick your system and see your monthly pension at any age, and what each extra year of work adds."),
+    ("can-i-retire/", "Am I ready to retire?", "A plain yes, close or not yet in about three minutes, with Social Security at 62, 67 or 70."),
+    ("planner/", "Everything together, with my spouse", "The full retirement planner: your pension, savings and Social Security on one timeline, with dates side by side."),
+]
+CHOOSER_MORE = [("calculators/social-security-calculator/", "Social Security calculator"), ("retirement-checklist/", "Retirement countdown checklist"), ("calculators/", "All calculators")]
+
+
+def chooser(rel, page):
+    rows = "".join(f'\n  <li><a href="{href_of(rel, h)}"><strong>{q}</strong><span>{a}</span></a></li>' for h, q, a in CHOOSER)
+    more = " · ".join(f'<a href="{href_of(rel, h)}">{t}</a>' for h, t in CHOOSER_MORE if h != page)
+    return f'<!-- @chooser -->\n<ul class="chooser">{rows}\n</ul>\n<p class="chooser-more">Also: {more}</p>\n<!-- /@chooser -->'
 
 
 def related(rel, page):
@@ -510,16 +523,30 @@ def side(rel, page, links):
 
 
 def guidelist(rel):
-    out = ["<!-- @guidelist -->"]
+    """The Guides page: "jump to" buttons, then one fold-out section per topic. Phones start with the sections
+    folded so the page is short; wide screens open them all (script at the end of the block)."""
+    secs = []
     for sec in SECTIONS:
         items = [g for g in GUIDES if g[1] == sec and g[0] != "guides/where-to-begin/"]
-        if not items:
-            continue
-        anchor = re.sub(r"[^a-z]+", "-", sec.lower()).strip("-")
-        out.append(f'<h2 id="{anchor}">{sec}</h2>\n<div class="cards two">')
+        if items:
+            secs.append((sec, re.sub(r"[^a-z]+", "-", sec.lower()).strip("-"), items))
+    out = ["<!-- @guidelist -->", '<nav class="jump" aria-label="Jump to a topic"><p class="jump-h">Jump to a topic</p><ul>'
+           + "".join(f'<li><a href="#{a}">{s}</a></li>' for s, a, _ in secs) + "</ul></nav>"]
+    for sec, anchor, items in secs:
+        n = len(items)
+        out.append(f'<details class="guide-sec"><summary><h2 id="{anchor}">{sec}</h2><span class="count">{n} guide{"s" if n != 1 else ""}</span></summary>\n<div class="cards two">')
         for h, _, t, d in items:
             out.append(f'  <a class="card" href="{href_of(rel, h)}"><span class="label">{sec}</span><h3>{t}</h3><p>{d}</p><span class="go">Read the guide</span></a>')
-        out.append("</div>")
+        out.append("</div>\n</details>")
+    out.append("""<script>
+(function () {
+  var secs = document.querySelectorAll("details.guide-sec");
+  if (window.matchMedia("(min-width: 900px)").matches) secs.forEach(function (d) { d.open = true; });
+  function openFor(hash) { var h = hash && document.getElementById(hash.slice(1)); var d = h && h.closest("details.guide-sec"); if (!d) return false; d.open = true; h.scrollIntoView(); return true; }
+  document.addEventListener("click", function (e) { var a = e.target.closest('.jump a, .side-toc a'); if (a && openFor(a.getAttribute("href"))) { e.preventDefault(); history.replaceState(null, "", a.getAttribute("href")); } });
+  openFor(location.hash);
+})();
+</script>""")
     out.append("<!-- /@guidelist -->")
     return "\n".join(out)
 
@@ -625,6 +652,8 @@ def main():
             text = replace(text, "runbox", runbox(rel, page))
         # Old pages had "Reviewed by" after the checked date; the editor is named on the About page only.
         text = re.sub(r'\s*<span class="reviewer">.*?</a></span>', "", text)
+        if "<!-- @chooser -->" in text:
+            text = replace(text, "chooser", chooser(rel, page))
         if "<!-- @guidelist -->" in text:
             text = replace(text, "guidelist", guidelist(rel))
         if "<!-- @faqhub -->" in text:
