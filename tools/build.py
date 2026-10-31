@@ -243,6 +243,26 @@ def structured(page, url, text):
     return out
 
 
+def minify_css():
+    """Write assets/site.min.css, a smaller copy of assets/site.css (edit site.css, never the .min file)."""
+    css = (ROOT / "assets/site.css").read_text()
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    css = re.sub(r"\s+", " ", css)
+    css = re.sub(r"\s*([{};,>])\s*", r"\1", css)
+    css = re.sub(r":\s+", ":", css)   # safe here: no CSS selector in site.css has a space after a colon
+    css = css.replace(";}", "}").strip()
+    (ROOT / "assets/site.min.css").write_text(css + "\n")
+
+
+_CSS_V = []
+def css_version():
+    """A short fingerprint of the stylesheet, so browsers fetch a new copy only when it changes."""
+    if not _CSS_V:
+        import hashlib
+        _CSS_V.append(hashlib.sha1((ROOT / "assets/site.css").read_bytes()).hexdigest()[:8])
+    return _CSS_V[0]
+
+
 def head(rel, url, page="", text=""):
     title, desc = title_of(text), meta(text, "description")
     kind = "article" if page in GUIDE_PATHS else "website"
@@ -266,10 +286,9 @@ def head(rel, url, page="", text=""):
 <link rel="apple-touch-icon" href="{rel}apple-touch-icon.png">
 <link rel="manifest" href="{rel}site.webmanifest">
 <meta name="theme-color" content="#14325c">{social}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="{rel}assets/site.css">
+<link rel="preload" href="{rel}assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{rel}assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{rel}assets/site.min.css?v={css_version()}">
 <script>{EARLY}</script>
 {adsense}{structured(page, url, text) if url else ""}
 <!-- /@head -->"""
@@ -570,6 +589,7 @@ def replace(text, tag, block):
 
 
 def main():
+    minify_css()
     pages = sorted(p for p in ROOT.rglob("index.html") if "tools" not in p.parts and ".git" not in p.parts)
     urls = []
     for h, *_ in GUIDES:
