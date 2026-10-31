@@ -24,10 +24,9 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="preload" href="../assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.min.css?v=8b8e6d8d">
 <script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867146450299069" crossorigin="anonymous"></script>
 <!-- /@head -->
@@ -65,16 +64,20 @@
               </ul>
             </div>
             <div class="nav-col">
-              <h3>Full planners</h3>
+              <h3>Your pension, by system</h3>
               <ul>
-                <li><a class="nav-link" href="../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
-                <li><a class="nav-link" href="../oregon-pers/"><strong>Oregon PERS Pension Estimator</strong><span>Your monthly pension at any age, with Money Match</span></a></li>
-                <li><a class="nav-link" href="../planner/?system=fers"><strong>FERS and TSP Planner</strong><span>Annuity, supplement and TSP for federal employees</span></a></li>
+                <li><a class="nav-link" href="../oregon-pers/"><strong>Oregon PERS calculator</strong></a></li>
+                <li><a class="nav-link" href="../calculators/washington-drs-retirement-calculator/"><strong>Washington DRS calculator</strong></a></li>
+                <li><a class="nav-link" href="../calculators/fers-retirement-calculator/"><strong>FERS calculator</strong></a></li>
+                <li><a class="nav-link" href="../calculators/calpers-retirement-calculator/"><strong>CalPERS calculator</strong></a></li>
+                <li><a class="nav-link" href="../calculators/calstrs-retirement-calculator/"><strong>CalSTRS calculator</strong></a></li>
+                <li><a class="nav-link" href="../calculators/idaho-persi-retirement-calculator/"><strong>Idaho PERSI calculator</strong></a></li>
               </ul>
             </div>
             <div class="nav-col">
-              <h3>Decisions and deadlines</h3>
+              <h3>Plan and decide</h3>
               <ul>
+                <li><a class="nav-link" href="../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
                 <li><a class="nav-link" href="../calculators/survivor-option-comparison/"><strong>Single life or survivor option</strong><span>What a survivor option costs, and when it pays off</span></a></li>
                 <li><a class="nav-link" href="../calculators/how-long-will-savings-last/"><strong>How long will my savings last?</strong><span>Monthly withdrawals, year by year</span></a></li>
                 <li><a class="nav-link" href="../retirement-checklist/"><strong>Retirement Countdown Checklist</strong><span>Every deadline, with calendar reminders</span></a></li>
@@ -152,6 +155,7 @@
               <h3>This year</h3>
               <ul>
                 <li><a class="nav-link" href="../guides/retirement-numbers-2027/"><strong>Retirement numbers for 2027</strong></a></li>
+                <li><a class="nav-link" href="../guides/medicare-open-enrollment/"><strong>Medicare open enrollment</strong></a></li>
                 <li><a class="nav-link" href="../calculators/social-security-calculator/"><strong>Social Security calculator</strong></a></li>
               </ul>
             </div>
@@ -221,6 +225,8 @@
   <a class="card" href="../guides/fehb-fegli-in-retirement/"><span class="label">Federal FERS</span><h3>Keeping FEHB, PSHB and FEGLI in retirement</h3><p>The five-year rule, premiums, Medicare Part B, FEGLI reductions and FEDVIP.</p><span class="go">Read the guide</span></a>
   <a class="card" href="../guides/tsp-withdrawal-options/"><span class="label">Federal FERS</span><h3>TSP withdrawal options in retirement</h3><p>Installments, partial withdrawals, annuities, the age 55 and 50 rules, Roth, required withdrawals and withholding.</p><span class="go">Read the guide</span></a>
   <a class="card" href="../guides/fers-special-provisions/"><span class="label">Federal FERS</span><h3>FERS special retirement for police, firefighters and ATCs</h3><p>Law enforcement, firefighters, air traffic controllers, CBP and Capitol Police: 50 with 20, mandatory age 57 and the 1.7% formula.</p><span class="go">Read the guide</span></a>
+  <a class="card" href="../guides/fehb-open-season-retirees/"><span class="label">Federal FERS</span><h3>FEHB open season for retirees</h3><p>November 9 to December 14, 2026: what retirees can change, the 2027 premium rise and Medicare.</p><span class="go">Read the guide</span></a>
+  <a class="card" href="../guides/retiring-at-end-of-year-fers/"><span class="label">Federal FERS</span><h3>Retiring at the end of the year under FERS</h3><p>When the annuity starts, the annual leave payout, taxes and FEHB for a December 31 exit.</p><span class="go">Read the guide</span></a>
   <a class="card" href="../guides/fers-survivor-benefit/"><span class="label">Federal FERS</span><h3>FERS survivor benefit: full, partial or none?</h3><p>50% for a 10% cut or 25% for 5%, spousal consent, insurable interest, FEHB and death benefits.</p><span class="go">Read the guide</span></a>
 </div>
 <h2 id="california-calpers-and-calstrs">California CalPERS and CalSTRS</h2>
@@ -245,6 +251,7 @@
 <h2 id="medicare-and-health-care">Medicare and health care</h2>
 <div class="cards two">
   <a class="card" href="../guides/health-insurance-before-medicare/"><span class="label">Medicare and health care</span><h3>How do I get health insurance if I retire before 65?</h3><p>FEHB, PERS retiree plans, COBRA, a spouse's plan and HealthCare.gov, and the Medicare penalty to avoid.</p><span class="go">Read the guide</span></a>
+  <a class="card" href="../guides/medicare-open-enrollment/"><span class="label">Medicare and health care</span><h3>Medicare open enrollment</h3><p>October 15 to December 7: what you can change, five things to check, and care with retiree coverage.</p><span class="go">Read the guide</span></a>
   <a class="card" href="../guides/when-to-sign-up-for-medicare/"><span class="label">Medicare and health care</span><h3>When to sign up for Medicare</h3><p>The 7-month window, the special period for current job coverage, the retiree-coverage and COBRA trap, and late penalties.</p><span class="go">Read the guide</span></a>
   <a class="card" href="../guides/medicare-irmaa/"><span class="label">Medicare and health care</span><h3>Medicare IRMAA explained</h3><p>2026 IRMAA brackets for Parts B and D, the two-year lookback, how lump sums trigger it, and lowering it with form SSA-44.</p><span class="go">Read the guide</span></a>
 </div>
@@ -323,8 +330,8 @@
         <ul>
           <li><a href="../can-i-retire/">Can I retire?</a></li>
           <li><a href="../planner/">Retirement Date Planner</a></li>
-          <li><a href="../oregon-pers/">Oregon PERS Estimator</a></li>
-          <li><a href="../planner/?system=fers">FERS and TSP Planner</a></li>
+          <li><a href="../oregon-pers/">Oregon PERS calculator</a></li>
+          <li><a href="../calculators/fers-retirement-calculator/">FERS calculator</a></li>
           <li><a href="../calculators/social-security-calculator/">Social Security calculator</a></li>
           <li><a href="../retirement-checklist/">Countdown Checklist</a></li>
           <li><a href="../calculators/">All calculators</a></li>
@@ -359,7 +366,7 @@
     </div>
     <div class="foot-legal">
       <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
-      <p>Your answers stay on your device. Last updated October 24, 2026.</p>
+      <p>Your answers stay on your device. Last updated October 31, 2026.</p>
       <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
     </div>
   </div>
@@ -385,14 +392,18 @@
           <li><a href="../calculators/social-security-calculator/"><strong>Social Security calculator</strong><span>Your monthly amount at every age from 62 to 70</span></a></li>
           <li><a href="../calculators/retirement-income-after-tax/"><strong>Take-home pay in retirement</strong><span>Federal tax on your pension and Social Security</span></a></li>
         </ul>
-        <h3>Full planners</h3>
+        <h3>Your pension, by system</h3>
+        <ul>
+          <li><a href="../oregon-pers/"><strong>Oregon PERS calculator</strong></a></li>
+          <li><a href="../calculators/washington-drs-retirement-calculator/"><strong>Washington DRS calculator</strong></a></li>
+          <li><a href="../calculators/fers-retirement-calculator/"><strong>FERS calculator</strong></a></li>
+          <li><a href="../calculators/calpers-retirement-calculator/"><strong>CalPERS calculator</strong></a></li>
+          <li><a href="../calculators/calstrs-retirement-calculator/"><strong>CalSTRS calculator</strong></a></li>
+          <li><a href="../calculators/idaho-persi-retirement-calculator/"><strong>Idaho PERSI calculator</strong></a></li>
+        </ul>
+        <h3>Plan and decide</h3>
         <ul>
           <li><a href="../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
-          <li><a href="../oregon-pers/"><strong>Oregon PERS Pension Estimator</strong><span>Your monthly pension at any age, with Money Match</span></a></li>
-          <li><a href="../planner/?system=fers"><strong>FERS and TSP Planner</strong><span>Annuity, supplement and TSP for federal employees</span></a></li>
-        </ul>
-        <h3>Decisions and deadlines</h3>
-        <ul>
           <li><a href="../calculators/survivor-option-comparison/"><strong>Single life or survivor option</strong><span>What a survivor option costs, and when it pays off</span></a></li>
           <li><a href="../calculators/how-long-will-savings-last/"><strong>How long will my savings last?</strong><span>Monthly withdrawals, year by year</span></a></li>
           <li><a href="../retirement-checklist/"><strong>Retirement Countdown Checklist</strong><span>Every deadline, with calendar reminders</span></a></li>
@@ -452,6 +463,7 @@
         <h3>This year</h3>
         <ul>
           <li><a href="../guides/retirement-numbers-2027/"><strong>Retirement numbers for 2027</strong></a></li>
+          <li><a href="../guides/medicare-open-enrollment/"><strong>Medicare open enrollment</strong></a></li>
           <li><a href="../calculators/social-security-calculator/"><strong>Social Security calculator</strong></a></li>
         </ul>
         <a class="sheet-all" href="../faq/">See common questions</a>

@@ -26,7 +26,7 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE_URL = "https://publicpensionplanner.com/"
 ADSENSE_ID = "pub-7867146450299069"        # e.g. "pub-1234567890123456" from AdSense > Account > Account information
-LAST_UPDATED = "October 24, 2026"
+LAST_UPDATED = "October 31, 2026"
 SITE_NAME = "Public Retirement Planner"
 EDITOR = {"@type": "Person", "name": "Max Ma", "url": SITE_URL + "about/#editor"}
 
@@ -48,12 +48,16 @@ NAV = [
             ("calculators/social-security-calculator/", "Social Security calculator", "Your monthly amount at every age from 62 to 70"),
             ("calculators/retirement-income-after-tax/", "Take-home pay in retirement", "Federal tax on your pension and Social Security"),
         ]),
-        ("Full planners", [
-            PLANNER,
-            ("oregon-pers/", "Oregon PERS Pension Estimator", "Your monthly pension at any age, with Money Match"),
-            ("planner/?system=fers", "FERS and TSP Planner", "Annuity, supplement and TSP for federal employees"),
+        ("Your pension, by system", [
+            ("oregon-pers/", "Oregon PERS calculator", ""),
+            ("calculators/washington-drs-retirement-calculator/", "Washington DRS calculator", ""),
+            ("calculators/fers-retirement-calculator/", "FERS calculator", ""),
+            ("calculators/calpers-retirement-calculator/", "CalPERS calculator", ""),
+            ("calculators/calstrs-retirement-calculator/", "CalSTRS calculator", ""),
+            ("calculators/idaho-persi-retirement-calculator/", "Idaho PERSI calculator", ""),
         ]),
-        ("Decisions and deadlines", [
+        ("Plan and decide", [
+            PLANNER,
             ("calculators/survivor-option-comparison/", "Single life or survivor option", "What a survivor option costs, and when it pays off"),
             ("calculators/how-long-will-savings-last/", "How long will my savings last?", "Monthly withdrawals, year by year"),
             ("retirement-checklist/", "Retirement Countdown Checklist", "Every deadline, with calendar reminders"),
@@ -98,6 +102,7 @@ NAV = [
         ]),
         ("This year", [
             ("guides/retirement-numbers-2027/", "Retirement numbers for 2027", ""),
+            ("guides/medicare-open-enrollment/", "Medicare open enrollment", ""),
             ("calculators/social-security-calculator/", "Social Security calculator", ""),
         ]),
     ], ("faq/", "See common questions")),
@@ -106,7 +111,7 @@ NAV = [
     ("glossary/", "Glossary"),
 ]
 FOOT_COLS = [
-    ("Calculators", [("can-i-retire/", "Can I retire?"), ("planner/", "Retirement Date Planner"), ("oregon-pers/", "Oregon PERS Estimator"), ("planner/?system=fers", "FERS and TSP Planner"),
+    ("Calculators", [("can-i-retire/", "Can I retire?"), ("planner/", "Retirement Date Planner"), ("oregon-pers/", "Oregon PERS calculator"), ("calculators/fers-retirement-calculator/", "FERS calculator"),
                      ("calculators/social-security-calculator/", "Social Security calculator"), ("retirement-checklist/", "Countdown Checklist"), ("calculators/", "All calculators"), ("my-plan/", "My plan")]),
     ("Guides", [("guides/where-to-begin/", "Where to begin"), ("guides/oregon-pers-explained/", "Oregon PERS"), ("guides/washington-drs-explained/", "Washington DRS"), ("fers/", "Federal FERS"),
                 ("guides/calpers-explained/", "CalPERS"), ("guides/social-security-explained/", "Social Security"), ("guides/", "All guides"), ("faq/", "Common questions"), ("glossary/", "Glossary")]),
@@ -142,6 +147,8 @@ GUIDES = [
     ('guides/fehb-fegli-in-retirement/', 'Federal FERS', 'Keeping FEHB, PSHB and FEGLI in retirement', 'The five-year rule, premiums, Medicare Part B, FEGLI reductions and FEDVIP.'),
     ('guides/tsp-withdrawal-options/', 'Federal FERS', 'TSP withdrawal options in retirement', 'Installments, partial withdrawals, annuities, the age 55 and 50 rules, Roth, required withdrawals and withholding.'),
     ('guides/fers-special-provisions/', 'Federal FERS', 'FERS special retirement for police, firefighters and ATCs', 'Law enforcement, firefighters, air traffic controllers, CBP and Capitol Police: 50 with 20, mandatory age 57 and the 1.7% formula.'),
+    ('guides/fehb-open-season-retirees/', 'Federal FERS', 'FEHB open season for retirees', 'November 9 to December 14, 2026: what retirees can change, the 2027 premium rise and Medicare.'),
+    ('guides/retiring-at-end-of-year-fers/', 'Federal FERS', 'Retiring at the end of the year under FERS', 'When the annuity starts, the annual leave payout, taxes and FEHB for a December 31 exit.'),
     ('guides/fers-survivor-benefit/', 'Federal FERS', 'FERS survivor benefit: full, partial or none?', '50% for a 10% cut or 25% for 5%, spousal consent, insurable interest, FEHB and death benefits.'),
     ('guides/calpers-explained/', 'California CalPERS and CalSTRS', 'CalPERS explained', 'Classic vs PEPRA, CalPERS formulas and age factors, final compensation, the 2% COLA, survivor options and health vesting.'),
     ('guides/calstrs-explained/', 'California CalPERS and CalSTRS', 'CalSTRS explained', 'CalSTRS 2% at 60 vs 2% at 62, age factors, the career factor, the 2% raise, SBMA, options and Social Security for teachers.'),
@@ -154,6 +161,7 @@ GUIDES = [
     ('guides/social-security-earnings-test/', 'Social Security', 'Working while on Social Security', "Earnings limits for 2026 and 2027, $1 for $2 and $1 for $3, the first-year monthly rule, and why pensions don't count."),
     ('guides/are-social-security-benefits-taxed/', 'Social Security', 'Are Social Security benefits taxed?', 'Combined-income thresholds, the 50% and 85% rules, how a pension pushes you over, the $6,000 senior deduction and W-4V.'),
     ('guides/health-insurance-before-medicare/', 'Medicare and health care', 'How do I get health insurance if I retire before 65?', "FEHB, PERS retiree plans, COBRA, a spouse's plan and HealthCare.gov, and the Medicare penalty to avoid."),
+    ('guides/medicare-open-enrollment/', 'Medicare and health care', 'Medicare open enrollment', 'October 15 to December 7: what you can change, five things to check, and care with retiree coverage.'),
     ('guides/when-to-sign-up-for-medicare/', 'Medicare and health care', 'When to sign up for Medicare', 'The 7-month window, the special period for current job coverage, the retiree-coverage and COBRA trap, and late penalties.'),
     ('guides/medicare-irmaa/', 'Medicare and health care', 'Medicare IRMAA explained', '2026 IRMAA brackets for Parts B and D, the two-year lookback, how lump sums trigger it, and lowering it with form SSA-44.'),
     ('guides/single-life-or-survivor-pension/', 'Pension decisions', 'Single-life or survivor pension: how to choose', 'How single-life and joint-and-survivor pension options compare across PERS, DRS, FERS and CalPERS, and what to weigh.'),
@@ -171,6 +179,17 @@ ICONS = {
     "plan": '<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
     "guides": '<path d="M4 5.5C6.5 4.5 9.5 4.5 12 6.5c2.5-2 5.5-2 8-1V19c-2.5-1-5.5-1-8 1-2.5-2-5.5-2-8-1zM12 6.5V20"/>',
     "menu": '<path d="M4 7h16M4 12h16M4 17h16"/>',
+}
+# Guides about one pension system get a "Run your numbers" box under the short answer that goes to that system's calculator.
+CALC_FOR = {"oregon-pers/": "Oregon PERS", "calculators/washington-drs-retirement-calculator/": "Washington DRS", "calculators/fers-retirement-calculator/": "FERS",
+            "calculators/calpers-retirement-calculator/": "CalPERS", "calculators/calstrs-retirement-calculator/": "CalSTRS", "calculators/idaho-persi-retirement-calculator/": "Idaho PERSI"}
+RUNBOX = {
+    "guides/oregon-pers-explained/": "oregon-pers/", "guides/when-can-i-retire-oregon-pers/": "oregon-pers/", "guides/pers-tier-one-tier-two-opsrp/": "oregon-pers/",
+    "guides/washington-drs-explained/": "calculators/washington-drs-retirement-calculator/", "guides/when-can-i-retire-washington-drs/": "calculators/washington-drs-retirement-calculator/",
+    "guides/washington-drs-plan-1-2-3/": "calculators/washington-drs-retirement-calculator/",
+    "fers/": "calculators/fers-retirement-calculator/", "guides/fers-retirement-age/": "calculators/fers-retirement-calculator/",
+    "guides/calpers-explained/": "calculators/calpers-retirement-calculator/", "guides/calstrs-explained/": "calculators/calstrs-retirement-calculator/",
+    "guides/idaho-persi-explained/": "calculators/idaho-persi-retirement-calculator/",
 }
 TABS = [("", "Home", "home"), ("guides/where-to-begin/", "Start here", "start"), ("planner/", "Planner", "plan"), ("guides/", "Guides", "guides")]
 
@@ -208,6 +227,13 @@ def structured(page, url, text):
                 "datePublished": meta(text, "published") or "2026-10-17", "dateModified": meta(text, "updated") or meta(text, "published") or "2026-10-17",
                 "author": EDITOR,
                 "publisher": {"@type": "Organization", "name": "X Ventures LLC", "logo": {"@type": "ImageObject", "url": SITE_URL + "icon-512.png"}}}
+    elif page in ("planner/", "oregon-pers/", "can-i-retire/", "retirement-checklist/") or (page.startswith("calculators/") and page != "calculators/"):
+        # A free web tool: tells search engines this page is a calculator people use, not an article.
+        data = {"@context": "https://schema.org", "@type": "WebApplication", "name": title_of(text).split(":")[0].strip(), "url": url,
+                "description": meta(text, "description"), "applicationCategory": "FinanceApplication", "operatingSystem": "Any web browser",
+                "isAccessibleForFree": True, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+                "dateModified": meta(text, "updated") or meta(text, "published") or "2026-10-17",
+                "publisher": {"@type": "Organization", "name": "X Ventures LLC", "url": SITE_URL}}
     else:
         data = None
     out = '\n<script type="application/ld+json">' + json.dumps(data, separators=(",", ":")) + "</script>" if data else ""
@@ -219,6 +245,26 @@ def structured(page, url, text):
         if qa:
             out += '\n<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": qa}, separators=(",", ":")) + "</script>"
     return out
+
+
+def minify_css():
+    """Write assets/site.min.css, a smaller copy of assets/site.css (edit site.css, never the .min file)."""
+    css = (ROOT / "assets/site.css").read_text()
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    css = re.sub(r"\s+", " ", css)
+    css = re.sub(r"\s*([{};,>])\s*", r"\1", css)
+    css = re.sub(r":\s+", ":", css)   # safe here: no CSS selector in site.css has a space after a colon
+    css = css.replace(";}", "}").strip()
+    (ROOT / "assets/site.min.css").write_text(css + "\n")
+
+
+_CSS_V = []
+def css_version():
+    """A short fingerprint of the stylesheet, so browsers fetch a new copy only when it changes."""
+    if not _CSS_V:
+        import hashlib
+        _CSS_V.append(hashlib.sha1((ROOT / "assets/site.css").read_bytes()).hexdigest()[:8])
+    return _CSS_V[0]
 
 
 def head(rel, url, page="", text=""):
@@ -244,10 +290,9 @@ def head(rel, url, page="", text=""):
 <link rel="apple-touch-icon" href="{rel}apple-touch-icon.png">
 <link rel="manifest" href="{rel}site.webmanifest">
 <meta name="theme-color" content="#14325c">{social}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="{rel}assets/site.css">
+<link rel="preload" href="{rel}assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{rel}assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{rel}assets/site.min.css?v={css_version()}">
 <script>{EARLY}</script>
 {adsense}{structured(page, url, text) if url else ""}
 <!-- /@head -->"""
@@ -397,6 +442,12 @@ def crumbs(rel, page, text):
 <!-- /@crumbs -->"""
 
 
+def runbox(rel, page):
+    target = RUNBOX[page]
+    return (f'<!-- @runbox -->\n<p class="runbox"><span>Want your own number?</span> '
+            f'<a href="{href_of(rel, target)}">Open the {CALC_FOR[target]} calculator <span aria-hidden="true">›</span></a></p>\n<!-- /@runbox -->')
+
+
 def related(rel, page):
     """'Keep reading' links on a guide: the other guides in its section, then the planner and the start page."""
     section = next(g[1] for g in GUIDES if g[0] == page)
@@ -542,6 +593,7 @@ def replace(text, tag, block):
 
 
 def main():
+    minify_css()
     pages = sorted(p for p in ROOT.rglob("index.html") if "tools" not in p.parts and ".git" not in p.parts)
     urls = []
     for h, *_ in GUIDES:
@@ -565,6 +617,12 @@ def main():
             if "<!-- @related -->" not in text:
                 text = text.replace("</article>", "<!-- @related --><!-- /@related -->\n</article>", 1)
             text = replace(text, "related", related(rel, page))
+        if page in RUNBOX:
+            if "<!-- @runbox -->" not in text:
+                i = text.index('<div class="shortanswer">')
+                j = text.index("</div>", i) + len("</div>")
+                text = text[:j] + "\n<!-- @runbox --><!-- /@runbox -->" + text[j:]
+            text = replace(text, "runbox", runbox(rel, page))
         # Old pages had "Reviewed by" after the checked date; the editor is named on the About page only.
         text = re.sub(r'\s*<span class="reviewer">.*?</a></span>', "", text)
         if "<!-- @guidelist -->" in text:

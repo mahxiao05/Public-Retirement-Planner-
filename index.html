@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Public Retirement Planner</title>
+<title>Public Retirement Planner: PERS, FERS and CalPERS Calculators</title>
 <meta name="description" content="Free, plain-English retirement guides and calculators for public employees: Oregon PERS, Washington DRS, FERS, CalPERS, Social Security and Medicare. Official rules, with sources.">
 <meta name="published" content="2026-10-17">
-<meta name="updated" content="2026-10-24">
+<meta name="updated" content="2026-10-31">
 <meta name="nav" content="">
 <!-- @head -->
 <link rel="canonical" href="https://publicpensionplanner.com/">
@@ -17,21 +17,20 @@
 <meta name="theme-color" content="#14325c">
 <meta property="og:site_name" content="Public Retirement Planner">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Public Retirement Planner">
+<meta property="og:title" content="Public Retirement Planner: PERS, FERS and CalPERS Calculators">
 <meta property="og:description" content="Free, plain-English retirement guides and calculators for public employees: Oregon PERS, Washington DRS, FERS, CalPERS, Social Security and Medicare. Official rules, with sources.">
 <meta property="og:url" content="https://publicpensionplanner.com/">
 <meta property="og:image" content="https://publicpensionplanner.com/assets/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="preload" href="assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.min.css?v=8b8e6d8d">
 <script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867146450299069" crossorigin="anonymous"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://publicpensionplanner.com/#site","name":"Public Retirement Planner","url":"https://publicpensionplanner.com/","publisher":{"@id":"https://publicpensionplanner.com/#org"}},{"@type":"Organization","@id":"https://publicpensionplanner.com/#org","name":"X Ventures LLC","brand":"Public Retirement Planner","url":"https://publicpensionplanner.com/","logo":"https://publicpensionplanner.com/icon-512.png","email":"info@publicpensionplanner.com"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this site run by the government?","acceptedAnswer":{"@type":"Answer","text":"No. Public Retirement Planner is an independent site owned by X Ventures LLC. We build our tools from the rules that Oregon PERS, Washington DRS, OPM, Social Security and other agencies publish, and link to them so you can check."}},{"@type":"Question","name":"Which retirement systems do the calculators cover?","acceptedAnswer":{"@type":"Answer","text":"The Retirement Date Planner and Can I retire? cover Oregon PERS, Washington DRS (PERS, TRS and SERS Plans 1, 2 and 3), federal FERS, CalPERS (the three most common formulas), CalSTRS and Idaho PERSI. Every tool includes Social Security."}},{"@type":"Question","name":"Do you save or see my answers?","acceptedAnswer":{"@type":"Answer","text":"No. Your answers stay in your own browser on your own device. We never receive them, and you can remove them at any time from My plan."}},{"@type":"Question","name":"How accurate are the estimates?","acceptedAnswer":{"@type":"Answer","text":"They follow the official formulas, but they rely on the numbers you enter and leave out some special cases. Use them to compare choices, then ask your retirement system and Social Security for official estimates before you pick a date."}},{"@type":"Question","name":"Does it cost anything?","acceptedAnswer":{"@type":"Answer","text":"No. The site is free and paid for by ads. Ads never change the math."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this site run by the government?","acceptedAnswer":{"@type":"Answer","text":"No. Public Retirement Planner is an independent site owned by X Ventures LLC. We build our tools from the rules that Oregon PERS, Washington DRS, OPM, Social Security and other agencies publish, and link to them so you can check."}},{"@type":"Question","name":"Which retirement systems do the calculators cover?","acceptedAnswer":{"@type":"Answer","text":"The pension calculators, the Retirement Date Planner and Can I retire? cover Oregon PERS, Washington DRS (PERS, TRS and SERS Plans 1, 2 and 3), federal FERS, CalPERS (the three most common formulas), CalSTRS and Idaho PERSI. Every tool includes Social Security."}},{"@type":"Question","name":"Do you save or see my answers?","acceptedAnswer":{"@type":"Answer","text":"No. Your answers stay in your own browser on your own device. We never receive them, and you can remove them at any time from My plan."}},{"@type":"Question","name":"How accurate are the estimates?","acceptedAnswer":{"@type":"Answer","text":"They follow the official formulas, but they rely on the numbers you enter and leave out some special cases. Use them to compare choices, then ask your retirement system and Social Security for official estimates before you pick a date."}},{"@type":"Question","name":"Does it cost anything?","acceptedAnswer":{"@type":"Answer","text":"No. The site is free and paid for by ads. Ads never change the math."}}]}</script>
 <!-- /@head -->
 <style>
 .home { max-width: 1120px; }
@@ -127,16 +126,20 @@
               </ul>
             </div>
             <div class="nav-col">
-              <h3>Full planners</h3>
+              <h3>Your pension, by system</h3>
               <ul>
-                <li><a class="nav-link" href="planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
-                <li><a class="nav-link" href="oregon-pers/"><strong>Oregon PERS Pension Estimator</strong><span>Your monthly pension at any age, with Money Match</span></a></li>
-                <li><a class="nav-link" href="planner/?system=fers"><strong>FERS and TSP Planner</strong><span>Annuity, supplement and TSP for federal employees</span></a></li>
+                <li><a class="nav-link" href="oregon-pers/"><strong>Oregon PERS calculator</strong></a></li>
+                <li><a class="nav-link" href="calculators/washington-drs-retirement-calculator/"><strong>Washington DRS calculator</strong></a></li>
+                <li><a class="nav-link" href="calculators/fers-retirement-calculator/"><strong>FERS calculator</strong></a></li>
+                <li><a class="nav-link" href="calculators/calpers-retirement-calculator/"><strong>CalPERS calculator</strong></a></li>
+                <li><a class="nav-link" href="calculators/calstrs-retirement-calculator/"><strong>CalSTRS calculator</strong></a></li>
+                <li><a class="nav-link" href="calculators/idaho-persi-retirement-calculator/"><strong>Idaho PERSI calculator</strong></a></li>
               </ul>
             </div>
             <div class="nav-col">
-              <h3>Decisions and deadlines</h3>
+              <h3>Plan and decide</h3>
               <ul>
+                <li><a class="nav-link" href="planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
                 <li><a class="nav-link" href="calculators/survivor-option-comparison/"><strong>Single life or survivor option</strong><span>What a survivor option costs, and when it pays off</span></a></li>
                 <li><a class="nav-link" href="calculators/how-long-will-savings-last/"><strong>How long will my savings last?</strong><span>Monthly withdrawals, year by year</span></a></li>
                 <li><a class="nav-link" href="retirement-checklist/"><strong>Retirement Countdown Checklist</strong><span>Every deadline, with calendar reminders</span></a></li>
@@ -214,6 +217,7 @@
               <h3>This year</h3>
               <ul>
                 <li><a class="nav-link" href="guides/retirement-numbers-2027/"><strong>Retirement numbers for 2027</strong></a></li>
+                <li><a class="nav-link" href="guides/medicare-open-enrollment/"><strong>Medicare open enrollment</strong></a></li>
                 <li><a class="nav-link" href="calculators/social-security-calculator/"><strong>Social Security calculator</strong></a></li>
               </ul>
             </div>
@@ -292,19 +296,12 @@
       <p>Your pension, savings account and Social Security together on one timeline, for Oregon PERS, Washington DRS, FERS, CalPERS, CalSTRS or Idaho PERSI. Include your spouse and compare retirement ages.</p>
       <span class="go">Plan my retirement date</span>
     </a>
-    <a class="card" href="oregon-pers/">
+    <a class="card" href="calculators/#pensions">
       <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 20h18M5 20V10M19 20V10M9 20v-6M15 20v-6M2.5 10L12 4l9.5 6z"/></svg></span>
-      <span class="label">Oregon PERS</span>
-      <h3>PERS Pension Estimator</h3>
-      <p>Your monthly PERS pension and IAP for Tier One, Tier Two or OPSRP, including Money Match for longtime members.</p>
-      <span class="go">Estimate my PERS pension</span>
-    </a>
-    <a class="card" href="planner/?system=fers">
-      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>
-      <span class="label">Federal employees</span>
-      <h3>FERS and TSP Planner</h3>
-      <p>Your FERS annuity, the FERS supplement and your TSP, and your earliest retirement date.</p>
-      <span class="go">Estimate my FERS pension</span>
+      <span class="label">Pick your system</span>
+      <h3>Pension calculator</h3>
+      <p>Your monthly pension at any age, and what each extra year of work adds, for Oregon PERS, Washington DRS, FERS, CalPERS, CalSTRS or Idaho PERSI.</p>
+      <span class="go">Estimate my pension</span>
     </a>
     <a class="card" href="retirement-checklist/">
       <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.5M8 15.5l1.6 1.6 2.9-3.1M14.5 9.5H17M14.5 16H17"/></svg></span>
@@ -351,7 +348,7 @@
     <p>No. Public Retirement Planner is an independent site owned by X Ventures LLC. We build our tools from the rules that Oregon PERS, Washington DRS, OPM, Social Security and other agencies publish, and link to them so you can check.</p>
   </details>
   <details class="qa"><summary><h3>Which retirement systems do the calculators cover?</h3></summary>
-    <p>The Retirement Date Planner and Can I retire? cover Oregon PERS, Washington DRS (PERS, TRS and SERS Plans 1, 2 and 3), federal FERS, CalPERS (the three most common formulas), CalSTRS and Idaho PERSI. Every tool includes Social Security.</p>
+    <p>The pension calculators, the Retirement Date Planner and Can I retire? cover Oregon PERS, Washington DRS (PERS, TRS and SERS Plans 1, 2 and 3), federal FERS, CalPERS (the three most common formulas), CalSTRS and Idaho PERSI. Every tool includes Social Security.</p>
   </details>
   <details class="qa"><summary><h3>Do you save or see my answers?</h3></summary>
     <p>No. Your answers stay in your own browser on your own device. We never receive them, and you can remove them at any time from My plan.</p>
@@ -379,8 +376,8 @@
         <ul>
           <li><a href="can-i-retire/">Can I retire?</a></li>
           <li><a href="planner/">Retirement Date Planner</a></li>
-          <li><a href="oregon-pers/">Oregon PERS Estimator</a></li>
-          <li><a href="planner/?system=fers">FERS and TSP Planner</a></li>
+          <li><a href="oregon-pers/">Oregon PERS calculator</a></li>
+          <li><a href="calculators/fers-retirement-calculator/">FERS calculator</a></li>
           <li><a href="calculators/social-security-calculator/">Social Security calculator</a></li>
           <li><a href="retirement-checklist/">Countdown Checklist</a></li>
           <li><a href="calculators/">All calculators</a></li>
@@ -415,7 +412,7 @@
     </div>
     <div class="foot-legal">
       <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
-      <p>Your answers stay on your device. Last updated October 24, 2026.</p>
+      <p>Your answers stay on your device. Last updated October 31, 2026.</p>
       <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
     </div>
   </div>
@@ -441,14 +438,18 @@
           <li><a href="calculators/social-security-calculator/"><strong>Social Security calculator</strong><span>Your monthly amount at every age from 62 to 70</span></a></li>
           <li><a href="calculators/retirement-income-after-tax/"><strong>Take-home pay in retirement</strong><span>Federal tax on your pension and Social Security</span></a></li>
         </ul>
-        <h3>Full planners</h3>
+        <h3>Your pension, by system</h3>
+        <ul>
+          <li><a href="oregon-pers/"><strong>Oregon PERS calculator</strong></a></li>
+          <li><a href="calculators/washington-drs-retirement-calculator/"><strong>Washington DRS calculator</strong></a></li>
+          <li><a href="calculators/fers-retirement-calculator/"><strong>FERS calculator</strong></a></li>
+          <li><a href="calculators/calpers-retirement-calculator/"><strong>CalPERS calculator</strong></a></li>
+          <li><a href="calculators/calstrs-retirement-calculator/"><strong>CalSTRS calculator</strong></a></li>
+          <li><a href="calculators/idaho-persi-retirement-calculator/"><strong>Idaho PERSI calculator</strong></a></li>
+        </ul>
+        <h3>Plan and decide</h3>
         <ul>
           <li><a href="planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
-          <li><a href="oregon-pers/"><strong>Oregon PERS Pension Estimator</strong><span>Your monthly pension at any age, with Money Match</span></a></li>
-          <li><a href="planner/?system=fers"><strong>FERS and TSP Planner</strong><span>Annuity, supplement and TSP for federal employees</span></a></li>
-        </ul>
-        <h3>Decisions and deadlines</h3>
-        <ul>
           <li><a href="calculators/survivor-option-comparison/"><strong>Single life or survivor option</strong><span>What a survivor option costs, and when it pays off</span></a></li>
           <li><a href="calculators/how-long-will-savings-last/"><strong>How long will my savings last?</strong><span>Monthly withdrawals, year by year</span></a></li>
           <li><a href="retirement-checklist/"><strong>Retirement Countdown Checklist</strong><span>Every deadline, with calendar reminders</span></a></li>
@@ -508,6 +509,7 @@
         <h3>This year</h3>
         <ul>
           <li><a href="guides/retirement-numbers-2027/"><strong>Retirement numbers for 2027</strong></a></li>
+          <li><a href="guides/medicare-open-enrollment/"><strong>Medicare open enrollment</strong></a></li>
           <li><a href="calculators/social-security-calculator/"><strong>Social Security calculator</strong></a></li>
         </ul>
         <a class="sheet-all" href="faq/">See common questions</a>

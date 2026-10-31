@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CalSTRS Retirement Calculator: 2% at 60 and 2% at 62</title>
+<meta name="description" content="Free CalSTRS retirement calculator for California teachers: estimate your monthly pension from service credit, your age factor and final compensation.">
+<meta name="published" content="2026-10-31">
+<meta name="updated" content="2026-10-31">
+<meta name="nav" content="tools">
+<!-- @head -->
+<link rel="canonical" href="https://publicpensionplanner.com/calculators/calstrs-retirement-calculator/">
+<link rel="icon" href="../../favicon.ico" sizes="48x48">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<meta name="theme-color" content="#14325c">
+<meta property="og:site_name" content="Public Retirement Planner">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CalSTRS Retirement Calculator: 2% at 60 and 2% at 62">
+<meta property="og:description" content="Free CalSTRS retirement calculator for California teachers: estimate your monthly pension from service credit, your age factor and final compensation.">
+<meta property="og:url" content="https://publicpensionplanner.com/calculators/calstrs-retirement-calculator/">
+<meta property="og:image" content="https://publicpensionplanner.com/assets/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../../assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.min.css?v=8b8e6d8d">
+<script>(function(){try{var d=document.documentElement,s=localStorage,t=s.getItem('site-theme'),z=s.getItem('site-size')||(s.getItem('pers-guide-size')==='1'?'2':null),f=s.getItem('site-font');if(t)d.setAttribute('data-theme',t);if(z)d.setAttribute('data-size',z);if(f)d.setAttribute('data-font',f);}catch(e){}})();</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7867146450299069" crossorigin="anonymous"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CalSTRS Retirement Calculator","url":"https://publicpensionplanner.com/calculators/calstrs-retirement-calculator/","description":"Free CalSTRS retirement calculator for California teachers: estimate your monthly pension from service credit, your age factor and final compensation.","applicationCategory":"FinanceApplication","operatingSystem":"Any web browser","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"dateModified":"2026-10-31","publisher":{"@type":"Organization","name":"X Ventures LLC","url":"https://publicpensionplanner.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the earliest I can retire from CalSTRS?","acceptedAnswer":{"@type":"Answer","text":"Age 55 with at least five years of service credit. Members on 2% at 60 with at least 30 years can retire at 50."}},{"@type":"Question","name":"What is the career factor?","acceptedAnswer":{"@type":"Answer","text":"If you're on 2% at 60 and retire with at least 30 years of earned service, CalSTRS adds 0.2% to your age factor, up to a total of 2.4%."}},{"@type":"Question","name":"Will I get Social Security as a California teacher?","acceptedAnswer":{"@type":"Answer","text":"Not from teaching, because CalSTRS jobs don't pay Social Security tax. You may get it from other work or as a spouse, and since 2025 WEP and GPO no longer reduce it."}},{"@type":"Question","name":"Can I change my option after I retire?","acceptedAnswer":{"@type":"Answer","text":"Within 30 days of your first payment, yes. After that, generally only after events like a death, divorce or marriage."}},{"@type":"Question","name":"Who gives an official estimate?","acceptedAnswer":{"@type":"Answer","text":"CalSTRS. Use the calculator in your myCalSTRS account, or ask for a written estimate."}}]}</script>
+<!-- /@head -->
+</head>
+<body>
+<!-- @header -->
+<a class="skip" href="#main">Skip to main content</a>
+<div class="topstrip"><div class="inner"><span>Free retirement guides and calculators for public employees</span><span>Independent: not a government website</span></div></div>
+<header class="site-head">
+  <div class="headbar">
+    <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name"><span>Public</span> <span>Retirement</span> <span>Planner</span></span></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul class="nav-list">
+      <li><a class="nav-top" href="../../guides/where-to-begin/">Start here</a></li>
+      <li class="nav-group has-current">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-1">Calculators<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-1" hidden>
+          <div class="nav-cols">
+            <div class="nav-col">
+              <h3>Quick answers</h3>
+              <ul>
+                <li><a class="nav-link" href="../../can-i-retire/"><strong>Can I retire?</strong><span>A plain yes or not yet, with Social Security at 62, 67 or 70</span></a></li>
+                <li><a class="nav-link" href="../../calculators/social-security-calculator/"><strong>Social Security calculator</strong><span>Your monthly amount at every age from 62 to 70</span></a></li>
+                <li><a class="nav-link" href="../../calculators/retirement-income-after-tax/"><strong>Take-home pay in retirement</strong><span>Federal tax on your pension and Social Security</span></a></li>
+              </ul>
+            </div>
+            <div class="nav-col">
+              <h3>Your pension, by system</h3>
+              <ul>
+                <li><a class="nav-link" href="../../oregon-pers/"><strong>Oregon PERS calculator</strong></a></li>
+                <li><a class="nav-link" href="../../calculators/washington-drs-retirement-calculator/"><strong>Washington DRS calculator</strong></a></li>
+                <li><a class="nav-link" href="../../calculators/fers-retirement-calculator/"><strong>FERS calculator</strong></a></li>
+                <li><a class="nav-link" href="../../calculators/calpers-retirement-calculator/"><strong>CalPERS calculator</strong></a></li>
+                <li><a class="nav-link" href="../../calculators/calstrs-retirement-calculator/" aria-current="page"><strong>CalSTRS calculator</strong></a></li>
+                <li><a class="nav-link" href="../../calculators/idaho-persi-retirement-calculator/"><strong>Idaho PERSI calculator</strong></a></li>
+              </ul>
+            </div>
+            <div class="nav-col">
+              <h3>Plan and decide</h3>
+              <ul>
+                <li><a class="nav-link" href="../../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
+                <li><a class="nav-link" href="../../calculators/survivor-option-comparison/"><strong>Single life or survivor option</strong><span>What a survivor option costs, and when it pays off</span></a></li>
+                <li><a class="nav-link" href="../../calculators/how-long-will-savings-last/"><strong>How long will my savings last?</strong><span>Monthly withdrawals, year by year</span></a></li>
+                <li><a class="nav-link" href="../../retirement-checklist/"><strong>Retirement Countdown Checklist</strong><span>Every deadline, with calendar reminders</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <p class="nav-all"><a href="../../calculators/">See all calculators <span aria-hidden="true">→</span></a></p>
+        </div>
+      </li>
+      <li class="nav-group">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-2">Pensions<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-2" hidden>
+          <div class="nav-cols">
+            <div class="nav-col">
+              <h3>Oregon PERS</h3>
+              <ul>
+                <li><a class="nav-link" href="../../guides/oregon-pers-explained/"><strong>Oregon PERS explained</strong></a></li>
+                <li><a class="nav-link" href="../../guides/when-can-i-retire-oregon-pers/"><strong>When can I retire?</strong></a></li>
+                <li><a class="nav-link" href="../../guides/pers-tier-one-tier-two-opsrp/"><strong>Tier One, Tier Two or OPSRP</strong></a></li>
+                <li><a class="nav-link" href="../../guides/oregon-pers-iap-payout-options/"><strong>IAP payout options</strong></a></li>
+              </ul>
+            </div>
+            <div class="nav-col">
+              <h3>Washington DRS</h3>
+              <ul>
+                <li><a class="nav-link" href="../../guides/washington-drs-explained/"><strong>Washington DRS explained</strong></a></li>
+                <li><a class="nav-link" href="../../guides/when-can-i-retire-washington-drs/"><strong>When can I retire?</strong></a></li>
+                <li><a class="nav-link" href="../../guides/washington-drs-plan-1-2-3/"><strong>Plans 1, 2 and 3 compared</strong></a></li>
+              </ul>
+            </div>
+            <div class="nav-col">
+              <h3>Federal FERS</h3>
+              <ul>
+                <li><a class="nav-link" href="../../fers/"><strong>FERS explained</strong></a></li>
+                <li><a class="nav-link" href="../../guides/fers-retirement-age/"><strong>When can I retire?</strong></a></li>
+                <li><a class="nav-link" href="../../guides/tsp-withdrawal-options/"><strong>TSP withdrawal options</strong></a></li>
+                <li><a class="nav-link" href="../../guides/fers-survivor-benefit/"><strong>Survivor benefit</strong></a></li>
+              </ul>
+            </div>
+            <div class="nav-col">
+              <h3>California and Idaho</h3>
+              <ul>
+                <li><a class="nav-link" href="../../guides/calpers-explained/"><strong>CalPERS explained</strong></a></li>
+                <li><a class="nav-link" href="../../guides/calstrs-explained/"><strong>CalSTRS explained</strong></a></li>
+                <li><a class="nav-link" href="../../guides/idaho-persi-explained/"><strong>Idaho PERSI explained</strong></a></li>
+              </ul>
+            </div>
+          </div>
+          <p class="nav-all"><a href="../../guides/">See all guides <span aria-hidden="true">→</span></a></p>
+        </div>
+      </li>
+      <li class="nav-group">
+        <button type="button" class="nav-top" aria-expanded="false" aria-controls="menu-3">Social Security & Medicare<svg class="chev" viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="M1.5 1.5l4.5 4.5 4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-panel" id="menu-3" hidden>
+          <div class="nav-cols">
+            <div class="nav-col">
+              <h3>Social Security</h3>
+              <ul>
+                <li><a class="nav-link" href="../../guides/social-security-explained/"><strong>Social Security explained</strong></a></li>
+                <li><a class="nav-link" href="../../guides/when-to-start-social-security/"><strong>When should I start it?</strong></a></li>
+                <li><a class="nav-link" href="../../guides/does-a-pension-reduce-social-security/"><strong>Does my pension lower it?</strong></a></li>
+                <li><a class="nav-link" href="../../guides/social-security-spousal-benefits/"><strong>Spousal benefits</strong></a></li>
+                <li><a class="nav-link" href="../../guides/social-security-survivor-benefits/"><strong>Survivor benefits</strong></a></li>
+              </ul>
+            </div>
+            <div class="nav-col">
+              <h3>Medicare and health care</h3>
+              <ul>
+                <li><a class="nav-link" href="../../guides/when-to-sign-up-for-medicare/"><strong>When to sign up for Medicare</strong></a></li>
+                <li><a class="nav-link" href="../../guides/health-insurance-before-medicare/"><strong>Health insurance before 65</strong></a></li>
+                <li><a class="nav-link" href="../../guides/medicare-irmaa/"><strong>Medicare IRMAA</strong></a></li>
+              </ul>
+            </div>
+            <div class="nav-col">
+              <h3>This year</h3>
+              <ul>
+                <li><a class="nav-link" href="../../guides/retirement-numbers-2027/"><strong>Retirement numbers for 2027</strong></a></li>
+                <li><a class="nav-link" href="../../guides/medicare-open-enrollment/"><strong>Medicare open enrollment</strong></a></li>
+                <li><a class="nav-link" href="../../calculators/social-security-calculator/"><strong>Social Security calculator</strong></a></li>
+              </ul>
+            </div>
+          </div>
+          <p class="nav-all"><a href="../../faq/">See common questions <span aria-hidden="true">→</span></a></p>
+        </div>
+      </li>
+      <li><a class="nav-top" href="../../guides/">All guides</a></li>
+      <li><a class="nav-top" href="../../faq/">Questions</a></li>
+      <li><a class="nav-top" href="../../glossary/">Glossary</a></li>
+      </ul>
+    </nav>
+    <div class="quick" role="group" aria-label="Reading settings">
+      <button type="button" class="quick-btn" data-cycle="size" aria-label="Text size"><span class="q-ico q-size" aria-hidden="true">A<b>A</b></span><span class="q-label">Text size</span></button>
+      <button type="button" class="quick-btn" data-cycle="theme" aria-label="Colors"><span class="q-ico" aria-hidden="true"><svg class="q-sun" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg><svg class="q-moon" viewBox="0 0 24 24" focusable="false"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg></span><span class="q-label">Colors</span></button>
+      <button type="button" class="quick-btn" data-cycle="font" aria-label="Letter style"><span class="q-ico q-font" aria-hidden="true">Aa</span><span class="q-label">Letters</span></button>
+    </div>
+  </div>
+</header>
+<!-- /@header -->
+<main id="main" class="page">
+<!-- @crumbs -->
+<nav class="crumbs" aria-label="You are here"><ol><li><a href="../../">Home</a></li><li><a href="../../calculators/">Calculators</a></li><li aria-current="page">CalSTRS retirement calculator</li></ol></nav>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://publicpensionplanner.com/"},{"@type":"ListItem","position":2,"name":"Calculators","item":"https://publicpensionplanner.com/calculators/"},{"@type":"ListItem","position":3,"name":"CalSTRS retirement calculator","item":"https://publicpensionplanner.com/calculators/calstrs-retirement-calculator/"}]}</script>
+<!-- /@crumbs -->
+<div class="layout"><div class="main-col">
+<article class="prose">
+<span class="eyebrow">Calculator</span>
+<h1>CalSTRS retirement calculator</h1>
+<p class="byline"><span class="byline-text">Updated October 31, 2026</span></p>
+<div class="shortanswer">
+  <span class="label">Short answer</span>
+  <p>A CalSTRS pension is <strong>service credit × age factor × final compensation</strong>. Educators hired before 2013 are usually on 2% at 60, and those hired since on 2% at 62. Both top out at 2.4% per year of service. Enter your numbers to see your monthly pension.</p>
+</div>
+<section class="panel calc" aria-labelledby="calc-h">
+  <h2 id="calc-h" style="margin:0">Your numbers</h2>
+  <p class="help">For CalSTRS Defined Benefit members. Your formula and service credit are in your myCalSTRS account.</p>
+  <div class="fields">
+    <div class="field"><label for="cs-kind">Your formula</label><select id="cs-kind"><option value="2@60">2% at 60 (hired before 2013)</option><option value="2@62">2% at 62 (hired 2013 on)</option></select></div>
+    <div class="field"><label for="cs-age">Age you plan to retire</label><div class="plain"><input type="number" id="cs-age" min="45" max="80" step="1" value="62" inputmode="numeric"></div></div>
+    <div class="field"><label for="cs-svc">Years of service by then</label><div class="plain"><input type="number" id="cs-svc" min="0" max="50" step="0.5" value="25" inputmode="decimal"></div></div>
+    <div class="field"><label for="cs-pay">Final compensation (a year)</label><div class="money"><input type="number" id="cs-pay" min="0" step="1000" value="95000" inputmode="numeric"></div><span class="help">Your highest average yearly pay over 36 months in a row (12 months for some 2% at 60 members with 25 or more years).</span></div>
+  </div>
+  <div class="answer" aria-live="polite"><p class="lead" id="cs-lead"></p></div>
+  <h3 style="margin:.4rem 0 0">If you keep working</h3>
+  <div class="tablewrap"><table class="compact"><thead><tr><th>Retire at</th><th>Years</th><th>A month</th></tr></thead><tbody id="cs-rows"></tbody></table></div>
+  <p class="help">Before taxes, paying only you for life, in today's dollars. Your pay stays the same in every row.</p>
+  <details class="how"><summary>How we worked this out</summary><div class="how-body"><ol class="steps" id="cs-steps"></ol></div></details>
+</section>
+
+<div class="toolcta">
+  <p>Add savings, any Social Security from other work and a spouse, and compare retirement dates on one timeline.</p>
+  <a class="btn primary" href="../../planner/?system=calstrs">Open the full planner for CalSTRS</a>
+</div>
+
+<h2 id="leaves-out">What this calculator leaves out</h2>
+<ul>
+  <li><strong>The longevity bonus.</strong> Members with 30 years by the end of 2010 get $200 to $400 a month more.</li>
+  <li><strong>Beneficiary options.</strong> They lower your payment so a beneficiary keeps a share. Your CalSTRS estimate shows the amounts.</li>
+  <li><strong>Retiring before 55.</strong> 2% at 60 members with 30 years can start at 50 at lower factors. Ask CalSTRS.</li>
+  <li><strong>The yearly raise.</strong> A simple 2% of your starting benefit is added each September after your first year.</li>
+</ul>
+
+<details class="how"><summary>See a worked example</summary><div class="how-body">
+<p>Jordan is on 2% at 60 with final compensation of $95,000.</p>
+<ul>
+  <li><strong>At 60 with 25 years:</strong> 25 × 2.0% × $95,000 = $47,500 a year, about $3,958 a month.</li>
+  <li><strong>At 62 with 30 years:</strong> the age factor is 2.27%, plus the 0.2% career factor for 30 years, capped at 2.4%. 30 × 2.4% × $95,000 = $68,400 a year, or $5,700 a month.</li>
+</ul>
+<p>Change the numbers above to see your own version of this.</p>
+</div></details>
+
+<section class="faq" id="faq">
+  <h2>Common questions</h2>
+  <details class="qa"><summary><h3>What is the earliest I can retire from CalSTRS?</h3></summary>
+    <p>Age 55 with at least five years of service credit. Members on 2% at 60 with at least 30 years can retire at 50.</p>
+  </details>
+  <details class="qa"><summary><h3>What is the career factor?</h3></summary>
+    <p>If you're on 2% at 60 and retire with at least 30 years of earned service, CalSTRS adds 0.2% to your age factor, up to a total of 2.4%.</p>
+  </details>
+  <details class="qa"><summary><h3>Will I get Social Security as a California teacher?</h3></summary>
+    <p>Not from teaching, because CalSTRS jobs don't pay Social Security tax. You may get it from other work or as a spouse, and since 2025 WEP and GPO no longer reduce it.</p>
+  </details>
+  <details class="qa"><summary><h3>Can I change my option after I retire?</h3></summary>
+    <p>Within 30 days of your first payment, yes. After that, generally only after events like a death, divorce or marriage.</p>
+  </details>
+  <details class="qa"><summary><h3>Who gives an official estimate?</h3></summary>
+    <p>CalSTRS. Use the calculator in your myCalSTRS account, or ask for a written estimate.</p>
+  </details>
+</section>
+<p>Learn more: <a href="../../guides/calstrs-explained/">CalSTRS explained</a> · <a href="../../guides/does-a-pension-reduce-social-security/">Does my pension lower my Social Security?</a> · <a href="../../guides/457b-deferred-compensation/">457(b) plans</a>.</p>
+<p class="plainnote"><strong>An estimate, not an official figure.</strong> Built from CalSTRS's published age factors and pay limits. CalSTRS decides your actual pension.</p>
+</article>
+<script src="../../assets/rules/calstrs.js"></script>
+<script src="../calc.js"></script>
+<script src="../pension-calc.js"></script>
+<script>
+(function () {
+  var C = window.Calc, R = window.RetirementRules.pensions.calstrs;
+  function read() { return { age: C.v("cs-age"), svc: C.v("cs-svc"), pay: C.v("cs-pay"), kind: C.$("cs-kind").value }; }
+  function compute(ageMonths, svc) { var s = read(); return R.calcPension({ formula: s.kind, ageMonths: ageMonths, svc: svc, fc: s.pay }); }
+  window.PensionCalc.setup({ name: "CalSTRS", prefix: "cs", read: read, compute: compute, maxAge: 72 });
+})();
+</script>
+<!-- @side -->
+</div>
+<aside class="side" aria-label="More on this site">
+  <div class="side-inner">
+    <div class="side-box">
+      <p class="side-h">Run your numbers</p>
+      <ul>
+        <li><a href="../../planner/">Retirement Date Planner</a></li>
+        <li><a href="../../can-i-retire/">Can I retire?</a></li>
+        <li><a href="../../calculators/social-security-calculator/">Social Security calculator</a></li>
+        <li><a href="../../retirement-checklist/">Countdown Checklist</a></li>
+        <li><a href="../../calculators/">All calculators</a></li>
+      </ul>
+    </div>
+    <div class="side-box">
+      <p class="side-h">New to this?</p>
+      <ul>
+        <li><a href="../../guides/where-to-begin/">Where to begin</a></li>
+        <li><a href="../../guides/">All guides</a></li>
+        <li><a href="../../faq/">Common questions</a></li>
+        <li><a href="../../glossary/">Glossary</a></li>
+      </ul>
+    </div>
+  </div>
+</aside>
+</div>
+<!-- /@side -->
+</main>
+<!-- @footer -->
+<footer class="site-foot">
+  <div class="inner">
+    <div class="foot-top">
+      <div class="foot-about">
+        <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" focusable="false"><path d="M3 18h18M6.5 18a5.5 5.5 0 0 1 11 0M12 5v3M5.6 9.1l1.8 1.5M18.4 9.1l-1.8 1.5"/></svg></span><span class="brand-name">Public Retirement Planner</span></a>
+        <p>Plain-English retirement guides and calculators for public employees, built from the official rules and checked against the agencies that publish them.</p>
+      </div>
+      <div class="foot-col dup">
+        <h2>Calculators</h2>
+        <ul>
+          <li><a href="../../can-i-retire/">Can I retire?</a></li>
+          <li><a href="../../planner/">Retirement Date Planner</a></li>
+          <li><a href="../../oregon-pers/">Oregon PERS calculator</a></li>
+          <li><a href="../../calculators/fers-retirement-calculator/">FERS calculator</a></li>
+          <li><a href="../../calculators/social-security-calculator/">Social Security calculator</a></li>
+          <li><a href="../../retirement-checklist/">Countdown Checklist</a></li>
+          <li><a href="../../calculators/">All calculators</a></li>
+          <li><a href="../../my-plan/">My plan</a></li>
+        </ul>
+      </div>
+      <div class="foot-col dup">
+        <h2>Guides</h2>
+        <ul>
+          <li><a href="../../guides/where-to-begin/">Where to begin</a></li>
+          <li><a href="../../guides/oregon-pers-explained/">Oregon PERS</a></li>
+          <li><a href="../../guides/washington-drs-explained/">Washington DRS</a></li>
+          <li><a href="../../fers/">Federal FERS</a></li>
+          <li><a href="../../guides/calpers-explained/">CalPERS</a></li>
+          <li><a href="../../guides/social-security-explained/">Social Security</a></li>
+          <li><a href="../../guides/">All guides</a></li>
+          <li><a href="../../faq/">Common questions</a></li>
+          <li><a href="../../glossary/">Glossary</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h2>About us</h2>
+        <ul>
+          <li><a href="../../about/">About this site</a></li>
+          <li><a href="../../how-we-check/">How we check our numbers</a></li>
+          <li><a href="../../changes/">What changed</a></li>
+          <li><a href="../../contact/">Contact us</a></li>
+          <li><a href="../../privacy/">Privacy policy</a></li>
+          <li><a href="../../terms/">Terms of use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <p><strong>Estimates, not advice.</strong> The tools on this site give estimates based on your answers and on rules published by government agencies. They are not financial, legal or tax advice and do not guarantee any benefit. This site is not affiliated with Oregon PERS, the Social Security Administration, OPM, the TSP or any other government agency.</p>
+      <p>Your answers stay on your device. Last updated October 31, 2026.</p>
+      <p>© 2026 X Ventures LLC. Public Retirement Planner is owned and operated by X Ventures LLC.</p>
+    </div>
+  </div>
+</footer>
+<nav class="tabbar" aria-label="Shortcuts">
+    <a class="tab" href="../../"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h4.5v-5.5h3V20H18V9.5"/></svg><span>Home</span></a>
+    <a class="tab" href="../../guides/where-to-begin/"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg><span>Start here</span></a>
+    <a class="tab" href="../../planner/"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Planner</span></a>
+    <a class="tab" href="../../guides/"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5.5C6.5 4.5 9.5 4.5 12 6.5c2.5-2 5.5-2 8-1V19c-2.5-1-5.5-1-8 1-2.5-2-5.5-2-8-1zM12 6.5V20"/></svg><span>Guides</span></a>
+    <button type="button" class="tab" id="menu-btn" aria-expanded="false" aria-controls="menu-sheet"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
+</nav>
+<div class="sheet" id="menu-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-head"><h2 id="sheet-title" tabindex="-1">Menu</h2><button type="button" class="btn secondary sheet-close">Close</button></div>
+  <div class="sheet-body">
+    <a class="sheet-start" href="../../guides/where-to-begin/"><span class="label">New here?</span><strong>Start with "Where to begin"</strong><span>Six steps, in order, for anyone a few years from retiring.</span></a>
+    <div class="sheet-groups">
+    <details class="sheet-group" open>
+      <summary>Calculators</summary>
+      <div class="sheet-group-body">
+        <h3>Quick answers</h3>
+        <ul>
+          <li><a href="../../can-i-retire/"><strong>Can I retire?</strong><span>A plain yes or not yet, with Social Security at 62, 67 or 70</span></a></li>
+          <li><a href="../../calculators/social-security-calculator/"><strong>Social Security calculator</strong><span>Your monthly amount at every age from 62 to 70</span></a></li>
+          <li><a href="../../calculators/retirement-income-after-tax/"><strong>Take-home pay in retirement</strong><span>Federal tax on your pension and Social Security</span></a></li>
+        </ul>
+        <h3>Your pension, by system</h3>
+        <ul>
+          <li><a href="../../oregon-pers/"><strong>Oregon PERS calculator</strong></a></li>
+          <li><a href="../../calculators/washington-drs-retirement-calculator/"><strong>Washington DRS calculator</strong></a></li>
+          <li><a href="../../calculators/fers-retirement-calculator/"><strong>FERS calculator</strong></a></li>
+          <li><a href="../../calculators/calpers-retirement-calculator/"><strong>CalPERS calculator</strong></a></li>
+          <li><a href="../../calculators/calstrs-retirement-calculator/" aria-current="page"><strong>CalSTRS calculator</strong></a></li>
+          <li><a href="../../calculators/idaho-persi-retirement-calculator/"><strong>Idaho PERSI calculator</strong></a></li>
+        </ul>
+        <h3>Plan and decide</h3>
+        <ul>
+          <li><a href="../../planner/"><strong>Retirement Date Planner</strong><span>Pension, savings and Social Security on one timeline</span></a></li>
+          <li><a href="../../calculators/survivor-option-comparison/"><strong>Single life or survivor option</strong><span>What a survivor option costs, and when it pays off</span></a></li>
+          <li><a href="../../calculators/how-long-will-savings-last/"><strong>How long will my savings last?</strong><span>Monthly withdrawals, year by year</span></a></li>
+          <li><a href="../../retirement-checklist/"><strong>Retirement Countdown Checklist</strong><span>Every deadline, with calendar reminders</span></a></li>
+        </ul>
+        <a class="sheet-all" href="../../calculators/">See all calculators</a>
+      </div>
+    </details>
+    <details class="sheet-group">
+      <summary>Pensions</summary>
+      <div class="sheet-group-body">
+        <h3>Oregon PERS</h3>
+        <ul>
+          <li><a href="../../guides/oregon-pers-explained/"><strong>Oregon PERS explained</strong></a></li>
+          <li><a href="../../guides/when-can-i-retire-oregon-pers/"><strong>When can I retire?</strong></a></li>
+          <li><a href="../../guides/pers-tier-one-tier-two-opsrp/"><strong>Tier One, Tier Two or OPSRP</strong></a></li>
+          <li><a href="../../guides/oregon-pers-iap-payout-options/"><strong>IAP payout options</strong></a></li>
+        </ul>
+        <h3>Washington DRS</h3>
+        <ul>
+          <li><a href="../../guides/washington-drs-explained/"><strong>Washington DRS explained</strong></a></li>
+          <li><a href="../../guides/when-can-i-retire-washington-drs/"><strong>When can I retire?</strong></a></li>
+          <li><a href="../../guides/washington-drs-plan-1-2-3/"><strong>Plans 1, 2 and 3 compared</strong></a></li>
+        </ul>
+        <h3>Federal FERS</h3>
+        <ul>
+          <li><a href="../../fers/"><strong>FERS explained</strong></a></li>
+          <li><a href="../../guides/fers-retirement-age/"><strong>When can I retire?</strong></a></li>
+          <li><a href="../../guides/tsp-withdrawal-options/"><strong>TSP withdrawal options</strong></a></li>
+          <li><a href="../../guides/fers-survivor-benefit/"><strong>Survivor benefit</strong></a></li>
+        </ul>
+        <h3>California and Idaho</h3>
+        <ul>
+          <li><a href="../../guides/calpers-explained/"><strong>CalPERS explained</strong></a></li>
+          <li><a href="../../guides/calstrs-explained/"><strong>CalSTRS explained</strong></a></li>
+          <li><a href="../../guides/idaho-persi-explained/"><strong>Idaho PERSI explained</strong></a></li>
+        </ul>
+        <a class="sheet-all" href="../../guides/">See all guides</a>
+      </div>
+    </details>
+    <details class="sheet-group">
+      <summary>Social Security & Medicare</summary>
+      <div class="sheet-group-body">
+        <h3>Social Security</h3>
+        <ul>
+          <li><a href="../../guides/social-security-explained/"><strong>Social Security explained</strong></a></li>
+          <li><a href="../../guides/when-to-start-social-security/"><strong>When should I start it?</strong></a></li>
+          <li><a href="../../guides/does-a-pension-reduce-social-security/"><strong>Does my pension lower it?</strong></a></li>
+          <li><a href="../../guides/social-security-spousal-benefits/"><strong>Spousal benefits</strong></a></li>
+          <li><a href="../../guides/social-security-survivor-benefits/"><strong>Survivor benefits</strong></a></li>
+        </ul>
+        <h3>Medicare and health care</h3>
+        <ul>
+          <li><a href="../../guides/when-to-sign-up-for-medicare/"><strong>When to sign up for Medicare</strong></a></li>
+          <li><a href="../../guides/health-insurance-before-medicare/"><strong>Health insurance before 65</strong></a></li>
+          <li><a href="../../guides/medicare-irmaa/"><strong>Medicare IRMAA</strong></a></li>
+        </ul>
+        <h3>This year</h3>
+        <ul>
+          <li><a href="../../guides/retirement-numbers-2027/"><strong>Retirement numbers for 2027</strong></a></li>
+          <li><a href="../../guides/medicare-open-enrollment/"><strong>Medicare open enrollment</strong></a></li>
+          <li><a href="../../calculators/social-security-calculator/"><strong>Social Security calculator</strong></a></li>
+        </ul>
+        <a class="sheet-all" href="../../faq/">See common questions</a>
+      </div>
+    </details>
+    </div>
+    <section>
+      <h2>More</h2>
+      <ul class="sheet-more"><li><a href="../../guides/"><strong>All guides</strong></a></li><li><a href="../../faq/"><strong>Common questions</strong></a></li><li><a href="../../glossary/"><strong>Glossary</strong></a></li><li><a href="../../my-plan/"><strong>My plan</strong></a></li><li><a href="../../how-we-check/"><strong>How we check our numbers</strong></a></li><li><a href="../../about/"><strong>About this site</strong></a></li><li><a href="../../contact/"><strong>Contact us</strong></a></li></ul>
+    </section>
+  </div>
+</div>
+<script src="../../assets/info.js"></script>
+<script src="../../assets/site.js"></script>
+<!-- /@footer -->
+</body>
+</html>

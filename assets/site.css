@@ -1,3 +1,10 @@
+/* Fonts are served from this site (assets/fonts, SIL Open Font License), so no outside font service is called. */
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/atkinson-hyperlegible-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/atkinson-hyperlegible-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: italic; font-weight: 400; font-display: swap; src: url(fonts/atkinson-hyperlegible-latin-400-italic.woff2) format("woff2"); }
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/public-sans-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/public-sans-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/public-sans-latin-800-normal.woff2) format("woff2"); }
 /* Public Retirement Planner: shared styles for every page.
    Phone first: most readers arrive on a phone, so the base layout is one column with a tab bar along the bottom
    of the screen; wider screens add the full menu bar. Built for readers in their 50s, 60s and 70s: big type,
@@ -557,3 +564,21 @@ dl.terms dt:target + dd { background: var(--answer); border-radius: 10px; paddin
 .hub-sec { scroll-margin-top: 1rem; margin-bottom: 1.6rem; display: grid; gap: .5rem; }
 .hub-sec h2 { margin-bottom: .3rem; }
 .hub-from { font-size: .92rem; color: var(--muted); }
+/* One-system pension calculators: the row for the age you entered */
+table.compact tr.now td { background: var(--accent-soft); font-weight: 700; }
+/* "Want your own number?" link under a system guide's short answer */
+.runbox { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .8rem; margin: 0; padding: .85rem 1.1rem; border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: var(--radius-sm); background: var(--surface); font-weight: 700; }
+.runbox span:first-child { color: var(--muted); font-weight: 400; }
+.runbox a { min-height: 44px; display: inline-flex; align-items: center; }
+/* Largest text on a 320px phone: let long questions and the byline wrap instead of pushing the page sideways */
+details.qa > summary h3 { min-width: 0; overflow-wrap: anywhere; }
+.prose .byline { max-width: 100%; flex-wrap: wrap; }
+.prose > *, .main-col, .fields, .field { min-width: 0; }
+@media (max-width: 400px) {
+  table.stack td { min-width: 0; overflow-wrap: anywhere; }
+  table.stack td.amt { white-space: normal; }
+  .prose li li { overflow-wrap: anywhere; }
+  .prose li ul, .prose li ol { padding-left: 1.1rem; }
+}
+details.how > summary { overflow-wrap: anywhere; }
+details.how { min-width: 0; }

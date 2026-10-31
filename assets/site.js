@@ -12,11 +12,13 @@
     sync();
   }
   // Only the default letters load with every page. Book-style and wide-spaced letters load the first time someone picks them.
-  var FONT_CSS = { book: "Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700", wide: "Lexend:wght@400;600;700" };
+  // The font files are served from this site (assets/fonts/book.css and wide.css), found next to this script.
+  var FONTS = (document.currentScript && document.currentScript.src || "").replace(/site\.js[^\/]*$/, "") + "fonts/";
+  var FONT_CSS = { book: "book.css", wide: "wide.css" };
   function loadFont(v) {
     if (!FONT_CSS[v] || document.getElementById("font-" + v)) return;
     var l = document.createElement("link"); l.id = "font-" + v; l.rel = "stylesheet";
-    l.href = "https://fonts.googleapis.com/css2?family=" + FONT_CSS[v] + "&display=swap";
+    l.href = FONTS + FONT_CSS[v];
     document.head.appendChild(l);
   }
   function current(kind) {
